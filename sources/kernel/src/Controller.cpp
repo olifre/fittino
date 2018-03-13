@@ -60,50 +60,53 @@ void Fittino::Controller::ExecuteFittino() const {
             model = factory.CreateModel( modelType, modelTree );
 
         }
+        
+        for( auto toolNode : _inputPtree->get_child( "InputFile.Tool" ) ) {
+            
+            std::string toolType = toolNode.first;
+            boost::property_tree::ptree& toolTree = toolNode.second;
+            Tool* tool = factory.CreateTool( toolType, model, toolTree );
 
-
-        boost::property_tree::ptree::value_type& toolNode = *( _inputPtree->get_child( "InputFile.Tool" ).begin() );
-        std::string toolType = toolNode.first;
-        boost::property_tree::ptree& toolTree = toolNode.second;
-        Tool* tool = factory.CreateTool( toolType, model, toolTree );
-
-        if ( !_lockFileName.empty() ) {
+            if ( !_lockFileName.empty() ) {
 
 #if Boost_MINOR_VERSION<56
 
-            boost::property_tree::xml_writer_settings<char> settings( '\t', 1 );
+                boost::property_tree::xml_writer_settings<char> settings( '\t', 1 );
 
 #else
 
-            auto settings = boost::property_tree::xml_writer_make_settings<std::string> ( '\t', 1 );
+                auto settings = boost::property_tree::xml_writer_make_settings<std::string> ( '\t', 1 );
 
 #endif
 
-            boost::property_tree::write_xml( _inputFileName, *_inputPtree, std::locale(), settings );
+                boost::property_tree::write_xml( _inputFileName, *_inputPtree, std::locale(), settings );
 
-            _scopedLock->unlock();
+                _scopedLock->unlock();
 
+            }
+
+            tool->PerformTask();
+
+            _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
+
+            if ( _inputPtree->get_child( "InputFile" ).count( "RandomSeed" ) ) {
+
+                _outputPtree->put( "InputFile.RandomSeed", _inputPtree->get<std::string>( "InputFile.RandomSeed" ) );
+
+            }
+
+            if ( _inputPtree->get_child( "InputFile" ).count( "Model" ) ) {
+
+                _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
+
+            }
+
+            _outputPtree->put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
+
+            delete tool;
+            
         }
-
-        tool->PerformTask();
-
-        _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
-
-        if ( _inputPtree->get_child( "InputFile" ).count( "RandomSeed" ) ) {
-
-            _outputPtree->put( "InputFile.RandomSeed", _inputPtree->get<std::string>( "InputFile.RandomSeed" ) );
-
-        }
-
-        if ( _inputPtree->get_child( "InputFile" ).count( "Model" ) ) {
-
-            _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
-
-        }
-
-        _outputPtree->put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
-
-        delete tool;
+        
         delete model;
 
     }
