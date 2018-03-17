@@ -1,10 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
+
 <InputFile>
+
     <VerbosityLevel>INFO</VerbosityLevel>
+
     <Model>
+
         <ModelBase>
+
             <Name>MSSM</Name>
+
             <ModelParameter>
                 <Name>M1</Name>
                 <Value>4000.</Value>
@@ -13,6 +19,7 @@
                 <UpperBound>5000.</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>M2</Name>
                 <Value>4000.</Value>
@@ -21,6 +28,7 @@
                 <UpperBound>5000.</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>M3</Name>
                 <Value>4000.</Value>
@@ -29,6 +37,7 @@
                 <UpperBound>5000.</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>Mu</Name>
                 <Value>4000.</Value>
@@ -37,6 +46,7 @@
                 <UpperBound>5000.</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>MA</Name>
                 <Value>4000.</Value>
@@ -45,6 +55,7 @@
                 <UpperBound>5000.</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>TanBeta</Name>
                 <Value>10.</Value>
@@ -53,6 +64,7 @@
                 <UpperBound>100.</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>lambda'_232</Name>
                 <Value>0.0</Value>
@@ -61,6 +73,7 @@
                 <UpperBound>+0.11</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>lambda'_233</Name>
                 <Value>0.0</Value>
@@ -69,6 +82,7 @@
                 <UpperBound>+0.11</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>lambda'_313</Name>
                 <Value>0.0</Value>
@@ -77,14 +91,16 @@
                 <UpperBound>+1.1</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>lambda'_323</Name>
                 <Value>0.0</Value>
                 <Error>0.2</Error>
                 <LowerBound>-1.0</LowerBound>
                 <UpperBound>+1.1</UpperBound>
-                <Fixed>false</Fixed>
+                <Fixed>true</Fixed>
             </ModelParameter>
+            
             <ModelParameter>
                 <Name>lambda'_332</Name>
                 <Value>0.0</Value>
@@ -93,14 +109,16 @@
                 <UpperBound>+2.1</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>lambda'_333</Name>
-                <Value>1.0</Value>
+                <Value>0.0</Value>
                 <Error>0.2</Error>
                 <LowerBound>-1.0</LowerBound>
                 <UpperBound>+1.1</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+            
             <ModelParameter>
                 <Name>lambda_322</Name>
                 <Value>0.0</Value>
@@ -109,14 +127,16 @@
                 <UpperBound>+1.1</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>md2_33</Name>
-                <Value>12.5e5</Value>
+                <Value>16e6</Value>
                 <Error>2.5e5</Error>
                 <LowerBound>7.5e5</LowerBound>
                 <UpperBound>20.1e5</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>mq2_33</Name>
                 <Value>16e6</Value>
@@ -125,6 +145,7 @@
                 <UpperBound>2.001e6</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>ml2_33</Name>
                 <Value>16e6</Value>
@@ -133,6 +154,7 @@
                 <UpperBound>2.001e6</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <ModelParameter>
                 <Name>mf2_high</Name>
                 <Value>16e6</Value>
@@ -141,11 +163,14 @@
                 <UpperBound>2.001e23</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+
             <Observables>
             </Observables>
             <CovarianceMatrices>
             </CovarianceMatrices>
+
             <Calculators>
+
                 <SARAHSPhenoCalculator>
                     <Executable>@SPheno_MSSMTriLnV_EXECUTABLE@</Executable>
                     <InputFile>
@@ -222,6 +247,7 @@
                     </InputFile>
                     <OutputFile>SPheno.spc.MSSMTriLnV</OutputFile>
                 </SARAHSPhenoCalculator>
+
                 <RPVCalculator>
                     <Mass_sbottomR>TMath::Sqrt([md2_33])</Mass_sbottomR>
                     <lambdaPrime_313>[lambda'_313]</lambdaPrime_313>
@@ -229,14 +255,25 @@
                     <lambdaPrime_333>[lambda'_333]</lambdaPrime_333>
                     <Vev>[SPheno_HMIX_Vev]</Vev>
                 </RPVCalculator>
+
                 <FlavioCalculator>
                 </FlavioCalculator>
+
             </Calculators>
+
+
         </ModelBase>
+
     </Model>
+
     <Tool>
+
         <SimpleSampler>
-            <OutputFile>MSSMTriLnV_RD_323.root</OutputFile>
+            <OutputFile>MSSMTriLnV_Raw.root</OutputFile>
         </SimpleSampler>
+
     </Tool>
+
+
 </InputFile>
+

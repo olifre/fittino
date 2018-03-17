@@ -3,37 +3,64 @@ list( APPEND src definitions )
 list( APPEND src style )
 list( APPEND src external )
 list( APPEND src steering )
+list( APPEND src scripts )
 list( APPEND src prospino_main.f90 )
 add_custom_target( input SOURCES ${src} )
 
-file( COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${PROJECT_BINARY_DIR} PATTERN ".svn" EXCLUDE )
-#file(MAKE_DIRECTORY ${builddir} )
+file( MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/input-gen )
+file( MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/input-gen/steering )
 
-list( APPEND inputFiles steering/SModelS.in.xml )
-list( APPEND inputFiles steering/SCYNet.xml )
-list( APPEND inputFiles steering/MSSMTriLnV_low.xml  )
-list( APPEND inputFiles steering/RPV.xml )
-list( APPEND inputFiles steering/MSSMTriLnV_RK_stop.xml )
-list( APPEND inputFiles steering/MSSMTriLnV_RK_stop_233.xml )
+if( PYTHONINTERP_FOUND )
 
-list( APPEND inputFiles steering/MSSMTriLnV_RD_313.xml )
-list( APPEND inputFiles steering/MSSMTriLnV_RD_323.xml )
-list( APPEND inputFiles steering/MSSMTriLnV_RD_333.xml )
-list( APPEND inputFiles steering/MSSMTriLnV_gRatios.xml )
-list( APPEND inputFiles steering/MSSMTriLnV_Decoupling_01.xml )
-list( APPEND inputFiles steering/MSSMTriLnV_Decoupling_10.xml )
+    list( APPEND outputs steering/MSSMTriLnV_RD_313.xml )
+    list( APPEND outputs steering/MSSMTriLnV_RD_323.xml )
+    list( APPEND outputs steering/MSSMTriLnV_RD_333.xml )
+    list( APPEND outputs steering/MSSMTriLnV_gRatios.xml )
+    list( APPEND outputs steering/MSSMTriLnV_Decoupling_01.xml )
+    list( APPEND outputs steering/MSSMTriLnV_Decoupling_10.xml )
+    list( APPEND outputs steering/MSSMTriLnV_RK_stop.xml )
+    list( APPEND outputs steering/MSSMTriLnV_RK_stop_233.xml )
 
-list( APPEND inputFiles external/SModelS/parameters.ini )
-list( APPEND inputFiles external/SPheno/pMSSM11.slha )
-list( APPEND inputFiles external/SPheno/LesHouches.in.MSSMTriLnV_low )
+    foreach( f ${outputs} )
+
+        list(APPEND fulloutputs ${PROJECT_BINARY_DIR}/input-gen/${f} )
+
+    endforeach()
+
+    add_custom_command( OUTPUT ${fulloutputs}
+                    COMMAND ${PYTHON_EXECUTABLE}
+                    ARGS ${PROJECT_SOURCE_DIR}/input/scripts/createMSSMTriLnVfiles.py ${PROJECT_SOURCE_DIR}/input/scripts/MSSMTriLnV_Raw.xml
+                    DEPENDS ${PROJECT_SOURCE_DIR}/input/scripts/createMSSMTriLnVfiles.py ${PROJECT_SOURCE_DIR}/input/scripts/MSSMTriLnV_Raw.xml
+                    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/input-gen/steering )
+
+    add_custom_target( input-gen ALL DEPENDS ${fulloutputs} )
+
+endif()
 
 set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
 
-foreach( f ${inputFiles} )
+list( APPEND confargs -DPROJECT_BINARY_DIR=${PROJECT_BINARY_DIR} )
+list( APPEND confargs -DPROJECT_SOURCE_DIR=${PROJECT_SOURCE_DIR} )
+list( APPEND confargs -DFittino_INPUT_DIR=${Fittino_INPUT_DIR} )
+list( APPEND confargs -DPYTHONINTERP_FOUND=${PYTHONINTERP_FOUND} )
+list( APPEND confargs -DSPheno_MSSMTriLnV_EXECUTABLE=${SPheno_MSSMTriLnV_EXECUTABLE} )
+list( APPEND confargs -DSModelS_Database_DIR=${SModelS_Database_DIR} )
 
-    set_source_files_properties(${f} PROPERTIES HEADER_FILE_ONLY TRUE)
-    configure_file( ${f} ${PROJECT_BINARY_DIR}/input/${f} )
+list( APPEND installDirs definitions )
+list( APPEND installDirs style )
+list( APPEND installDirs external )
+list( APPEND installDirs steering )
+
+add_custom_command( OUTPUT ${installDirs}
+                    COMMAND ${CMAKE_COMMAND} "-Doutputs=${outputs}" ${confargs} -P ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake
+                    DEPENDS ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake ${fulloutputs} ${PROJECT_SOURCE_DIR}/input
+                    VERBATIM )
+
+add_custom_target( input-conf ALL DEPENDS ${installDirs})
+
+foreach( dir ${installDirs} )
+
+    install( DIRECTORY ${PROJECT_BINARY_DIR}/input/${dir} DESTINATION share/fittino/input )
 
 endforeach()
 
-install( DIRECTORY ${PROJECT_BINARY_DIR}/input DESTINATION share/fittino )
