@@ -21,7 +21,7 @@ public:
        
          void Execute();
          void InitializeTool();
-        void PrintResult() const;
+         void PrintResult() const;
          void Terminate();
          void WriteResultToFile() const;
         
