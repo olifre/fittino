@@ -3140,7 +3140,6 @@ OddllTRR = OddllTRR - OddllTRRSM
 
  ! ***** Combine operators for 2d2nu
 fact_loop = 1
-
 OddvvVRR = fact_loop*BOddvvVRR + fact_loop*PSOddvvVRR + fact_loop*PVOddvvVRR + TSOddvvVRR + TVOddvvVRR
 OddvvVRRSM = fact_loop*BOddvvVRRSM + fact_loop*PSOddvvVRRSM + fact_loop*PVOddvvVRRSM + TSOddvvVRRSM + TVOddvvVRRSM
 OddvvVRR = OddvvVRR - OddvvVRRSM
@@ -4548,9 +4547,9 @@ coeffC9eeNP = (OddllVLL(3,2,1,1) - OddllVLLSM(3,2,1,1) + OddllVLR(3,2,1,1) - Odd
 coeffC9PeeNP = (OddllVRL(3,2,1,1) + OddllVRR(3,2,1,1))/2._dp
 coeffC10eeSM = (-OddllVLLSM(3,2,1,1) + OddllVLRSM(3,2,1,1))/2._dp
 coeffC10ee = (-OddllVLL(3,2,1,1) + OddllVLR(3,2,1,1))/2._dp
-coeffC10Pee = (OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
+coeffC10Pee = -(OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
 coeffC10eeNP = (-OddllVLL(3,2,1,1) + OddllVLLSM(3,2,1,1) + OddllVLR(3,2,1,1) - OddllVLRSM(3,2,1,1))/2._dp
-coeffC10PeeNP = (OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
+coeffC10PeeNP = -(OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
 coeffC9mumuSM = (OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2))/2._dp
 coeffC9mumu = (OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2))/2._dp
 coeffC9Pmumu = (OddllVRL(3,2,2,2) + OddllVRR(3,2,2,2))/2._dp
@@ -4558,9 +4557,9 @@ coeffC9mumuNP = (OddllVLL(3,2,2,2) - OddllVLLSM(3,2,2,2) + OddllVLR(3,2,2,2) - O
 coeffC9PmumuNP = (OddllVRL(3,2,2,2) + OddllVRR(3,2,2,2))/2._dp
 coeffC10mumuSM = (-OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2))/2._dp
 coeffC10mumu = (-OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2))/2._dp
-coeffC10Pmumu = (OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
+coeffC10Pmumu = -(OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
 coeffC10mumuNP = (-OddllVLL(3,2,2,2) + OddllVLLSM(3,2,2,2) + OddllVLR(3,2,2,2) - OddllVLRSM(3,2,2,2))/2._dp
-coeffC10PmumuNP = (OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
+coeffC10PmumuNP = -(OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
 coeffCLnu1nu1SM = OddvvVLLSM(3,2,1,1)
 coeffCLnu1nu1 = OddvvVLL(3,2,1,1)
 coeffCLPnu1nu1 = OddvvVRL(3,2,1,1)
@@ -7621,6 +7620,7 @@ g1input = Sqrt(3._dp/5._dp)*g1input
 End subroutine CalculateLowEnergyConstraints 
  
 
+ 
 
 Subroutine Switch_from_superCKM(Y_d, Y_u, Ad_in, Au_in, MD_in, MQ_in, MU_in &
                       &, Ad_out, Au_out, MD_out, MQ_out, MU_out, tr        &
