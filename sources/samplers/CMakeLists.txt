@@ -31,4 +31,4 @@ FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY(src sources)
 
 ADD_LIBRARY(samplers ${includes} ${sources})
-SET_TARGET_PROPERTIES(samplers PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON )
+

@@ -1,6 +1,7 @@
 set( Fittino Fittino )
 
 list( APPEND CACHE_ARGS "-DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>" )
+list( APPEND CACHE_ARGS "-DCMAKE_CXX_STANDARD:STRING=${CMAKE_CXX_STANDARD}" )
 
 check_language( Fortran )
 

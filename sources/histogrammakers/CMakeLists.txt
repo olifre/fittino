@@ -29,5 +29,5 @@ FILE(GLOB includes ./include/*.h)
 AUX_SOURCE_DIRECTORY(src sources)
 
 ADD_LIBRARY(histogrammakers ${includes} ${sources})
-SET_TARGET_PROPERTIES(histogrammakers PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON  )
+
 

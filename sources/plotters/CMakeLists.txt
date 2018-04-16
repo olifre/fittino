@@ -44,4 +44,4 @@ LIST( APPEND sources "src/ScatterData.cpp" )
 
 
 ADD_LIBRARY(plotters ${includes} ${sources})
-SET_TARGET_PROPERTIES(plotters PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON  )
+

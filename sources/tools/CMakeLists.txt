@@ -32,4 +32,4 @@ FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY(src sources)
 
 ADD_LIBRARY(tools ${includes} ${sources})
-SET_TARGET_PROPERTIES(tools PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON  )
+

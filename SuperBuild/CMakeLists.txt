@@ -18,6 +18,9 @@
 # because of DOWNLOAD_NO_EXTRACT: https://cmake.org/cmake/help/v3.6/release/3.6.html?highlight=download_no_extract#modules
 cmake_minimum_required( VERSION 3.6 FATAL_ERROR )
 
+set( CMAKE_CXX_STANDARD 14 CACHE STRING "" )
+set( CMAKE_CXX_STANDARD_REQUIRED ON )
+
 set( CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "" )
 
 project( Fittino_Superbuild LANGUAGES NONE )
