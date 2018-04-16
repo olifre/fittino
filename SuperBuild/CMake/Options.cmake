@@ -27,7 +27,7 @@ add_feature_info( INSTALL_MSSMTriLnV INSTALL_MSSMTriLnV "This option depends on 
 option( USE_WCxf "Use WCxf" ON )
 add_feature_info( USE_WCxf USE_WCxf "SPhenoMSSMTriLnV and flavio communicate via WCxf." )
 
-option( USE_SPhenoMSSMTriLnV_LOOPS ON )
+option( USE_SPhenoMSSMTriLnV_LOOPS "Use loops in SPhenoMSSMTriLnV." ON )
 add_feature_info( USE_SPhenoMSSMTriLnV_LOOPS USE_SPhenoMSSMTriLnV_LOOPS "If OFF the epsTree parameter of SPhenoMSSMTriLnV is set to 0 such that loop corrections to wilson coefficients are never calculated. If ON it stays at 0.1 such that loops are calculated if the tree level contribution is less than 0.1 (in units of GeV)." )
 
 cmake_dependent_option( INSTALL_SModelS "Install SModelS" OFF "INSTALL_Python2" OFF )
