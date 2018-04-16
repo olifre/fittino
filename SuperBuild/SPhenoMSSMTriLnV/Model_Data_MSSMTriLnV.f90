@@ -78,6 +78,32 @@ Complex(dp) :: coeffCRPbdnu3nu3 = 0._dp
 Complex(dp) :: coeffCRbdnu3nu3NP = 0._dp
 Complex(dp) :: coeffCRPbdnu3nu3NP = 0._dp
 
+Complex(dp) :: coeffSsbee =  0._dp
+Complex(dp) :: coeffSsbeeP =  0._dp
+Complex(dp) :: coeffSsbeeSM =  0._dp
+Complex(dp) :: coeffSsbeepSM =  0._dp
+Complex(dp) :: coeffSsbeeNP =  0._dp
+Complex(dp) :: coeffSsbeepNP =  0._dp
+Complex(dp) :: coeffPsbee =  0._dp
+Complex(dp) :: coeffPsbeeP =  0._dp
+Complex(dp) :: coeffPsbeeSM =  0._dp
+Complex(dp) :: coeffPsbeepSM =  0._dp
+Complex(dp) :: coeffPsbeeNP =  0._dp
+Complex(dp) :: coeffPsbeepNP =  0._dp
+
+Complex(dp) :: coeffSsbmumu =  0._dp
+Complex(dp) :: coeffSsbmumuP =  0._dp
+Complex(dp) :: coeffSsbmumuSM =  0._dp
+Complex(dp) :: coeffSsbmumupSM =  0._dp
+Complex(dp) :: coeffSsbmumuNP =  0._dp
+Complex(dp) :: coeffSsbmumupNP =  0._dp
+Complex(dp) :: coeffPsbmumu =  0._dp
+Complex(dp) :: coeffPsbmumuP =  0._dp
+Complex(dp) :: coeffPsbmumuSM =  0._dp
+Complex(dp) :: coeffPsbmumupSM =  0._dp
+Complex(dp) :: coeffPsbmumuNP =  0._dp
+Complex(dp) :: coeffPsbmumupNP =  0._dp
+
 ! end hack Werner
 Real(dp) :: tau_pi0=0.0000000000000000852_dp, mass_pi0=0.13498_dp
 Real(dp) :: tau_pip=0.000000026_dp, mass_pip=0.13957_dp

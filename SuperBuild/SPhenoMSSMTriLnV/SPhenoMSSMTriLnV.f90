@@ -945,6 +945,7 @@ Do i1=1,3
   end Do
  end Do
 end Do
+
 L2 = L2p
  mf_d_160 = MFd(1:3) 
  mf_d2_160 = MFd(1:3)**2 
@@ -2175,7 +2176,6 @@ Call CalculateTreeS2d2L(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MCha,MCha2,MChi,        
 & ,TSOddllVRRSM(gt1,gt2,gt3,gt4),TSOddllVLLSM(gt1,gt2,gt3,gt4),TSOddllVRLSM(gt1,gt2,gt3,gt4)& 
 & ,TSOddllVLRSM(gt1,gt2,gt3,gt4),TSOddllTLLSM(gt1,gt2,gt3,gt4),TSOddllTLRSM(gt1,gt2,gt3,gt4)& 
 & ,TSOddllTRLSM(gt1,gt2,gt3,gt4),TSOddllTRRSM(gt1,gt2,gt3,gt4))
-
 End do 
 
 
@@ -4549,6 +4549,22 @@ coeffC10eeSM = (-OddllVLLSM(3,2,1,1) + OddllVLRSM(3,2,1,1))/2._dp
 coeffC10ee = (-OddllVLL(3,2,1,1) + OddllVLR(3,2,1,1))/2._dp
 coeffC10Pee = -(OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
 coeffC10eeNP = (-OddllVLL(3,2,1,1) + OddllVLLSM(3,2,1,1) + OddllVLR(3,2,1,1) - OddllVLRSM(3,2,1,1))/2._dp
+
+! WP, scalar operators
+coeffSsbee =  mf_d_mZ(3) * (OddllSRR(3,2,1,1) +  OddllSRL(3,2,1,1))/2._dp
+coeffSsbeeP =  mf_d_mZ(3) * (OddllSLR(3,2,1,1) +  OddllSLL(3,2,1,1))/2._dp
+coeffSsbeeSM =  mf_d_mZ(3) * (OddllSRRSM(3,2,1,1) +  OddllSRLSM(3,2,1,1))/2._dp
+coeffSsbeepSM = mf_d_mZ(3) *  (OddllSLRSM(3,2,1,1) +  OddllSLLSM(3,2,1,1))/2._dp
+coeffSsbeeNP = coeffSsbee - coeffSsbeeSM
+coeffSsbeepNP = coeffSsbeeP - coeffSsbeePSM
+coeffPsbee = mf_d_mZ(3) *  (OddllSRR(3,2,1,1) -  OddllSRL(3,2,1,1))/2._dp
+coeffPsbeeP = mf_d_mZ(3) *  (OddllSLR(3,2,1,1) -  OddllSLL(3,2,1,1))/2._dp
+coeffPsbeeSM = mf_d_mZ(3) *  (OddllSRRSM(3,2,1,1) -  OddllSRLSM(3,2,1,1))/2._dp
+coeffPsbeepSM = mf_d_mZ(3) *  (OddllSLRSM(3,2,1,1) -  OddllSLLSM(3,2,1,1))/2._dp
+coeffPsbeeNP = coeffPsbee - coeffPsbeeSM
+coeffPsbeepNP = coeffPsbeeP - coeffPsbeePSM
+! end WP, scalar operators
+
 coeffC10PeeNP = -(OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
 coeffC9mumuSM = (OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2))/2._dp
 coeffC9mumu = (OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2))/2._dp
@@ -4559,6 +4575,22 @@ coeffC10mumuSM = (-OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2))/2._dp
 coeffC10mumu = (-OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2))/2._dp
 coeffC10Pmumu = -(OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
 coeffC10mumuNP = (-OddllVLL(3,2,2,2) + OddllVLLSM(3,2,2,2) + OddllVLR(3,2,2,2) - OddllVLRSM(3,2,2,2))/2._dp
+
+! WP, scalar operators
+coeffSsbmumu = mf_d_mZ(3) *  (OddllSRR(3,2,2,2) +  OddllSRL(3,2,2,2))/2._dp
+coeffSsbmumuP = mf_d_mZ(3) *  (OddllSLR(3,2,2,2) +  OddllSLL(3,2,2,2))/2._dp
+coeffSsbmumuSM = mf_d_mZ(3) *  (OddllSRRSM(3,2,2,2) +  OddllSRLSM(3,2,2,2))/2._dp
+coeffSsbmumupSM = mf_d_mZ(3) *  (OddllSLRSM(3,2,2,2) +  OddllSLLSM(3,2,2,2))/2._dp
+coeffSsbmumuNP = coeffSsbmumu - coeffSsbmumuSM
+coeffSsbmumupNP = coeffSsbmumuP - coeffSsbmumuPSM
+coeffPsbmumu = mf_d_mZ(3) *  (OddllSRR(3,2,2,2) -  OddllSRL(3,2,2,2))/2._dp
+coeffPsbmumuP = mf_d_mZ(3) *  (OddllSLR(3,2,2,2) -  OddllSLL(3,2,2,2))/2._dp
+coeffPsbmumuSM = mf_d_mZ(3) *  (OddllSRRSM(3,2,2,2) -  OddllSRLSM(3,2,2,2))/2._dp
+coeffPsbmumupSM = mf_d_mZ(3) *  (OddllSLRSM(3,2,2,2) -  OddllSLLSM(3,2,2,2))/2._dp
+coeffPsbmumuNP = coeffPsbmumu - coeffPsbmumuSM
+coeffPsbmumupNP = coeffPsbmumuP - coeffPsbmumuPSM
+! end WP, scalar operators
+
 coeffC10PmumuNP = -(OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
 coeffCLnu1nu1SM = OddvvVLLSM(3,2,1,1)
 coeffCLnu1nu1 = OddvvVLL(3,2,1,1)
