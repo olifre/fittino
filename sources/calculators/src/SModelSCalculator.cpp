@@ -184,8 +184,7 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 
     ReadXML();
     ReadMissingConstraints();
-    // TODO: read in constraints outside grid. but let's wait for malte's update
-
+    ReadConstraintsOutsideGrid();
 
 }
 
@@ -216,7 +215,7 @@ void Fittino::SModelSCalculator::ReadXML() {
         
     }
 
-    unsigned int iMissingModel = 0;
+    unsigned int iModel = 0;
 
     for( auto node : ptree.get_child( "smodelsOutput.Missing_Topologies" ) ) {
 
@@ -226,22 +225,22 @@ void Fittino::SModelSCalculator::ReadXML() {
         double fractionOutsideGrid = node.second.get<double>("Outside_grid_pb") / weight;
         double fractionInsideGrid = node.second.get<double>("No_OS_pb") / weight;
 
-        if( iMissingModel < _numberOfMissingModelsConsidered ) {
+        if( iModel < _numberOfMissingModelsConsidered ) {
 
-            _missingModels_TxNames.at(iMissingModel) = txName;
-            _missingModels_Brackets.at(iMissingModel) = bracket;
+            _missingModels_TxNames.at(iModel) = txName;
+            _missingModels_Brackets.at(iModel) = bracket;
 
-            _missingModels_Weights_Total.at(iMissingModel) = weight;
-            _missingModels_Fractions_InsideGrid.at(iMissingModel) = fractionInsideGrid;
-            _missingModels_Fractions_OutsideGrid.at(iMissingModel) = fractionOutsideGrid;
+            _missingModels_Weights_Total.at(iModel) = weight;
+            _missingModels_Fractions_InsideGrid.at(iModel) = fractionInsideGrid;
+            _missingModels_Fractions_OutsideGrid.at(iModel) = fractionOutsideGrid;
 
         }
 
-        ++iMissingModel;
+        ++iModel;
 
     }
 
-    _numberOfMissingModelsDetermined = iMissingModel;
+    _numberOfMissingModelsDetermined = iModel;
     
 }
 
@@ -262,23 +261,57 @@ void Fittino::SModelSCalculator::ReadMissingConstraints() {
                                    boost::property_tree::xml_parser::no_comments );
     
 
-    unsigned int iMissingConstraint = 0;
+    unsigned int iConstraint = 0;
     
     for( auto node : ptree.get_child( "smodelsOutput.Missing_Constraints.Missing.Constraint_List" ) ) {
         
         if( node.first != "Constraint" ) throw LogicException("Expected node Constraint in SModelS xml file.");
         
-        if( iMissingConstraint < _constraintsMissing_NumberConsidered ) {
+        if( iConstraint < _constraintsMissing_NumberConsidered ) {
             
-            _constraintsMissing_Brackets.at( iMissingConstraint ) = node.second.get<std::string>( "FinalState" );
-            _constraintsMissing_Weights.at( iMissingConstraint ) = node.second.get<double>( "Weight_pb" );
+            _constraintsMissing_Brackets.at( iConstraint ) = node.second.get<std::string>( "FinalState" );
+            _constraintsMissing_Weights.at( iConstraint ) = node.second.get<double>( "Weight_pb" );
 
         }
         
-        ++iMissingConstraint;
+        ++iConstraint;
         
     }
     
-    _constraintsMissing_NumberDetermined = iMissingConstraint;
+    _constraintsMissing_NumberDetermined = iConstraint;
+    
+}
+
+
+void Fittino::SModelSCalculator::ReadConstraintsOutsideGrid() {
+    
+    boost::property_tree::ptree ptree;
+    
+    // TODO: avoid reading the file twice
+    
+    boost::property_tree::read_xml( _xmlFile,
+                                   ptree,
+                                   boost::property_tree::xml_parser::trim_whitespace |
+                                   boost::property_tree::xml_parser::no_comments );
+    
+    
+    unsigned int iConstraint = 0;
+    
+    for( auto node : ptree.get_child( "smodelsOutput.Missing_Constraints.Outside_Grid.Constraint_List" ) ) {
+        
+        if( node.first != "Constraint" ) throw LogicException("Expected node Constraint in SModelS xml file.");
+        
+        if( iConstraint < _constraintsOutsideGrid_NumberConsidered ) {
+            
+            _constraintsOutsideGrid_Brackets.at( iConstraint ) = node.second.get<std::string>( "FinalState" );
+            _constraintsOutsideGrid_Weights.at( iConstraint ) = node.second.get<double>( "Weight_pb" );
+            
+        }
+        
+        ++iConstraint;
+        
+    }
+    
+    _constraintsOutsideGrid_NumberDetermined = iConstraint;
     
 }

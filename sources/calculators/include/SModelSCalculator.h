@@ -58,6 +58,8 @@ namespace Fittino {
 
       void ReadXML();
       void ReadMissingConstraints();
+      void ReadConstraintsOutsideGrid();
+
 
   };
 
