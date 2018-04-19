@@ -34,8 +34,6 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
 
      _fileName = ptree.get<std::string>( "FileName" );
 
-    _individualMissingWeights = ptree.get<bool>( "MissingWeights", false );
-
     _xmlFile = "results/" + _fileName + ".xml";
 
     _parameterFile = ptree.get<std::string>( "ParameterFile" );
@@ -103,35 +101,6 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     messenger << Messenger::INFO << "SModelS database contains " <<nResults<<" results."<< Messenger::Endl;
     messenger << Messenger::INFO << "SModelS database uses "<<_txNamesWithResults.size()<<" TxNames."<<Messenger::Endl;
 
-    auto tdict = boost::python::import("smodels.tools.tdict");
-
-    auto dictionary = tdict.attr( "txnames" );
-
-    auto iter = dictionary.attr("itervalues")();
-
-    for ( int i=0; i< boost::python::len(dictionary); ++i ) {
-
-        std::string name = boost::python::extract<std::string> ( iter.attr("next")() );
-
-        _txNames.insert( name  );
-
-    }
-
-    messenger << Messenger::INFO << "SModelS knows "<<_txNames.size()<<" TxNames."<<Messenger::Endl;
-
-    _txNames.insert( "None" );
-
-
-if( _individualMissingWeights ) {
-
-    for (auto txName : _txNames) {
-
-        AddOutput("MissingWeight_" + txName);
-
-    }
-
-}
-
     _numberOfMissingModelsConsidered =  ptree.get<unsigned int>( "NumberOfUnusedModels", 10 );
     _missingModels_TxNames.resize( _numberOfMissingModelsConsidered );
     _missingModels_Brackets.resize( _numberOfMissingModelsConsidered );
@@ -182,17 +151,6 @@ Fittino::SModelSCalculator::~SModelSCalculator() {
 }
 
 void Fittino::SModelSCalculator::CalculatePredictions() {
-
-
-    if( _individualMissingWeights ) {
-
-        for (auto txName : _txNames) {
-
-            SetOutput("MissingWeight_" + txName, 0);
-
-        }
-
-    }
     
     for( unsigned int iMissingModel = 0; iMissingModel < _numberOfMissingModelsConsidered; ++iMissingModel ) {
 
@@ -263,18 +221,6 @@ void Fittino::SModelSCalculator::ReadXML() {
         std::string bracket = node.second.get<std::string>("Finalstate");
         double fractionOutsideGrid = node.second.get<double>("Outside_grid_pb") / weight;
         double fractionInsideGrid = node.second.get<double>("No_OS_pb") / weight;
-
-        if ( _txNames.count( txName ) == 0 ) {
-
-            throw LogicException("txName " + txName + " appears in Missing_Topologies in xml file but is unknown." );
-
-        }
-
-        if( _individualMissingWeights ) {
-
-            SetOutput("MissingWeight_" + txName, weight );
-
-        }
 
         if( iMissingModel < _numberOfMissingModelsConsidered ) {
 

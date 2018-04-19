@@ -36,9 +36,7 @@ namespace Fittino {
       boost::python::object _listOfExpRes;
       boost::python::object _testPoints;
 
-      bool _individualMissingWeights;
       std::set<std::string> _txNamesWithResults;
-      std::set<std::string> _txNames;
 
       std::vector<std::string> _missingModels_TxNames;
       std::vector<std::string> _missingModels_Brackets;
