@@ -107,13 +107,66 @@ if __name__ == "__main__":
     rd333.setPara( "md2_33", "Value", "12.5e5" )
     rd333.setPara( "lambda'_333", "Fixed", "false" )
     rd333.write("MSSMTriLnV_RD_333.xml" )
-
-    rkstop = Modifier( inputfile )
-    rkstop.setPara( "mq2_33", "Value", "12.5e5" )
-    rkstop.setPara( "lambda'_232", "Fixed", "false" )
-    rkstop.setPara( "lambda'_233", "Fixed", "false" )
-    rkstop.write("MSSMTriLnV_RK_stop.xml" )
     
+    rkstar = Modifier( inputfile )
+    
+    rkstar.setPara( "mq2_33", "Value", "2e6" )
+    #rkstar.setPara( "mq2_33", "Value", "12.5e5" )
+
+    rkstar.setPara( "mq2_33", "Fixed", "true" )
+    rkstar.setPara( "mq2_33", "LowerBound", "1.25e6" )
+    rkstar.setPara( "mq2_33", "UpperBound", "3.26e6" )
+    rkstar.setPara( "mq2_33", "Error", "1e6" )
+
+    rkstar.setPara( "lambda'_232", "Value", "0.5" )
+    #rkstar.setPara( "lambda'_232", "Value", "0.05" )
+
+    rkstar.setPara( "lambda'_232", "Fixed", "true" )
+    rkstar.setPara( "lambda'_232", "LowerBound", "-0.2" )
+    rkstar.setPara( "lambda'_232", "UpperBound", "+0.2" )
+    rkstar.setPara( "lambda'_232", "Error", "0.1" )
+
+    rkstar.setPara( "lambda'_233", "Value", "0.05" )
+    rkstar.setPara( "lambda'_233", "Fixed", "false" )
+    rkstar.setPara( "lambda'_233", "LowerBound", "-0.1" )
+    rkstar.setPara( "lambda'_233", "UpperBound", "+0.020001" )
+    rkstar.setPara( "lambda'_233", "Error", "0.005" )
+    
+    rkstar.write("MSSMTriLnV_RKstar.xml" )
+    
+    rk = Modifier( inputfile )
+
+    rk.setPara( "mq2_33", "Value", "2e6" )
+    rk.setPara( "mq2_33", "Fixed", "true" )
+    #rk.setPara( "lambda'_233", "Value", "-0.015" )
+    rk.setPara( "lambda'_233", "Value", "-0.035" )
+    rk.setPara( "lambda'_233", "Fixed", "true" )
+    rk.setPara( "lambda'_232", "Value", "0.5" )
+    rk.setPara( "lambda'_232", "Fixed", "true" )
+    
+    #rk.setPara( "ml2_33", "Value", "2e5" )
+    rk.setPara( "ml2_33", "Value", "2e4" )
+    rk.setPara( "ml2_33", "Fixed", "true" )
+    rk.setPara( "ml2_33", "LowerBound", "1.25e6" )
+    rk.setPara( "ml2_33", "UpperBound", "3.26e6" )
+    rk.setPara( "ml2_33", "Error", "1e6" )
+    
+    rk.setPara( "lambda'_323", "Value", "1.0" )
+    rk.setPara( "lambda'_323", "Fixed", "true" )
+    rk.setPara( "lambda'_323", "LowerBound", "-3.0" )
+    rk.setPara( "lambda'_323", "UpperBound", "0.1" )
+    rk.setPara( "lambda'_323", "Error", "1.0" )
+    
+    rk.setPara( "lambda_322", "Value", "0.05" )
+    rk.setPara( "lambda_322", "Fixed", "false" )
+    #rk.setPara( "lambda_322", "LowerBound", "-15.0" )
+    #rk.setPara( "lambda_322", "UpperBound", "+0.1" )
+    rk.setPara( "lambda_322", "LowerBound", "-0.00001" )
+    rk.setPara( "lambda_322", "UpperBound", "+0.000011" )
+    rk.setPara( "lambda_322", "Error", "0.000002" )
+    
+    rk.write("MSSMTriLnV_RK.xml" )
+
     rkstop2 = Modifier( inputfile )
     rkstop2.setPara( "mq2_33", "Value", "12.5e5" )
     rkstop2.setPara( "lambda'_233", "Fixed", "false" )

@@ -18,8 +18,10 @@ if( PYTHONINTERP_FOUND )
     list( APPEND outputs steering/MSSMTriLnV_gRatios.xml )
     list( APPEND outputs steering/MSSMTriLnV_Decoupling_01.xml )
     list( APPEND outputs steering/MSSMTriLnV_Decoupling_10.xml )
-    list( APPEND outputs steering/MSSMTriLnV_RK_stop.xml )
+    list( APPEND outputs steering/MSSMTriLnV_RK.xml )
     list( APPEND outputs steering/MSSMTriLnV_RK_stop_233.xml )
+    list( APPEND outputs steering/MSSMTriLnV_RKstar.xml )
+
 
     foreach( f ${outputs} )
 
