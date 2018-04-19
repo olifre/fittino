@@ -201,6 +201,8 @@ void Fittino::SModelSCalculator::ReadXML() {
     _rValue = 0;
 
     double ul, tp, r;
+    
+    if ( ptree.count("smodelsOutput.ExptRes_List" ) ) {
 
     for ( const auto res : ptree.get_child("smodelsOutput.ExptRes_List") ){
 
@@ -210,6 +212,8 @@ void Fittino::SModelSCalculator::ReadXML() {
 
         if ( r > _rValue ) _rValue = r;
 
+    }
+        
     }
 
     unsigned int iMissingModel = 0;
