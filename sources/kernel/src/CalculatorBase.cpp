@@ -32,8 +32,7 @@ Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, const boost::pr
 
     if ( ptree != nullptr ) {
 
-        _name = _ptree->get<std::string>( "Name", "" );
-        _tag = _name;
+        SetName( "" );
 
     }
 
@@ -256,6 +255,6 @@ void Fittino::CalculatorBase::SetName( std::string name ) {
     
     _className = name;
     _name = _ptree->get<std::string>( "Name", name );
-    _tag = _ptree->get<std::string>( "Prefix", name );
+    _tag = _ptree->get<std::string>( "Prefix", _name );
     
 }
