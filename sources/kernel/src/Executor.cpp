@@ -29,6 +29,9 @@
 
 #include <iostream>
 
+#include <boost/filesystem.hpp>
+
+#include "ConfigurationException.h"
 #include "Executor.h"
 #include "Messenger.h"
 #include "TimeoutExecutorException.h"
@@ -43,6 +46,14 @@ Fittino::Executor::Executor( std::string path, std::string arg0 )
     _args.push_back( arg0 );
     _creationTimeout = NULL;
     _completionTimeout = 0;
+        
+        if( !boost::filesystem::exists( _path ) ) {
+            
+            throw ConfigurationException( "No executable at path \"" + _path + "\"." );
+            
+        }
+        
+        
 
 }
 
