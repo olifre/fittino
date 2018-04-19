@@ -264,14 +264,15 @@ void Fittino::SModelSCalculator::ReadMissingConstraints() {
 
     unsigned int iMissingConstraint = 0;
     
-    for( auto node : ptree.get_child( "smodelsOutput.Missing_Constraints.Missing.Constraints_List" ) ) {
+    for( auto node : ptree.get_child( "smodelsOutput.Missing_Constraints.Missing.Constraint_List" ) ) {
         
-        if( node.first != "Constraints" ) throw LogicException("Expected node Constraints in SModelS xml file.");
+        if( node.first != "Constraint" ) throw LogicException("Expected node Constraint in SModelS xml file.");
         
         if( iMissingConstraint < _constraintsMissing_NumberConsidered ) {
             
-            _constraintsMissing_Brackets.at( iMissingConstraint ) = node.second.get_value<std::string>();
-            
+            _constraintsMissing_Brackets.at( iMissingConstraint ) = node.second.get<std::string>( "FinalState" );
+            _constraintsMissing_Weights.at( iMissingConstraint ) = node.second.get<double>( "Weight_pb" );
+
         }
         
         ++iMissingConstraint;
@@ -279,23 +280,5 @@ void Fittino::SModelSCalculator::ReadMissingConstraints() {
     }
     
     _constraintsMissing_NumberDetermined = iMissingConstraint;
-    
-    iMissingConstraint = 0;
-    
-    for( auto node : ptree.get_child( "smodelsOutput.Missing_Constraints.Missing.Weight_pb_List" ) ) {
-        
-        if( node.first != "Weight_pb" ) throw LogicException("Expected node Weight_pb in SModelS xml file.");
-        
-        if( iMissingConstraint < _constraintsMissing_NumberConsidered ) {
-        
-            _constraintsMissing_Weights.at( iMissingConstraint ) = node.second.get_value<double>();
-               
-        }
-        
-        ++iMissingConstraint;
-        
-    }
-    
-    // TODO: here one would need to check that iMissingConstraint ==constraintsMissing_NumberDetermined  but let's wait for Malte's update
     
 }
