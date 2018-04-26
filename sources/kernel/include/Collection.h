@@ -23,6 +23,7 @@
 #include <map>
 #include <stdexcept>
 #include <vector>
+#include <iostream>
 
 #include "ConfigurationException.h"
 
@@ -57,6 +58,7 @@ namespace Fittino {
       T*                        At( std::string name ) const;
       unsigned int              GetNumberOfElements() const;
       int                       Count( std::string key ) const;
+      void                      Print() const;
 
     public:
       virtual                   ~Collection();
@@ -129,6 +131,8 @@ T* Fittino::Collection<T*>::At( std::string name ) const {
     return _map.at( name );
 
   } catch ( const std::out_of_range& ) {
+      
+      Print();
 
     throw ConfigurationException( "Element with name " + name + " not contained in Collection." ); // TODO: Dedicated exception class ?
 
@@ -155,6 +159,17 @@ void Fittino::Collection<T*>::Delete()  {
   _vector.clear();
   _map.clear();
 
+}
+
+template<class T>
+void Fittino::Collection<T*>::Print() const  {
+    
+    for ( auto el : _map) {
+        
+        std::cout<<el.first<< + " = " << el.second->GetName() << std::endl;
+        
+    }
+    
 }
 
 template<class T>
