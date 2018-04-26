@@ -87,7 +87,7 @@ if __name__ == "__main__":
     couplings.append("lambda'_323")
     couplings.append("lambda'_332")
     couplings.append("lambda'_333")
-    couplings.append("lambda_322")
+    couplings.append("lambda_232")
 
     inputfile= sys.argv[1]
     
@@ -136,12 +136,14 @@ if __name__ == "__main__":
     
     rk = Modifier( inputfile )
 
-    rk.setPara( "mq2_33", "Value", "2e6" )
+    rk.setPara( "mq2_33", "Value", "1.6e7" )
     rk.setPara( "mq2_33", "Fixed", "true" )
     #rk.setPara( "lambda'_233", "Value", "-0.015" )
-    rk.setPara( "lambda'_233", "Value", "-0.035" )
+    #rk.setPara( "lambda'_233", "Value", "-0.035" )
+    rk.setPara( "lambda'_233", "Value", "0" )
+
     rk.setPara( "lambda'_233", "Fixed", "true" )
-    rk.setPara( "lambda'_232", "Value", "0.5" )
+    rk.setPara( "lambda'_232", "Value", "0." )
     rk.setPara( "lambda'_232", "Fixed", "true" )
     
     #rk.setPara( "ml2_33", "Value", "2e5" )
@@ -157,13 +159,13 @@ if __name__ == "__main__":
     rk.setPara( "lambda'_323", "UpperBound", "0.1" )
     rk.setPara( "lambda'_323", "Error", "1.0" )
     
-    rk.setPara( "lambda_322", "Value", "0.05" )
-    rk.setPara( "lambda_322", "Fixed", "false" )
+    rk.setPara( "lambda_232", "Value", "0.05" )
+    rk.setPara( "lambda_232", "Fixed", "false" )
     #rk.setPara( "lambda_322", "LowerBound", "-15.0" )
     #rk.setPara( "lambda_322", "UpperBound", "+0.1" )
-    rk.setPara( "lambda_322", "LowerBound", "-0.00001" )
-    rk.setPara( "lambda_322", "UpperBound", "+0.000011" )
-    rk.setPara( "lambda_322", "Error", "0.000002" )
+    rk.setPara( "lambda_232", "LowerBound", "-0.000005" )
+    rk.setPara( "lambda_232", "UpperBound", "+0.0000051" )
+    rk.setPara( "lambda_232", "Error", "0.000001" )
     
     rk.write("MSSMTriLnV_RK.xml" )
 

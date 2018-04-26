@@ -120,7 +120,7 @@
             </ModelParameter>
             
             <ModelParameter>
-                <Name>lambda_322</Name>
+                <Name>lambda_232</Name>
                 <Value>0.0</Value>
                 <Error>1.0</Error>
                 <LowerBound>-1.0</LowerBound>
@@ -170,6 +170,15 @@
             </CovarianceMatrices>
 
             <Calculators>
+                
+                <FormulaCalculator>
+                    <Name></Name>
+                    <Prefix></Prefix>
+                    <Quantity>
+                        <Name>lambda_322</Name>
+                        <Value>-[lambda_232]</Value>
+                    </Quantity>
+                </FormulaCalculator>
 
                 <SARAHSPhenoCalculator>
                     <Executable>@SPheno_MSSMTriLnV_EXECUTABLE@</Executable>
@@ -227,6 +236,10 @@
                         <Quantity>
                             <Name>lambda_322</Name>
                             <Value>[lambda_322]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>lambda_232</Name>
+                            <Value>[lambda_232]</Value>
                         </Quantity>
                         <Quantity>
                             <Name>md2_33</Name>
@@ -303,10 +316,10 @@
                 
                 <FormulaCalculator>
                     <Prefix></Prefix>
-                    <Formula>
+                    <Quantity>
                         <Name>TotalChi2</Name>
                         <Value>[R_K_Chi2]+[R_Kstar0_Chi2]</Value>
-                    </Formula>
+                    </Quantity>
                 </FormulaCalculator>
 
 
