@@ -39,6 +39,6 @@ endif()
 
 if( INSTALL_Fittino )
 
-include( Projects/Fittino)
+    include( Projects/Fittino)
 
 endif()

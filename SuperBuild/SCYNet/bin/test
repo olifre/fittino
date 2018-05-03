@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+from scynet.scynet import SCYNet
+
+x= [-1682.23027931 , 3465.09031358 , 1237.59831623 , 2429.59820408 , 3450.31039446, 2169.17885836, 1800.49227919, 1271.54318728, -4832.47899659  ,-610.85511464, 33.96309872]
+
+scyNet_8TeV = SCYNet()
+scyNet_8TeV.startSession(8)
+
+scyNet_13TeV = SCYNet()
+scyNet_13TeV.startSession(13)
+
+chi2_8 = str( scyNet_8TeV.chi2(x) )
+print "8TeV: chi2 =", chi2_8 
+assert chi2_8 == "38.4782770183"
+
+chi2_13 = str( scyNet_13TeV.chi2(x) ) 
+print "13TeV: chi2 =", chi2_13 
+assert chi2_13 == "89.5022272981"
+
+scyNet_8TeV.closeSession()
+scyNet_13TeV.closeSession()

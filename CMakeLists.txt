@@ -129,6 +129,7 @@ list( APPEND sbsrc SuperBuild/MSSMTriLnV )
 list( APPEND sbsrc SuperBuild/SPhenoMSSMTriLnV )
 list( APPEND sbsrc SuperBuild/Requirements )
 list( APPEND sbsrc SuperBuild/SPheno_patch )
+list( APPEND sbsrc SuperBuild/SCYNet )
 list( APPEND sbsrc SuperBuild/init.cmake )
 add_custom_target( SuperBuild SOURCES ${sbsrc} )
 
