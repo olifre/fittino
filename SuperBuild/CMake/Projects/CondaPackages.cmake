@@ -53,9 +53,13 @@ if( Conda_REQUIREMENTSFILE )
 
     list(APPEND install_command --no-deps --no-update-deps --file ${requirements} )
 
-else()
+elseif( INSTALL_Python3 )
 
-    list( APPEND install_command numpy scipy matplotlib nose pyyaml )
+    list( APPEND install_command numpy scipy matplotlib nose pyyaml mpmath )
+
+elseif( INSTALL_Python2 )
+
+    list( APPEND install_command numpy scipy matplotlib nose tensorflow docutils )
 
 endif()
 
