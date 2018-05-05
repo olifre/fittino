@@ -85,8 +85,11 @@ ENDIF()
 
   IF( NOT PYTHON2_FOUND)
 
-    LIST(REMOVE_ITEM sources "src/SModelSCalculator.cpp")
-    LIST(REMOVE_ITEM sources "src/LHCNeuralNetCalculator.cpp")
+    list( APPEND python2files "src/SModelSCalculator.cpp" )
+    list( APPEND python2files "src/LHCNeuralNetCalculator.cpp" )
+
+    set_source_files_properties( ${python2files} PROPERTIES HEADER_FILE_ONLY TRUE )
+
 
 ENDIF()
 
