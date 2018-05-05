@@ -1,7 +1,7 @@
 #include <boost/python.hpp>
+#include <Python.h>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-#include <Python.h>
 #include <iostream>
 #include <CalculatorException.h>
 #include <LogicException.h>

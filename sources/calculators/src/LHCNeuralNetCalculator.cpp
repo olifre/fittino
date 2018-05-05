@@ -1,8 +1,8 @@
 #define BOOST_NO_CXX11_SCOPED_ENUMS
 
-#include "Python.h"
 #include <boost/python.hpp>
 #include <boost/python/object.hpp>
+#include "Python.h"
 #include "LHCNeuralNetCalculator.h"
 #include "CalculatorException.h"
 #include "PhysicsModel.h"

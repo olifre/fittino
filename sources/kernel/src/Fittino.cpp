@@ -31,7 +31,11 @@
  *  The central object is the Fittino::Controller.
  */
 
-#include "Controller.h"
+#ifdef PYTHON2
+
+#include <boost/python.hpp>
+
+#endif
 
 #ifdef PYTHON
 
@@ -39,11 +43,7 @@
 
 #endif
 
-#ifdef PYTHON2
-
-#include <boost/python.hpp>
-
-#endif
+#include "Controller.h"
 
 int main( int argc, char** argv ) {
 

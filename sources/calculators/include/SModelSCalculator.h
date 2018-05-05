@@ -1,8 +1,8 @@
 #ifndef FITTINO_SMODELSCALCULATOR_H
 #define FITTINO_SMODELSCALCULATOR_H
 
-#include "CalculatorBase.h"
 #include "boost/python.hpp"
+#include "CalculatorBase.h"
 #include <set>
 
 namespace Fittino {
