@@ -1,16 +1,17 @@
 if( INSTALL_Python2 )
 
     set( CondaPackages "CondaPackages2-1" )
-    set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/CondaPackages2.txt" )
     set( pythonIncludeDir include/python2.7 )
 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
         set( pythonLibrary lib/libpython2.7.dylib )
+        set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/CondaPackages2.txt" )
 
     elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
 
         set( pythonLibrary lib/libpython2.7.so )
+        set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/CondaPackages2_Linux.txt" )
 
     else()
 
