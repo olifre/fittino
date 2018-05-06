@@ -1,11 +1,3 @@
-set( src )
-list( APPEND src definitions )
-list( APPEND src style )
-list( APPEND src external )
-list( APPEND src steering )
-list( APPEND src scripts )
-list( APPEND src prospino_main.f90 )
-add_custom_target( input SOURCES ${src} )
 
 file( MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/input-gen )
 file( MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/input-gen/steering )

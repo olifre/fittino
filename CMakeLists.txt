@@ -133,6 +133,15 @@ list( APPEND sbsrc SuperBuild/SCYNet )
 list( APPEND sbsrc SuperBuild/init.cmake )
 add_custom_target( SuperBuild SOURCES ${sbsrc} )
 
+set( insrc )
+list( APPEND insrc input/definitions )
+list( APPEND insrc input/style )
+list( APPEND insrc input/external )
+list( APPEND insrc input/steering )
+list( APPEND insrc input/scripts )
+list( APPEND insrc input/prospino_main.f90 )
+add_custom_target( input SOURCES ${insrc} )
+
 # maybe needed for some IDEs in order to be able to run install command
 # add_custom_target( Install COMMAND ${CMAKE_MAKE_PROGRAM} install )
 
