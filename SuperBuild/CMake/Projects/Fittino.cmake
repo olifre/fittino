@@ -30,15 +30,35 @@ list( APPEND CACHE_ARGS "-DCMAKE_DISABLE_FIND_PACKAGE_PythonLibs:BOOL=${CMAKE_DI
 
 list( APPEND CACHE_ARGS "-DUSE_WCxf:BOOL=${USE_WCxf}" )
 
+set( Fittino_CMAKE_GENERATOR ${CMAKE_GENERATOR} CACHE STRING "" )
+
+if( INSTALL_Python2 OR INSTALL_Python3 )
+
+    list( APPEND fittinoInstallCommand ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH )
+
+endif()
+
+if( Fittino_CMAKE_GENERATOR STREQUAL "Unix Makefiles" )
+
+    list( APPEND fittinoInstallCommand $(MAKE) install )
+
+else()
+
+    list( APPEND fittinoInstallCommand ${CMAKE_COMMAND} --build . --target install )
+
+endif()
+
+
 externalproject_add(
 
     ${Fittino}
     DEPENDS ${Fittino_DEPENDENCIES}
     SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..
     BUILD_ALWAYS ON
-    #BUILD_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ${fittinoInstallCommand}
     CMAKE_CACHE_ARGS ${CACHE_ARGS}
-# CMAKE_GENERATOR Xcode
+    CMAKE_GENERATOR ${Fittino_CMAKE_GENERATOR}
 
 )
 
