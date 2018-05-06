@@ -13,6 +13,8 @@ if( PYTHONINTERP_FOUND )
     list( APPEND outputs steering/MSSMTriLnV_RK.xml )
     list( APPEND outputs steering/MSSMTriLnV_RK_stop_233.xml )
     list( APPEND outputs steering/MSSMTriLnV_RKstar.xml )
+    list( APPEND outputs steering/MSSMTriLnV_RKRKstar.xml )
+
 
 
     foreach( f ${outputs} )
