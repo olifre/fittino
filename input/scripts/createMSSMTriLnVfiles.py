@@ -67,7 +67,7 @@ class Modifier:
         else:
             b=self.root.find("./Tool/SimpleSampler")
             self.root.find("./Tool").remove(b)
-            mc = ET.Element("MarkovChain")
+            mc = ET.Element("MarkovChainSampler")
             ET.SubElement(mc, "NumberOfIterations").text="1"
             ET.SubElement(mc, "OutputFile").text=rootfile
             self.root.find("./Tool").insert(0, mc )

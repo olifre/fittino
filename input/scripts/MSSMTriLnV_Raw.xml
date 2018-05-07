@@ -326,7 +326,7 @@
 
             </Calculators>
             
-            <Chi2Contribution>TotalChi2</Chi2Contribution>
+            <Chi2Contribution>[TotalChi2]</Chi2Contribution>
 
         </ModelBase>
 
