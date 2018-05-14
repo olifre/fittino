@@ -199,23 +199,23 @@ if __name__ == "__main__":
     rkrkstar.setPara( "lambda'_233", "UpperBound", "+10." )
     rkrkstar.setPara( "lambda'_233", "Error", "0.01" )
     
-    rkrkstar.setPara( "ml2_33", "Value", "2e4" )
+    rkrkstar.setPara( "ml2_33", "Value", "2e6" )
     rkrkstar.setPara( "ml2_33", "Fixed", "false" )
     rkrkstar.setPara( "ml2_33", "LowerBound", "0" )
     rkrkstar.setPara( "ml2_33", "UpperBound", "1e20" )
-    rkrkstar.setPara( "ml2_33", "Error", "0.5e4" )
+    rkrkstar.setPara( "ml2_33", "Error", "1e4" )
     
     rkrkstar.setPara( "lambda'_323", "Value", "0.0" )
     rkrkstar.setPara( "lambda'_323", "Fixed", "false" )
     rkrkstar.setPara( "lambda'_323", "LowerBound", "-10" )
     rkrkstar.setPara( "lambda'_323", "UpperBound", "10" )
-    rkrkstar.setPara( "lambda'_323", "Error", "1e-3" )
+    rkrkstar.setPara( "lambda'_323", "Error", "0.01" )
     
     rkrkstar.setPara( "lambda_232", "Value", "0.0" )
     rkrkstar.setPara( "lambda_232", "Fixed", "false" )
     rkrkstar.setPara( "lambda_232", "LowerBound", "-10" )
     rkrkstar.setPara( "lambda_232", "UpperBound", "+10" )
-    rkrkstar.setPara( "lambda_232", "Error", "1e-3" )
+    rkrkstar.setPara( "lambda_232", "Error", "0.01" )
     
     rkrkstar.write("MSSMTriLnV_RKRKstar.xml", True)
 
