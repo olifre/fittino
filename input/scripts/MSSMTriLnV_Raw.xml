@@ -165,10 +165,8 @@
                 <Fixed>true</Fixed>
             </ModelParameter>
 
-            <Observables>
-            </Observables>
-            <CovarianceMatrices>
-            </CovarianceMatrices>
+            <Observables/>
+            <CovarianceMatrices/>
 
             <Calculators>
                 
