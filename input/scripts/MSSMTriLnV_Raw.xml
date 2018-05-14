@@ -268,8 +268,7 @@
                     <Vev>[SPheno_HMIX_Vev]</Vev>
                 </RPVCalculator>
 
-                <FlavioCalculator>
-                </FlavioCalculator>
+                <FlavioCalculator/>
                 
                 <Chi2Calculator>
                     <Name>R_Kstar0</Name>
