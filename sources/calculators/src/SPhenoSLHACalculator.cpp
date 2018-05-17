@@ -61,6 +61,10 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, con
     std::string executable = ptree.get<std::string>( exename );
 
 #endif
+          
+          AddFile( _slhaInputFileName );
+          AddFile( _slhaOutputFileName );
+
 
     _executor = new Executor( executable, "SPheno" );
     _executor->AddArgument( _slhaInputFileName );
