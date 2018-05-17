@@ -262,13 +262,13 @@ void Fittino::CalculatorBase::SetName( std::string name ) {
     
 }
 
-void Fittino::CalculatorBase::AddOutputFile( std::string name ) {
+void Fittino::CalculatorBase::AddFile( std::string name ) {
     
     _outFiles.push_back( name );
     
 }
 
-void Fittino::CalculatorBase::RemoveOutputFiles() {
+void Fittino::CalculatorBase::RemoveFiles() {
     
     for( auto f : _outFiles ) {
     
@@ -290,7 +290,7 @@ void Fittino::CalculatorBase::RemoveOutputFiles() {
 
 bool Fittino::CalculatorBase::Calculate() {
     
-    RemoveOutputFiles();
+    RemoveFiles();
     
     _requirementsFulfilled = true;
     CalculatePredictions();

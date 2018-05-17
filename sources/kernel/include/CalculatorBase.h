@@ -83,8 +83,8 @@ namespace Fittino {
     
       void                                    UpdateInput();
       const boost::property_tree::ptree*      GetConfiguration() const;
-      void                                    AddOutputFile( std::string name );
-      void                                    RemoveOutputFiles();
+      void                                    AddFile( std::string name );
+      void                                    RemoveFiles();
       virtual void                            CalculatePredictions() = 0;
 
 

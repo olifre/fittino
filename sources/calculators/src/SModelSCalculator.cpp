@@ -13,7 +13,7 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
         : CalculatorBase(model, &ptree) {
 
     AddOutput( "RValue", _rValue );
-    AddOutputFile( "results" );
+    AddFile( "results" );
 
     std::string exename = "SModelSToolsExecutable";
 
