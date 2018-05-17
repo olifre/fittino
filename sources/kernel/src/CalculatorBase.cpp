@@ -23,12 +23,15 @@
 #include "ModelBase.h"
 #include "SimplePrediction.h"
 #include "../../variables/include/ReferenceVariable.h"
+#include "boost/filesystem.hpp"
 
 Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, const boost::property_tree::ptree* ptree )
     : _name( "" ),
       _tag( "" ),
       _model( model ),
-      _ptree( ptree ) {
+      _ptree( ptree ),
+      _requirementsFulfilled( true )
+{
 
     if ( ptree != nullptr ) {
 
@@ -256,5 +259,42 @@ void Fittino::CalculatorBase::SetName( std::string name ) {
     _className = name;
     _name = _ptree->get<std::string>( "Name", name );
     _tag = _ptree->get<std::string>( "Prefix", _name );
+    
+}
+
+void Fittino::CalculatorBase::AddOutputFile( std::string name ) {
+    
+    _outFiles.push_back( name );
+    
+}
+
+void Fittino::CalculatorBase::RemoveOutputFiles() {
+    
+    for( auto f : _outFiles ) {
+    
+        if( boost::filesystem::exists( f + ".bak" ) ) {
+            
+            boost::filesystem::remove_all( f + ".bak" );
+
+        }
+        
+        if( boost::filesystem::exists( f ) ) {
+
+            boost::filesystem::rename( f, f + ".bak" );
+            
+        }
+        
+    }
+    
+}
+
+bool Fittino::CalculatorBase::Calculate() {
+    
+    RemoveOutputFiles();
+    
+    _requirementsFulfilled = true;
+    CalculatePredictions();
+    
+    return _requirementsFulfilled;
     
 }

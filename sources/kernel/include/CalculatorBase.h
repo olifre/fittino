@@ -54,7 +54,7 @@ namespace Fittino {
 
     public:
       virtual                                 ~CalculatorBase();
-      virtual void                            CalculatePredictions() = 0;
+      bool                                    Calculate();
       virtual void                            Initialize();
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
@@ -83,8 +83,12 @@ namespace Fittino {
     
       void                                    UpdateInput();
       const boost::property_tree::ptree*      GetConfiguration() const;
+      void                                    AddOutputFile( std::string name );
+      void                                    RemoveOutputFiles();
+      virtual void                            CalculatePredictions() = 0;
 
-      /*! \cond UML */
+
+      /*!; \cond UML */
     private:
       std::string                             _className;
       std::map<std::string, FormulaQuantity*> _input;
@@ -92,6 +96,8 @@ namespace Fittino {
       const boost::property_tree::ptree*      _ptree;
       Collection<Quantity*>                   _collectionOfQuantities;
       Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
+      std::vector<std::string>                _outFiles;
+      bool                                    _requirementsFulfilled;
 
       template<class T>
       void ModifyVariableName(VariableBase<T>* );

@@ -107,7 +107,7 @@ void Fittino::PhysicsModel::Evaluate() {
 
         for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
             
-            _collectionOfCalculators.At( i )->CalculatePredictions();
+            _collectionOfCalculators.At( i )->Calculate();
 
         }
 

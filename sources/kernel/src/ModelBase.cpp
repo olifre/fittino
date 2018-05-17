@@ -60,6 +60,8 @@ Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
     }
 
     AddPrediction( new SimplePrediction( chi2Name     , "", _chi2      ) );
+    AddPrediction( new SimplePrediction( "RequirementsFullfilled"     , "", _requirementsFulfilled    ) );
+
 
 
         _collectionOfStringVariables.AddElement( errorName     , new ReferenceVariable<std::string>( errorName, _error ) );
@@ -285,8 +287,16 @@ void Fittino::ModelBase::Evaluate() {
     try {
 
         for ( unsigned int i = 0; i < _calculators.size(); ++i ) {
+            
+            _requirementsFulfilled = _calculators[i]->Calculate();
 
-            _calculators[i]->CalculatePredictions();
+            if( ! _requirementsFulfilled ) {
+                
+                _terminator = _calculators[i]->GetName();
+                _chi2 = std::numeric_limits<double>::infinity();
+                return;
+                
+            }
 
         }
 

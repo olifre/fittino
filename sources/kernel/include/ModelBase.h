@@ -168,6 +168,7 @@ namespace Fittino {
 
     private:
       virtual void Evaluate();
+      double _requirementsFulfilled;
 
       /*! \endcond UML */
 
