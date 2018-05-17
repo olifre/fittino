@@ -182,6 +182,12 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
     _crossSections_NLL->Execute();
     
     auto result = _testPoints( _fileList, _fileName, "results", _parser, _databaseVersion, _listOfExpRes, 900, false, _parameterFile );
+    
+    if ( !result ) {
+        
+        throw CalculatorException( _name, "SMODELS_TESTPOINTS_ERROR" );
+        
+    }
 
     ReadXML();
     ReadMissingConstraints();
