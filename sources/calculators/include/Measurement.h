@@ -130,14 +130,7 @@ namespace Fittino {
         void SetMeasurement( double value );
 
     private:
-        /*!
-         * Whether the measurement is a lower limit.
-         */
-        bool                                   _isLowerLimit;
-        /*!
-         * Whether the measurement is an upper limit.
-         */
-        bool                                   _isUpperLimit;
+        enum class Type { Gauss, LowerLimit, UpperLimit, Box };
         /*!
          * The lower bound below which the measurement should not be set in toy experiments.
          */
@@ -167,6 +160,10 @@ namespace Fittino {
          * The name of the observable.
          */
         std::string                            _name;
+        /*!
+         * The type of the observable.
+         */
+        Type                            _type;
         /*!
          * Container of uncertainties with names.
          */

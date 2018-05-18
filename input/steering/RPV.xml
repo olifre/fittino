@@ -81,7 +81,7 @@
                         </Uncertainty>
                     </Observable>
                     <Observable>
-                        <IsUpperLimit>true</IsUpperLimit>
+                        <Type>UpperLimit</Type>
                         <Name>NormSM_BR_B_K_nu_nu</Name>
                         <Prediction>[NormSM_BR_B_K_nu_nu]</Prediction>
                         <Measurement>4.020</Measurement>
@@ -90,7 +90,7 @@
                         </Uncertainty>
                     </Observable>
                     <Observable>
-                        <IsUpperLimit>true</IsUpperLimit>
+                        <Type>UpperLimit</Type>
                         <Name>NormSM_BR_B_pi_nu_nu</Name>
                         <Prediction>[NormSM_BR_B_pi_nu_nu]</Prediction>
                         <Measurement>671.233</Measurement>

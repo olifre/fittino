@@ -19,6 +19,7 @@
 *******************************************************************************/
 
 #include <string>
+#include <limits>
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -42,16 +43,19 @@ Fittino::Measurement::Measurement(const ModelBase *model, const boost::property_
 
     _prediction = new FormulaQuantity( "Prediction", ptree.get<std::string>( "Prediction" ), model );
     _measurement = new Quantity( "Measurement", "", ptree.get<double>( "Measurement" ) );
-    _isLowerLimit = ptree.get<bool>( "IsLowerLimit", false );
-    _isUpperLimit = ptree.get<bool>( "IsUpperLimit", false );
+    
+    std::string type_str = ptree.get<std::string>( "Type", "Gauss" );
+    
+    std::map<std::string, Type> conv;
+    conv["Gauss"] = Type::Gauss;
+    conv["LowerLimit"] = Type::LowerLimit;
+    conv["UpperLimit"] = Type::UpperLimit;
+    conv["Box"] = Type::Box;
+    
+    _type = conv[type_str];
+    
     _lowerBound = ptree.get<double>( "LowerBound", -std::numeric_limits<double>::infinity() );
     _upperBound = ptree.get<double>( "UpperBound", +std::numeric_limits<double>::infinity() );
-
-    if ( _isLowerLimit && _isUpperLimit ) {
-
-        throw ConfigurationException( "Observable " + _name + " declared as both lower limit and upper limit." );
-
-    }
 
     for( const auto& node : ptree ) {
 
@@ -73,14 +77,6 @@ void Fittino::Measurement::Update()  {
 
     _prediction->Update();
 
-    _deviation = _prediction->GetValue() - _measurement->GetValue();
-
-    if ( ( _isLowerLimit && _deviation > 0 ) || ( _isUpperLimit && _deviation < 0 )  ) {
-
-        _deviation = 0;
-
-    }
-
     _totalUncertainty = 0;
 
     std::vector< Quantity* >::iterator it;
@@ -93,7 +89,21 @@ void Fittino::Measurement::Update()  {
     }
 
     _totalUncertainty = TMath::Sqrt( _totalUncertainty );
-
+    
+    _deviation = _prediction->GetValue() - _measurement->GetValue();
+    
+    if ( ( _type == Type::LowerLimit && _deviation > 0 ) || ( _type == Type::UpperLimit && _deviation < 0 ) ||
+        ( _type == Type::Box && _deviation <= _totalUncertainty ) ) {
+        
+        _deviation = 0;
+        
+    }
+    else if( _type == Type::Box ) {
+        
+        _deviation = std::numeric_limits<double>::infinity();
+        
+    }
+    
     _pull = _deviation / _totalUncertainty;
 
     if ( _totalUncertainty == 0 && _deviation == 0 ) {
