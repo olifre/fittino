@@ -54,7 +54,7 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      ~Tool();
+      virtual ~Tool();
       /*!
        *  Subdivides the tool's action into three distinct phases. It is usually called directly\n
        *  after the creation of a concrete tool.

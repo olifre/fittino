@@ -55,7 +55,7 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      ~AnalysisTool();
+      virtual ~AnalysisTool();
 
     protected:
       /*!
