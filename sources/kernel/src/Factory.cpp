@@ -64,6 +64,7 @@
 #include "MadGraphCalculator.h"
 #include "MadGraph2Calculator.h"
 #include "MadGraph5Calculator.h"
+#include "MinimumCalculator.h"
 #include "ProspinoCalculator.h"
 #include "CheckMATE3Calculator.h"
 #include "NLLFast2Calculator.h"
@@ -390,6 +391,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 
         return new MadGraph5Calculator( model, ptree );
    }
+    else if ( type == "MinimumCalculator" ) {
+        
+        return new MinimumCalculator( model, ptree );
+        
+    }
     else if ( type == "NLLFast2Calculator" ) {
 
         return new NLLFast2Calculator( model, ptree );
