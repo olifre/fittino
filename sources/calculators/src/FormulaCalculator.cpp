@@ -35,6 +35,8 @@ Fittino::FormulaCalculator::FormulaCalculator( const Fittino::ModelBase* model, 
                 if ( node.first == "Quantity" ) AddFormula( node.second );
             
             }
+        
+        _nonZerosRequired = GetConfiguration()->get<bool>( "NonZerosRequired", false );
 
     CalculatePredictions();
 
@@ -49,6 +51,12 @@ void Fittino::FormulaCalculator::CalculatePredictions() {
     for( auto formula : _formulas ) {
     
         formula->Update();
+        
+        if( _nonZerosRequired && !formula->GetValue() ) {
+            
+         _requirementsFulfilled = false;
+            
+        }
         
     }
 

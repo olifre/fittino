@@ -62,6 +62,7 @@ namespace Fittino {
       virtual void                            SetupMeasuredValues();
 
     protected:
+      bool _requirementsFulfilled;
       std::string                             _name;
       std::string                             _tag;
       const ModelBase*                        _model;
@@ -97,7 +98,7 @@ namespace Fittino {
       Collection<Quantity*>                   _collectionOfQuantities;
       Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
       std::vector<std::string>                _outFiles;
-      bool                                    _requirementsFulfilled;
+
 
       template<class T>
       void ModifyVariableName(VariableBase<T>* );

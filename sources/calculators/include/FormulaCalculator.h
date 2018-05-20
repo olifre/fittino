@@ -51,6 +51,7 @@ namespace Fittino {
     private:
       std::vector<FormulaQuantity*>     _formulas;
       void AddFormula( boost::property_tree::ptree ptree );
+      bool _nonZerosRequired;
 
       /*! \endcond UML */
 

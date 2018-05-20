@@ -189,6 +189,20 @@
                     </InputFile>
                     <OutputFile>SPheno.spc</OutputFile>
                 </SPhenoCalculator>
+                
+                <MinimumCalculator>
+                    <Name>MassOfLSP</Name>
+                    <Regex>SPheno.*Mass_~.*</Regex>
+                </MinimumCalculator>
+                
+                <FormulaCalculator>
+                    <Prefix/>
+                    <NonZerosRequired>true</NonZerosRequired>
+                    <Quantity>
+                        <Name>Chi10IsLSP</Name>
+                        <Value>[SPheno_Mass_~chi10]==[MassOfLSP_Value]</Value>
+                    </Quantity>
+                </FormulaCalculator>
 
                 <LHCNeuralNetCalculator>
                     <M1>[M1]</M1>
