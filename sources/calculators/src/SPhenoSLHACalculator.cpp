@@ -95,6 +95,27 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, con
  //   AddQuantity( new SLHAPrediction( "HMIX_TanBeta", "", _slhaOutputDataStorage, "HMIX", 1, "2", "", "", ""     ) );
     AddQuantity( new SLHAPrediction( "HMIX_VEV"    , "", _slhaOutputDataStorage, "HMIX", 1, "3", "", "", ""     ) );
   //  AddQuantity( new SLHAPrediction( "HMIX_m2A"    , "", _slhaOutputDataStorage, "HMIX", 1, "4", "", "", ""     ) );
+          
+          
+          std::map<unsigned int,std::string> leo;
+          leo[1] = "BR_b_s_gamma";
+          leo[8] = "BR_Bs_mu_mu";
+          leo[10] = "BR_Bu_tau_nu";
+          leo[11] = "NormSM_BR_Bu_tau_nu";
+          leo[12] = "Abs_Delta_Mass_Bd";
+          leo[13] = "Abs_Delta_Mass_Bs";
+          leo[21] = "DiffSM_amu";
+
+          for ( const auto& obs : leo  ) {
+              
+              AddQuantity( new SLHAPrediction( obs.second, "", _slhaOutputDataStorage, "SPhenoLowEnergy", 1, std::to_string( obs.first ), "", "", ""     ) );
+              
+          }
+
+
+
+
+
 
     std::vector<std::string> susyparticles = database.GetSUSYParticles();
 
