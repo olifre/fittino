@@ -111,8 +111,8 @@ Block RVLAMLQDIN    #
 2 2 2   0.000000E+00         # lambda'(2,2,2)
 2 2 3   0.000000E+00         # lambda'(2,2,3)
 2 3 1   0.000000E+00         # lambda'(2,3,1)
-2 3 2   lambda'_232           # lambda'(2,3,2) Bereich 0.05 bis 0.5
-2 3 3   lambda'_233          # lambda'(2,3,3) Bereich 0.05 bis 0.5
+2 3 2   lambda'_232          # lambda'(2,3,2) Bereich 0.05 bis 0.5
+2 3 3   Re_lambda'_233       # lambda'(2,3,3) Bereich 0.05 bis 0.5
 3 1 1   0.000000E+00         # lambda'(3,1,1)
 3 1 2   0.000000E+00         # lambda'(3,1,2)
 3 1 3   lambda'_313          # lambda'(3,1,3)
@@ -122,6 +122,8 @@ Block RVLAMLQDIN    #
 3 3 1   0.000000E+00         # lambda'(3,3,1)
 3 3 2   lambda'_332          # lambda'(3,3,2)
 3 3 3   lambda'_333          # lambda'(3,3,3)
+Block IMRVLAMLQDIN           #
+2 3 3   Im_lambda'_233          # Im( lambda'(2,3,3) )
 Block MSD2IN    #  
 1 1   mf2_high         # md2(1,1)
 1 2   0.000000E+00         # md2(1,2)

@@ -13,7 +13,8 @@ list( APPEND xmlFiles ${PROJECT_SOURCE_DIR}/input/steering/SModelS.in.xml )
 
 if( PYTHONINTERP_FOUND )
 
-    list( APPEND xmlFiles ${PROJECT_BINARY_DIR}/input-gen/steering/MSSMTriLnV_RKstar.xml )
+    list( APPEND xmlFiles ${PROJECT_BINARY_DIR}/input-gen/steering/MSSMTriLnV_RK_stop.xml )
+    list( APPEND xmlFiles ${PROJECT_BINARY_DIR}/input-gen/steering/MSSMTriLnV_RK_stop_Arg_lambdaPrime_233.xml )
 
 endif()
 
@@ -27,7 +28,7 @@ if( LIBXSLT_XSLTPROC_EXECUTABLE )
         list( APPEND com COMMAND ${LIBXSLT_XSLTPROC_EXECUTABLE} -o ${fn}.html ${PROJECT_SOURCE_DIR}/input/style/InputFile.xsl ${f} )
         set( HTML_EXTRA_FILES "${HTML_EXTRA_FILES} ${fn}.html" )
 
-endforeach( )
+    endforeach( )
 
 endif()
 

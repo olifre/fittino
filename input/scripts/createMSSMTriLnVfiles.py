@@ -61,15 +61,15 @@ class Modifier:
             
             rootfile = os.path.splitext(outfile)[0] + ".root"
         
-        if not markov:
-            self.setRootFile( rootfile )
+        #  if not markov:
+        #    self.setRootFile( rootfile )
 
         else:
             b=self.root.find("./Tool/SimpleSampler")
             self.root.find("./Tool").remove(b)
             mc = ET.Element("MarkovChainSampler")
             ET.SubElement(mc, "NumberOfIterations").text="1"
-            ET.SubElement(mc, "OutputFile").text=rootfile
+            # ET.SubElement(mc, "OutputFile").text=rootfile
             self.root.find("./Tool").insert(0, mc )
 
 
@@ -143,6 +143,24 @@ if __name__ == "__main__":
     rkstar.setPara( "lambda'_233", "Error", "0.005" )
     
     rkstar.write("MSSMTriLnV_RKstar.xml" )
+    
+    rkstar.setPara( "lambda'_233", "Value", "0.015" )
+    rkstar.setPara( "lambda'_233", "Fixed", "false" )
+    rkstar.setPara( "lambda'_233", "LowerBound", "-0.005" )
+    rkstar.setPara( "lambda'_233", "UpperBound", "+0.0200001" )
+    rkstar.setPara( "lambda'_233", "Error", "0.001" )
+    rkstar.setPara( "Arg_lambda'_233", "Fixed", "true" )
+    rkstar.write("MSSMTriLnV_RK_stop.xml" )
+    
+    
+    rkstar.setPara( "lambda'_233", "Value", "0.015" )
+    rkstar.setPara( "lambda'_233", "Fixed", "true" )
+    rkstar.setPara( "lambda'_233", "LowerBound", "-0.005" )
+    rkstar.setPara( "lambda'_233", "UpperBound", "+0.0200001" )
+    rkstar.setPara( "lambda'_233", "Error", "0.001" )
+    rkstar.setPara( "Arg_lambda'_233", "Fixed", "false" )
+    rkstar.write("MSSMTriLnV_RK_stop_Arg_lambdaPrime_233.xml" )
+
     
     rk = Modifier( inputfile )
 

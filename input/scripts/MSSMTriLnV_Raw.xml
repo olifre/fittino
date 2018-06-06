@@ -83,6 +83,15 @@
                 <UpperBound>+0.11</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+            
+            <ModelParameter>
+                <Name>Arg_lambda'_233</Name>
+                <Value>0.0</Value>
+                <Error>0.2</Error>
+                <LowerBound>0.0</LowerBound>
+                <UpperBound>+2.1</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
 
             <ModelParameter>
                 <Name>lambda'_313</Name>
@@ -165,9 +174,6 @@
                 <Fixed>true</Fixed>
             </ModelParameter>
 
-            <Observables/>
-            <CovarianceMatrices/>
-
             <Calculators>
                 
                 <FormulaCalculator>
@@ -213,8 +219,12 @@
                             <Value>[lambda'_232]</Value>
                         </Quantity>
                         <Quantity>
-                            <Name>lambda'_233</Name>
-                            <Value>[lambda'_233]</Value>
+                            <Name>Re_lambda'_233</Name>
+                            <Value>[lambda'_233]*TMath::Cos([Arg_lambda'_233]*TMath::Pi())</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>Im_lambda'_233</Name>
+                            <Value>[lambda'_233]*TMath::Sin([Arg_lambda'_233]*TMath::Pi())</Value>
                         </Quantity>
                         <Quantity>
                             <Name>lambda'_313</Name>
@@ -332,8 +342,48 @@
     <Tool>
 
         <SimpleSampler>
-            <OutputFile>MSSMTriLnV_Raw.root</OutputFile>
+            <OutputFile>Sampler.root</OutputFile>
         </SimpleSampler>
+
+        <Plotter>
+            <OutputFile>Plotter.root</OutputFile>
+            <Plot>
+                <Name>RK_Abs_233.pdf</Name>
+                <ScatterData>
+                    <File>Sampler.root</File>
+                    <Tree>Tree</Tree>
+                    <X>lambda'_233</X>
+                    <Y>Flavio_NormSM_R_K_LHCb</Y>
+                </ScatterData>
+            </Plot>
+            <Plot>
+                <Name>RK_Arg_233.pdf</Name>
+                <ScatterData>
+                    <File>Sampler.root</File>
+                    <Tree>Tree</Tree>
+                    <X>Arg_lambda'_233</X>
+                    <Y>Flavio_NormSM_R_K_LHCb</Y>
+                </ScatterData>
+            </Plot>
+            <Plot>
+                <Name>RKstar_Abs_233.pdf</Name>
+                <ScatterData>
+                    <File>Sampler.root</File>
+                    <Tree>Tree</Tree>
+                    <X>lambda'_233</X>
+                    <Y>Flavio_NormSM_R_Kstar0_LHCb_centralq2</Y>
+                </ScatterData>
+            </Plot>
+            <Plot>
+                <Name>RKstar_Arg_233.pdf</Name>
+                <ScatterData>
+                    <File>Sampler.root</File>
+                    <Tree>Tree</Tree>
+                    <X>Arg_lambda'_233</X>
+                    <Y>Flavio_NormSM_R_Kstar0_LHCb_centralq2</Y>
+                </ScatterData>
+            </Plot>
+        </Plotter>
 
     </Tool>
 
