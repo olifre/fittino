@@ -48,8 +48,6 @@ namespace Fittino {
       PyObject* _smPrediction;
 
       PyObject* _wc;
-      PyObject* _wcSM;
-
 
       std::vector<PyObject*> _npargs;
       PyObject* npargs;
