@@ -26,6 +26,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:include href="VerbosityLevel.xsl"/>
+  <xsl:include href="RandomSeed.xsl"/>
   <xsl:include href="Model.xsl"/>
   <xsl:include href="Tool.xsl"/>
   
@@ -51,6 +52,7 @@
       <body>
         <!-- Grouping of the top level nodes -->
         <xsl:apply-templates select="VerbosityLevel"/>
+        <xsl:apply-templates select="RandomSeed"/>
         <xsl:apply-templates select="Model"/>
         <xsl:apply-templates select="Tool"/>
       </body>
