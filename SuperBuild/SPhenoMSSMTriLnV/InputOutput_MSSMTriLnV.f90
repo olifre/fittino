@@ -168,6 +168,10 @@ InputValueforYe= .True.
 InputValueforL1= .True. 
     Call ReadTensorC(99,3,3,3,L1IN,0, "L1IN",kont)
 
+   Else If (read_line(7:18).Eq."IMRVLAMLLEIN") Then 
+InputValueforL1= .True. 
+    Call ReadTensorC(99,3,3,3,L1IN,1, "L1IN",kont)
+
  
    Else If (read_line(7:12).Eq."IML1IN") Then 
      If (i_cpv.Lt.2) Then  
@@ -180,6 +184,10 @@ InputValueforL1= .True.
    Else If (read_line(7:16).Eq."RVLAMLQDIN") Then 
 InputValueforL2= .True. 
     Call ReadTensorC(99,3,3,3,L2IN,0, "L2IN",kont)
+
+   Else If (read_line(7:18).Eq."IMRVLAMLQDIN") Then 
+InputValueforL2= .True. 
+    Call ReadTensorC(99,3,3,3,L2IN,1, "L2IN",kont)
 
  
    Else If (read_line(7:12).Eq."IML2IN") Then 
