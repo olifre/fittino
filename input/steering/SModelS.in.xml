@@ -4,7 +4,8 @@
 <InputFile>
 
     <VerbosityLevel>INFO</VerbosityLevel>
-
+    <RandomSeed>0</RandomSeed>
+    
     <Model>
 
         <ModelBase>
@@ -15,7 +16,7 @@
                 <Name>Minput</Name>
                 <Value>1000</Value>
                 <Error>1</Error>
-                <LowerBound>-10</LowerBound>
+                <LowerBound>0</LowerBound>
                 <UpperBound>10000</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
@@ -23,17 +24,17 @@
             <ModelParameter>
                 <Name>M1</Name>
                 <Value>170</Value>
-                <Error>1</Error>
-                <LowerBound>-1000</LowerBound>
-                <UpperBound>1000</UpperBound>
+                <Error>100</Error>
+                <LowerBound>-4000</LowerBound>
+                <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>M2</Name>
                 <Value>170</Value>
-                <Error>1</Error>
-                <LowerBound>0</LowerBound>
+                <Error>100</Error>
+                <LowerBound>100</LowerBound>
                 <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
@@ -41,7 +42,7 @@
             <ModelParameter>
                 <Name>M3</Name>
                 <Value>2600</Value>
-                <Error>1</Error>
+                <Error>100</Error>
                 <LowerBound>-4000</LowerBound>
                 <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
@@ -50,35 +51,35 @@
             <ModelParameter>
                 <Name>MQ1</Name>
                 <Value>2880</Value>
-                <Error>1</Error>
-                <LowerBound>0</LowerBound>
-                <UpperBound>4000</UpperBound>
+                <Error>100</Error>
+                <LowerBound>300</LowerBound>
+                <UpperBound>5000</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>MQ3</Name>
                 <Value>4360</Value>
-                <Error>1</Error>
-                <LowerBound>0</LowerBound>
-                <UpperBound>4000</UpperBound>
+                <Error>100</Error>
+                <LowerBound>100</LowerBound>
+                <UpperBound>5000</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>ML1</Name>
                 <Value>440</Value>
-                <Error>1</Error>
-                <LowerBound>0</LowerBound>
-                <UpperBound>2000</UpperBound>
+                <Error>100</Error>
+                <LowerBound>100</LowerBound>
+                <UpperBound>3000</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>ML3</Name>
                 <Value>440</Value>
-                <Error>1</Error>
-                <LowerBound>0</LowerBound>
+                <Error>100</Error>
+                <LowerBound>100</LowerBound>
                 <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
@@ -86,7 +87,7 @@
             <ModelParameter>
                 <Name>MA0</Name>
                 <Value>2070</Value>
-                <Error>1</Error>
+                <Error>100</Error>
                 <LowerBound>0</LowerBound>
                 <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
@@ -95,7 +96,7 @@
             <ModelParameter>
                 <Name>A</Name>
                 <Value>790</Value>
-                <Error>1</Error>
+                <Error>100</Error>
                 <LowerBound>-5000</LowerBound>
                 <UpperBound>5000</UpperBound>
                 <Fixed>false</Fixed>
@@ -104,7 +105,7 @@
             <ModelParameter>
                 <Name>Mu</Name>
                 <Value>550</Value>
-                <Error>1</Error>
+                <Error>100</Error>
                 <LowerBound>-5000</LowerBound>
                 <UpperBound>5000</UpperBound>
                 <Fixed>false</Fixed>
@@ -113,8 +114,8 @@
             <ModelParameter>
                 <Name>TanBeta</Name>
                 <Value>37.6</Value>
-                <Error>1</Error>
-                <LowerBound>0</LowerBound>
+                <Error>10</Error>
+                <LowerBound>1</LowerBound>
                 <UpperBound>60</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
@@ -129,6 +130,19 @@
             </ModelParameter>
 
             <Calculators>
+                
+                <FormulaCalculator>
+                    <Prefix/>
+                    <NonZerosRequired>true</NonZerosRequired>
+                    <Quantity>
+                        <Name>Bound_M3</Name>
+                        <Value>TMath::Abs([M3])>400.</Value>
+                    </Quantity>
+                    <Quantity>
+                        <Name>Bound_Mu</Name>
+                        <Value>TMath::Abs([Mu])>100.</Value>
+                    </Quantity>
+                </FormulaCalculator>
 
                 <SPhenoCalculator>
 
@@ -199,11 +213,205 @@
                     <Prefix/>
                     <NonZerosRequired>true</NonZerosRequired>
                     <Quantity>
-                        <Name>Chi10IsLSP</Name>
+                        <Name>NeutralinoLSP</Name>
                         <Value>[SPheno_Mass_~chi10]==[MassOfLSP_Value]</Value>
                     </Quantity>
                 </FormulaCalculator>
-
+                
+                <Chi2Calculator>
+                    <Name>Preselection</Name>
+                    <Observable>
+                        <Name>Mass_h0</Name>
+                        <Prediction>[SPheno_Mass_h0]</Prediction>
+                        <Measurement>110.</Measurement>
+                        <Type>LowerLimit</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>Mass_H0</Name>
+                        <Prediction>[SPheno_Mass_H0]</Prediction>
+                        <Measurement>110.</Measurement>
+                        <Type>LowerLimit</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>Mass_~chi1p</Name>
+                        <Prediction>[SPheno_Mass_~chi1p]</Prediction>
+                        <Measurement>103.5</Measurement>
+                        <Type>LowerLimit</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>Mass_W</Name>
+                        <Prediction>[SPheno_Mass_Wp]</Prediction>
+                        <Measurement>80.385</Measurement>
+                        <Uncertainty>
+                            <Value>5*0.015</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>5*[Prediction]*0.1/100.</Value>
+                        </Uncertainty>
+                        <Type>Box</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>BR_b_s_gamma</Name>
+                        <Prediction>[SPheno_BR_b_s_gamma]</Prediction>
+                        <Measurement>3.43e-4</Measurement>
+                        <Uncertainty>
+                            <Value>5*0.21e-4</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>5*0.07e-4</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>5*[Prediction]*14./100.</Value>
+                        </Uncertainty>
+                        <Type>Box</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>BR_Bs_mu_mu</Name>
+                        <Prediction>[SPheno_BR_Bs_mu_mu]</Prediction>
+                        <Measurement>2.9e-9</Measurement>
+                        <Uncertainty>
+                            <Value>0.7e-9</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>5*[Prediction]*26./100.</Value>
+                        </Uncertainty>
+                        <Type>Box</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>BR_Bu_tau_nu</Name>
+                        <Prediction>[SPheno_BR_Bu_tau_nu]</Prediction>
+                        <Measurement>1.05e-4</Measurement>
+                        <Uncertainty>
+                            <Value>5*0.25e-4</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>5*[Prediction]*20./100.</Value>
+                        </Uncertainty>
+                        <Type>Box</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>Abs_Delta_Mass_Bs</Name>
+                        <Prediction>[SPheno_Abs_Delta_Mass_Bs]</Prediction>
+                        <Measurement>17.719</Measurement>
+                        <Uncertainty>
+                            <Value>5*0.036</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>5*0.023</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>5*[Prediction]*24./100.</Value>
+                        </Uncertainty>
+                        <Type>Box</Type>
+                    </Observable>
+                </Chi2Calculator>
+                
+                <FormulaCalculator>
+                    <Prefix/>
+                    <NonZerosRequired>false</NonZerosRequired>
+                    <Quantity>
+                        <Name>PreselectionPassed</Name>
+                        <Value>[Preselection_Chi2]==0.</Value>
+                    </Quantity>
+                </FormulaCalculator>
+                
+                <Chi2Calculator>
+                    <Name>LEO</Name>
+                    <Observable>
+                        <Name>Mass_h0</Name>
+                        <Prediction>[SPheno_Mass_h0]</Prediction>
+                        <Measurement>125.09</Measurement>
+                        <Uncertainty>
+                            <Value>0.21.</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>0.11</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>[Prediction]*2.4/100.</Value>
+                        </Uncertainty>
+                        <Type>Gauss</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>Mass_H0</Name>
+                        <Prediction>[SPheno_Mass_H0]</Prediction>
+                        <Measurement>110.</Measurement>
+                        <Type>LowerLimit</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>Mass_~chi1p</Name>
+                        <Prediction>[SPheno_Mass_~chi1p]</Prediction>
+                        <Measurement>103.5</Measurement>
+                        <Type>LowerLimit</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>Mass_W</Name>
+                        <Prediction>[SPheno_Mass_Wp]</Prediction>
+                        <Measurement>80.385</Measurement>
+                        <Uncertainty>
+                            <Value>0.015</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>[Prediction]*0.1/100.</Value>
+                        </Uncertainty>
+                        <Type>Gauss</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>BR_b_s_gamma</Name>
+                        <Prediction>[SPheno_BR_b_s_gamma]</Prediction>
+                        <Measurement>3.43e-4</Measurement>
+                        <Uncertainty>
+                            <Value>0.21e-4</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>0.07e-4</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>[Prediction]*14./100.</Value>
+                        </Uncertainty>
+                        <Type>Gauss</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>BR_Bs_mu_mu</Name>
+                        <Prediction>[SPheno_BR_Bs_mu_mu]</Prediction>
+                        <Measurement>2.9e-9</Measurement>
+                        <Uncertainty>
+                            <Value>0.7e-9</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>[Prediction]*26./100.</Value>
+                        </Uncertainty>
+                        <Type>Gauss</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>BR_Bu_tau_nu</Name>
+                        <Prediction>[SPheno_BR_Bu_tau_nu]</Prediction>
+                        <Measurement>1.05e-4</Measurement>
+                        <Uncertainty>
+                            <Value>0.25e-4</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>[Prediction]*20./100.</Value>
+                        </Uncertainty>
+                        <Type>Gauss</Type>
+                    </Observable>
+                    <Observable>
+                        <Name>Abs_Delta_Mass_Bs</Name>
+                        <Prediction>[SPheno_Abs_Delta_Mass_Bs]</Prediction>
+                        <Measurement>17.719</Measurement>
+                        <Uncertainty>
+                            <Value>0.036</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>0.023</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>[Prediction]*24./100.</Value>
+                        </Uncertainty>
+                        <Type>Gauss</Type>
+                    </Observable>
+                </Chi2Calculator>
+                
                 <LHCNeuralNetCalculator>
                     <M1>[M1]</M1>
                     <M2>[M2]</M2>
@@ -235,60 +443,6 @@
                         </Uncertainty>
                         <Prediction>[SModelSCalculator_RValue]</Prediction>
                         <Type>UpperLimit</Type>
-                    </Observable>
-                </Chi2Calculator>
-
-                <Chi2Calculator>
-                    <Name>LEO</Name>
-                    <Observable>
-                        <Name>Mass_h0</Name>
-                        <Prediction>[SPheno_Mass_h0]</Prediction>
-                        <Measurement>125.09</Measurement>
-                        <Uncertainty>
-                            <Value>0.21</Value>
-                        </Uncertainty>
-                        <Uncertainty>
-                            <Value>0.11</Value>
-                        </Uncertainty>
-                    </Observable>
-                    <Observable>
-                        <Name>Mass_W</Name>
-                        <Prediction>[SPheno_Mass_Wp]</Prediction>
-                        <Measurement>80.385</Measurement>
-                        <Uncertainty>
-                            <Value>0.015</Value>
-                        </Uncertainty>
-                    </Observable>
-                </Chi2Calculator>
-                
-                <Chi2Calculator>
-                    <Name>Preselection</Name>
-                    <Observable>
-                        <Name>Mass_h0</Name>
-                        <Prediction>[SPheno_Mass_h0]</Prediction>
-                        <Measurement>110.</Measurement>
-                        <Type>LowerLimit</Type>
-                    </Observable>
-                    <Observable>
-                        <Name>Mass_H0</Name>
-                        <Prediction>[SPheno_Mass_H0]</Prediction>
-                        <Measurement>110.</Measurement>
-                        <Type>LowerLimit</Type>
-                    </Observable>
-                    <Observable>
-                        <Name>Mass_~chi1p</Name>
-                        <Prediction>[SPheno_Mass_~chi1p]</Prediction>
-                        <Measurement>103.5</Measurement>
-                        <Type>LowerLimit</Type>
-                    </Observable>
-                    <Observable>
-                        <Name>Mass_W</Name>
-                        <Prediction>[SPheno_Mass_Wp]</Prediction>
-                        <Measurement>80.385</Measurement>
-                        <Uncertainty>
-                            <Value>5*0.015</Value>
-                        </Uncertainty>
-                        <Type>Box</Box>
                     </Observable>
                 </Chi2Calculator>
 
