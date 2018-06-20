@@ -4,6 +4,7 @@
 
 #include "Tool.h"
 #include "Plot.h"
+#include "TStyle.h"
 
 namespace Fittino {
     
@@ -27,7 +28,8 @@ public:
         
     private:
         std::vector<Plot> _plots;
-    
+        TStyle*  _fittinoStyle;
+
 };
 
 }
