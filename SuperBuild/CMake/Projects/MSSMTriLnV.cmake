@@ -22,7 +22,7 @@ externalproject_add(
 )
 
 # these are partially actually patch dependencies but in order to start from scratch with the patch they are declared as download dependencies
-ExternalProject_Add_StepDependencies( ${MSSMTriLnV} download ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Scripts/patch_SPheno.cmake ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Scripts/patch_SPhenoMSSMTriLnV.cmake ${MSSMTriLnV_url} )
+ExternalProject_Add_StepDependencies( ${MSSMTriLnV} download ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Scripts/patch_SPheno.cmake ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Scripts/patch_SPhenoMSSMTriLnV.cmake ${MSSMTriLnV_url}/ )
 
 list( APPEND CACHE_ARGS -DSPheno_MSSMTriLnV_EXECUTABLE:FILEPATH=${SPheno_ROOT_DIR}/bin/SPhenoMSSMTriLnV )
 
