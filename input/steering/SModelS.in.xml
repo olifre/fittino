@@ -322,7 +322,7 @@
                         <Prediction>[SPheno_Mass_h0]</Prediction>
                         <Measurement>125.09</Measurement>
                         <Uncertainty>
-                            <Value>0.21.</Value>
+                            <Value>0.21</Value>
                         </Uncertainty>
                         <Uncertainty>
                             <Value>0.11</Value>
@@ -410,6 +410,18 @@
                         </Uncertainty>
                         <Type>Gauss</Type>
                     </Observable>
+                    <Observable>
+                        <Name>DiffSM_amu</Name>
+                        <Prediction>[SPheno_DiffSM_amu]</Prediction>
+                        <Measurement>28.7e-10</Measurement>
+                        <Uncertainty>
+                            <Value>8e-10</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>[Prediction]*7./100.</Value>
+                        </Uncertainty>
+                        <Type>Gauss</Type>
+                    </Observable>
                 </Chi2Calculator>
                 
                 <LHCNeuralNetCalculator>
@@ -458,6 +470,7 @@
 
         <MarkovChainSampler>
             <NumberOfIterations>3</NumberOfIterations>
+            <FirstPointScaleFactor>1</FirstPointScaleFactor>
         </MarkovChainSampler>
 
     </Tool>
