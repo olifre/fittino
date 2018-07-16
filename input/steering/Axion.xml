@@ -1,0 +1,86 @@
+
+<?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
+
+<InputFile>
+    
+    <VerbosityLevel>INFO</VerbosityLevel>
+    
+    <Model>
+        
+        <ModelBase>
+            
+            <Name>AxionModel</Name>
+            
+            <ModelParameter>
+                <Name>D1</Name>
+                <Value>10</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>100</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+            
+            <ModelParameter>
+                <Name>D2</Name>
+                <Value>10</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>100</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+            
+            <ModelParameter>
+                <Name>D3</Name>
+                <Value>10</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>100</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+            
+            <ModelParameter>
+                <Name>D4</Name>
+                <Value>10</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>100</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+            
+            <ModelParameter>
+                <Name>D5</Name>
+                <Value>10</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>100</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+            
+            
+            <Calculators>
+                <AxionCalculator>
+                    <D1>[D1]</D1>
+                    <D2>[D2]</D2>
+                    <D3>[D3]</D3>
+                    <D4>[D4]</D4>
+                    <D5>[D5]</D5>
+                </AxionCalculator>
+            </Calculators>
+            
+            <Chi2Contribution>[AxionCalculator_MyOutputQuantity]</Chi2Contribution>
+
+        </ModelBase>
+        
+    </Model>
+    
+    <Tool>
+        
+        <MarkovChainSampler>
+            <NumberOfIterations>10</NumberOfIterations>
+        </MarkovChainSampler>
+        
+    </Tool>
+    
+</InputFile>
+
