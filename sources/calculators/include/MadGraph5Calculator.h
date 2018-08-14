@@ -46,7 +46,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for MadGraph
    */
-  class MadGraph5Calculator : public SLHACalculatorBase{
+  class MadGraph5Calculator : public CalculatorBase{
 
     public:
       /*!
@@ -62,11 +62,12 @@ namespace Fittino {
       virtual void        CalculatePredictions();
       virtual void        Initialize();
       virtual void        SetupMeasuredValues();
+      virtual void        Check_Chargino_DecayWidth();
     
      private:
-     InputFile*             _inputFile;
+     //InputFile*             _inputFile;
 
-     //InputFile _inputFile;
+     InputFile _inputFile;
      Executor  _executor;
      std::string _BannerFile;
       double _weight;
@@ -83,6 +84,8 @@ namespace Fittino {
      std::map<std::string, int> _pdgIds;
      std::string _EventFile;
      std::string _SLHAFile;
+      double  _Decay_Width;
+      double  _Mt;
 
   };
 

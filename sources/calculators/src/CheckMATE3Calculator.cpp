@@ -80,6 +80,7 @@ for(const auto& elem : analysis ) {
     AddOutput( output + "_bkg"   );
     AddOutput( output + "_bkg_err"   );
     AddOutput( output + "_obs"   );
+    AddOutput( output + "_s95exp"   );
 
     SetOutput( output + "_tot_mc_ev"  , 0  );
     SetOutput( output + "_tot_norm_ev"  , 0 );
@@ -96,6 +97,7 @@ for(const auto& elem : analysis ) {
     SetOutput( output + "_bkg" , 0   );
     SetOutput( output + "_bkg_err", 0   );
     SetOutput( output + "_obs", 0   );
+    SetOutput( output + "_s95exp", 0   );
 
 
 
@@ -126,7 +128,7 @@ void Fittino::CheckMATE3Calculator::ReadResult() {
 
 	std::string dummy, temp1, temp2;
         std::string line;
-        double temp3 = 0, temp4=0, temp5=0, temp6=0, temp7=0, temp8=0, temp9=0, temp10=0, temp11=0, temp12=0, temp13=0, temp14=0, temp15=0, temp16=0, temp17=0;
+        double temp3 = 0, temp4=0, temp5=0, temp6=0, temp7=0, temp8=0, temp9=0, temp10=0, temp11=0, temp12=0, temp13=0, temp14=0, temp15=0, temp16=0, temp17=0, temp18=0;
         std::vector<std::string> analysis;
         std::vector<std::string> sr;
         std::vector<double> tot_mc_ev;
@@ -142,6 +144,7 @@ void Fittino::CheckMATE3Calculator::ReadResult() {
         std::vector<double> bkg;
         std::vector<double> bkg_err;
         std::vector<double> obs;
+        std::vector<double> s95exp;
         std::vector<double> likelihood;
 	std::vector<double> r_value;
         std::ifstream infile(_CM_tot_result);
@@ -151,7 +154,7 @@ void Fittino::CheckMATE3Calculator::ReadResult() {
          if(line.empty())  break ;
 
             std::istringstream ss(line);
-            ss>>temp1>>temp2>>temp3>>temp4>>dummy>>dummy>>dummy>>dummy>>temp5>>temp6>>temp7>>temp8>>temp11>>temp12>>temp13>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>temp10>>dummy>>dummy>>dummy>>dummy>>temp14>>temp15>>temp16>>temp17>>temp9;
+            ss>>temp1>>temp2>>temp3>>temp4>>dummy>>dummy>>dummy>>dummy>>temp5>>temp6>>temp7>>temp8>>temp11>>temp12>>temp13>>dummy>>dummy>>dummy>>dummy>>dummy>>temp18>>dummy>>temp10>>dummy>>dummy>>dummy>>dummy>>temp14>>temp15>>temp16>>temp17>>temp9;
             analysis.push_back(temp1);
             sr.push_back(temp2);
             tot_mc_ev.push_back(temp3);
@@ -165,6 +168,7 @@ void Fittino::CheckMATE3Calculator::ReadResult() {
 	    bkg.push_back(temp12);
 	    bkg_err.push_back(temp13);
 	    obs.push_back(temp11);
+	    s95exp.push_back(temp18);
 	    cls_obs.push_back(temp14);
 	    cls_obs_err.push_back(temp15);
 	    cls_exp.push_back(temp16);
@@ -208,6 +212,7 @@ for(const auto& elem : analysis ) {
     SetOutput( output3 + "_bkg"  , bkg[p]  ); 
     SetOutput( output3 + "_bkg_err"  , bkg_err[p]  ); 
     SetOutput( output3 + "_obs"  , obs[p]  ); 
+    SetOutput( output3 + "_s95exp"  , s95exp[p]  ); 
    std::cout<< tot_mc_ev[p] << std::endl;
   p+=1 ;
 }
