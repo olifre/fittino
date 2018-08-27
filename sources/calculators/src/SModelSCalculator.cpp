@@ -207,7 +207,7 @@ void Fittino::SModelSCalculator::ReadXML() {
                                     boost::property_tree::xml_parser::trim_whitespace |
                                     boost::property_tree::xml_parser::no_comments );
     
-    _fileStatus = ptree.get<int>( "OutputStatus.file_status" );
+    _fileStatus = ptree.get<int>( "smodelsOutput.OutputStatus.file_status" );
     
     if( _fileStatus != 1 ) {
         
@@ -215,7 +215,7 @@ void Fittino::SModelSCalculator::ReadXML() {
         
     }
     
-    _decompositionStatus = ptree.get<int>( "OutputStatus.decomposition_status" );
+    _decompositionStatus = ptree.get<int>( "smodelsOutput.OutputStatus.decomposition_status" );
     
     if( _decompositionStatus != 1 ) {
         
