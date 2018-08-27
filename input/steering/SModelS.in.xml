@@ -24,7 +24,7 @@
             <ModelParameter>
                 <Name>M1</Name>
                 <Value>170</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>-4000</LowerBound>
                 <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
@@ -33,7 +33,7 @@
             <ModelParameter>
                 <Name>M2</Name>
                 <Value>170</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>100</LowerBound>
                 <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
@@ -42,7 +42,7 @@
             <ModelParameter>
                 <Name>M3</Name>
                 <Value>2600</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>-4000</LowerBound>
                 <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
@@ -51,7 +51,7 @@
             <ModelParameter>
                 <Name>MQ1</Name>
                 <Value>2880</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>300</LowerBound>
                 <UpperBound>5000</UpperBound>
                 <Fixed>false</Fixed>
@@ -60,7 +60,7 @@
             <ModelParameter>
                 <Name>MQ3</Name>
                 <Value>4360</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>100</LowerBound>
                 <UpperBound>5000</UpperBound>
                 <Fixed>false</Fixed>
@@ -69,7 +69,7 @@
             <ModelParameter>
                 <Name>ML1</Name>
                 <Value>440</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>100</LowerBound>
                 <UpperBound>3000</UpperBound>
                 <Fixed>false</Fixed>
@@ -78,7 +78,7 @@
             <ModelParameter>
                 <Name>ML3</Name>
                 <Value>440</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>100</LowerBound>
                 <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
@@ -87,7 +87,7 @@
             <ModelParameter>
                 <Name>MA0</Name>
                 <Value>2070</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>0</LowerBound>
                 <UpperBound>4000</UpperBound>
                 <Fixed>false</Fixed>
@@ -96,7 +96,7 @@
             <ModelParameter>
                 <Name>A</Name>
                 <Value>790</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>-5000</LowerBound>
                 <UpperBound>5000</UpperBound>
                 <Fixed>false</Fixed>
@@ -105,7 +105,7 @@
             <ModelParameter>
                 <Name>Mu</Name>
                 <Value>550</Value>
-                <Error>100</Error>
+                <Error>10</Error>
                 <LowerBound>-5000</LowerBound>
                 <UpperBound>5000</UpperBound>
                 <Fixed>false</Fixed>
@@ -114,7 +114,7 @@
             <ModelParameter>
                 <Name>TanBeta</Name>
                 <Value>37.6</Value>
-                <Error>10</Error>
+                <Error>1</Error>
                 <LowerBound>1</LowerBound>
                 <UpperBound>60</UpperBound>
                 <Fixed>false</Fixed>
@@ -123,7 +123,7 @@
             <ModelParameter>
                 <Name>Mt</Name>
                 <Value>173.3</Value>
-                <Error>1</Error>
+                <Error>0.1</Error>
                 <LowerBound>130</LowerBound>
                 <UpperBound>215</UpperBound>
                 <Fixed>false</Fixed>
