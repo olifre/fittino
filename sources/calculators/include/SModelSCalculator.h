@@ -35,6 +35,9 @@ namespace Fittino {
       boost::python::object _fileList;
       boost::python::object _listOfExpRes;
       boost::python::object _testPoints;
+      double _decompositionStatus;
+      double _fileStatus;
+
 
       std::set<std::string> _txNamesWithResults;
 

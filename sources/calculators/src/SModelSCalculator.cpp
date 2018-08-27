@@ -13,6 +13,9 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
         : CalculatorBase(model, &ptree) {
 
     AddOutput( "RValue", _rValue );
+    AddOutput( "DecompositionStatus", _decompositionStatus );
+    AddOutput( "FileStatus", _fileStatus );
+
     AddFile( "results" );
 
     std::string exename = "SModelSToolsExecutable";
@@ -185,7 +188,7 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
     
     if ( !result ) {
         
-        throw CalculatorException( _name, "SMODELS_TESTPOINTS_ERROR" );
+        throw CalculatorException( _name, "SMODELS_NONE" );
         
     }
 
@@ -203,6 +206,22 @@ void Fittino::SModelSCalculator::ReadXML() {
                                     ptree,
                                     boost::property_tree::xml_parser::trim_whitespace |
                                     boost::property_tree::xml_parser::no_comments );
+    
+    _fileStatus = ptree.get<int>( "OutputStatus.file_status" );
+    
+    if( _fileStatus != 1 ) {
+        
+        throw CalculatorException( _name, "SMODELS_FILESTATUS" );
+        
+    }
+    
+    _decompositionStatus = ptree.get<int>( "OutputStatus.decomposition_status" );
+    
+    if( _decompositionStatus != 1 ) {
+        
+        throw CalculatorException( _name, "SMODELS_DECOMPOSITIONSTATUS" );
+        
+    }
 
     _rValue = 0;
 
