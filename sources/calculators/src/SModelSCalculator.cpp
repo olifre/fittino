@@ -207,7 +207,9 @@ void Fittino::SModelSCalculator::ReadXML() {
                                     boost::property_tree::xml_parser::trim_whitespace |
                                     boost::property_tree::xml_parser::no_comments );
     
-    _fileStatus = ptree.get<int>( "smodelsOutput.OutputStatus.file_status" );
+    ptree = ptree.get_child( "smodelsOutput" );
+    
+    _fileStatus = ptree.get<int>( "OutputStatus.file_status" );
     
     if( _fileStatus != 1 ) {
         
@@ -215,7 +217,7 @@ void Fittino::SModelSCalculator::ReadXML() {
         
     }
     
-    _decompositionStatus = ptree.get<int>( "smodelsOutput.OutputStatus.decomposition_status" );
+    _decompositionStatus = ptree.get<int>( "OutputStatus.decomposition_status" );
     
     if( _decompositionStatus != 1 ) {
         
@@ -227,23 +229,23 @@ void Fittino::SModelSCalculator::ReadXML() {
 
     double ul, tp, r;
     
-    if ( ptree.count("smodelsOutput.ExptRes_List" ) ) {
+    if ( ptree.count("ExptRes_List" ) ) {
+        
+        for ( const auto res : ptree.get_child( "ExptRes_List" ) ){
+        
+            ul = res.second.get<double>( "upper_limit_fb" );
+            tp = res.second.get<double>( "theory_prediction_fb" );
+            r = tp / ul;
 
-    for ( const auto res : ptree.get_child("smodelsOutput.ExptRes_List") ){
+            if ( r > _rValue ) _rValue = r;
 
-         ul = res.second.get<double>( "upper_limit_fb" );
-         tp = res.second.get<double>( "theory_prediction_fb" );
-         r = tp / ul;
-
-        if ( r > _rValue ) _rValue = r;
-
-    }
+        }
         
     }
 
     unsigned int iModel = 0;
 
-    for( auto node : ptree.get_child( "smodelsOutput.Missing_Topologies" ) ) {
+    for( auto node : ptree.get_child( "Missing_Topologies" ) ) {
 
         std::string txName = node.first;
         double weight = node.second.get<double>("TopoWeight_pb");
@@ -286,10 +288,11 @@ void Fittino::SModelSCalculator::ReadMissingConstraints() {
                                    boost::property_tree::xml_parser::trim_whitespace |
                                    boost::property_tree::xml_parser::no_comments );
     
+    ptree = ptree.get_child( "smodelsOutput" );
 
     unsigned int iConstraint = 0;
     
-    for( auto node : ptree.get_child( "smodelsOutput.Missing_Constraints.Missing.Constraint_List" ) ) {
+    for( auto node : ptree.get_child( "Missing_Constraints.Missing.Constraint_List" ) ) {
         
         if( node.first != "Constraint" ) throw LogicException("Expected node Constraint in SModelS xml file.");
         
@@ -320,10 +323,11 @@ void Fittino::SModelSCalculator::ReadConstraintsOutsideGrid() {
                                    boost::property_tree::xml_parser::trim_whitespace |
                                    boost::property_tree::xml_parser::no_comments );
     
-    
+    ptree = ptree.get_child( "smodelsOutput" );
+
     unsigned int iConstraint = 0;
     
-    for( auto node : ptree.get_child( "smodelsOutput.Missing_Constraints.Outside_Grid.Constraint_List" ) ) {
+    for( auto node : ptree.get_child( "Missing_Constraints.Outside_Grid.Constraint_List" ) ) {
         
         if( node.first != "Constraint" ) throw LogicException("Expected node Constraint in SModelS xml file.");
         
