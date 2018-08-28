@@ -53,7 +53,7 @@ list( APPEND installDirs steering )
 
 add_custom_command( OUTPUT ${installDirs}
                     COMMAND ${CMAKE_COMMAND} "-Doutputs=${outputs}" ${confargs} -P ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake
-                    DEPENDS ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake ${fulloutputs} ${PROJECT_SOURCE_DIR}/input
+                    DEPENDS ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake ${fulloutputs} ${PROJECT_SOURCE_DIR}/input/
                     VERBATIM )
 
 add_custom_target( input-conf ALL DEPENDS ${installDirs})
