@@ -471,6 +471,7 @@
         <MarkovChainSampler>
             <NumberOfIterations>3</NumberOfIterations>
             <FirstPointScaleFactor>1</FirstPointScaleFactor>
+            <StrictBounds>true</StrictBounds>
         </MarkovChainSampler>
 
     </Tool>
