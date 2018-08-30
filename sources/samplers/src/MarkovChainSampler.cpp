@@ -34,7 +34,7 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
     : SamplerBase( model, ptree ),
       _parameterValuesOfLastAcceptedPoint( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
       _firstPointScalefactor( ptree.get<double>( "FirstPointScaleFactor", 0 ) ),
-      _strictBounds( ptree.get<bool>( "StrictBounds", false ) ),
+      _strictBounds( ptree.get<bool>( "StrictBounds", true ) ),
       _numberOfIterations( _iterationCounter + ptree.get<int>( "NumberOfIterations" ) ) {
 
     _name = "Markov chain parameter sampler";
