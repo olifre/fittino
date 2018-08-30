@@ -15,6 +15,13 @@ set (installPython OFF)
 endif()
 cmake_dependent_option( Conda_REQUIREMENTSFILE  "Create Conda environment as specified in requiremts file." ON "installPython" OFF )
 
+option( INSTALL_HepMC2 "Install HepMC2" OFF )
+add_feature_info( INSTALL_HepMC2 INSTALL_HepMC2 "HepMC2 is required for installation of Pythia." )
+
+option( INSTALL_Pythia8 "Install Pythia8" OFF )
+add_feature_info( INSTALL_Pythia8 INSTALL_Pythia8 "Pythia8 is required for installation of CheckMATE." )
+
+
 option( INSTALL_SLHAea "Install SLHAea" OFF )
 add_feature_info( INSTALL_SLHAea INSTALL_SLHAea "SLHAea is required for using the SPhenoCalculator of Fittino." )
 

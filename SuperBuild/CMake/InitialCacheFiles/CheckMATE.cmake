@@ -1,0 +1,3 @@
+
+set( INSTALL_HepMC2    ON CACHE BOOL "" FORCE )
+set( INSTALL_Pythia8   ON CACHE BOOL "" FORCE )

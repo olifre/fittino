@@ -1,3 +1,16 @@
+if( INSTALL_HepMC2 )
+
+    include( Projects/HepMC2 )
+
+endif()
+
+if( INSTALL_Pythia8 )
+
+    include( Projects/Pythia8 )
+
+endif()
+
+
 if( INSTALL_Python2 OR INSTALL_Python3 )
 
     include( Projects/Miniconda )

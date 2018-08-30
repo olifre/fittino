@@ -1,4 +1,6 @@
-set( Pythia8 Pythia-8.2.30 )
+# see README inside tarball
+
+set( Pythia8 Pythia-8.2.35 )
 
 enable_language( CXX )
 
@@ -10,9 +12,9 @@ externalproject_add(
 
     ${Pythia8}
     DEPENDS ${HepMC2}
-    URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8230.tgz
-    URL_MD5 5362429333f43bd1f7621a599bae5a24
-    CONFIGURE_COMMAND ./configure --cxx=${CMAKE_CXX_COMPILER} --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_ROOT_DIR} --with-gzip-lib=${zlib_library_dir} --with-gzip-include=${ZLIB_INCLUDE_DIRS}
+    URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8235.tgz
+    URL_MD5 eed56d357dc91df4571c2a65d60f1af5
+    CONFIGURE_COMMAND ./configure --cxx=${CMAKE_CXX_COMPILER} --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC2_ROOT_DIR} --with-gzip-lib=${zlib_library_dir} --with-gzip-include=${ZLIB_INCLUDE_DIRS}
     BUILD_COMMAND $(MAKE)
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND $(MAKE) install
