@@ -15,5 +15,7 @@ list( APPEND src FindSLHAEA.cmake )
 list( APPEND src FindSModelS.cmake )
 list( APPEND src FindSPheno.cmake )
 list( APPEND src FindSUPERISO.cmake )
+list( APPEND src FindVecCore.cmake )
+
 
 add_custom_target( CMakeModules SOURCES ${src} )
