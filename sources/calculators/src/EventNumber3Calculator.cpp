@@ -23,7 +23,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 #include "TMath.h"
-#include "EventNumber2Calculator.h"
+#include "EventNumber3Calculator.h"
 #include "ConfigurationException.h"
 #include "PhysicsModel.h"
 #include "ModelParameter.h"
@@ -40,7 +40,7 @@
 
 
 
-Fittino::EventNumber2Calculator::EventNumber2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::EventNumber3Calculator::EventNumber3Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model, &ptree ),
 
     _executor(ptree.get<std::string>("Executable"), "mg5_aMC" )
@@ -54,11 +54,11 @@ AddInput("XS");
 
 }
 
-Fittino::EventNumber2Calculator::~EventNumber2Calculator() {
+Fittino::EventNumber3Calculator::~EventNumber3Calculator() {
   
 }
 
-void Fittino::EventNumber2Calculator::CalculatePredictions() {
+void Fittino::EventNumber3Calculator::CalculatePredictions() {
 
 UpdateInput();
 double _XS;
@@ -68,39 +68,40 @@ std::cout << _XS << std::endl;
 
 
 double test; 
-int event;
-event = 4000 * _XS *5;
+double event;
+int event_2;
+event_2 = 4000 * _XS *20;
 test = _XS;
 
-
-if(event < 10){
-event =10;
+if(event_2 < 10){
+event_2 =10;
 std::cout << "test" << std::endl;
 std::cout << test << std::endl;
 test = _XS - _XS;
 }
 
-if(event < 2000 and event >= 10){
-event =2000; 
+if(event_2 < 8000 and event_2 > 10){
+event_2 =8000; 
 }
 
-if(event > 50000){
-event = 45000;
+if(event_2 > 50000){
+event_2 = 45000;
 }
 
-_N = event;
+_N = event_2;
+std::cout << _N << std::endl;
 std::cout << "N" << std::endl;
-std::cout << event << std::endl;
-SetOutput( "N", event  );
+std::cout << event_2 << std::endl;
+SetOutput( "N", _N  );
 SetOutput( "NXS", test  );
 
 }
 
 
-void Fittino::EventNumber2Calculator::SetupMeasuredValues() {
+void Fittino::EventNumber3Calculator::SetupMeasuredValues() {
 
 }
 
-void Fittino::EventNumber2Calculator::Initialize() {
+void Fittino::EventNumber3Calculator::Initialize() {
   
 }
