@@ -418,6 +418,7 @@
                     <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
                         <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
                         <MGinputFile>MGewew_cMSSM_13TeV_1.txt</MGinputFile>
+                        <XSFile>cMSSM_ewew/crossx.html</XSFile>
                         <BannerFile>cMSSM_ewew/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
                         <EventFile>cMSSM_ewew/Events/run_01/unweighted_events.lhe.gz</EventFile>
                         <SLHAFile>SPheno.spc</SLHAFile>
@@ -434,10 +435,11 @@
 
                </MadGraph5EWCalculator>
                 
-                <MadGraph5Calculator>
+                <MadGraph5EWCalculator>
                     <Name>ewst</Name>
                     <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
                         <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                        <XSFile>cMSSM_ewst/crossx.html</XSFile>
                         <MGinputFile>MGewst_cMSSM_13TeV_1.txt</MGinputFile>
                         <BannerFile>cMSSM_ewst/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
                         <EventFile>cMSSM_ewst/Events/run_01/unweighted_events.lhe.gz</EventFile>
@@ -447,11 +449,11 @@
                            <Name> MGewst_cMSSM_13TeV_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
-                              <Value> 10000</Value>
+                              <Value>10000</Value>
                            </Quantity>
 
                          </InputFile>
-                </MadGraph5Calculator>
+                </MadGraph5EWCalculator>
 
 
 
