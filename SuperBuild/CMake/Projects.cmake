@@ -1,3 +1,9 @@
+if( INSTALL_MadGraph5 )
+
+    include( Projects/MadGraph5 )
+
+endif()
+
 if( INSTALL_HepMC2 )
 
     include( Projects/HepMC2 )
@@ -7,6 +13,18 @@ endif()
 if( INSTALL_Pythia8 )
 
     include( Projects/Pythia8 )
+
+endif()
+
+if( INSTALL_Delphes )
+
+    include( Projects/Delphes )
+
+endif()
+
+if( INSTALL_CheckMATE )
+
+    include( Projects/CheckMATE )
 
 endif()
 

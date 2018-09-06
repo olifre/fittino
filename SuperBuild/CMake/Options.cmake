@@ -15,12 +15,20 @@ set (installPython OFF)
 endif()
 cmake_dependent_option( Conda_REQUIREMENTSFILE  "Create Conda environment as specified in requiremts file." ON "installPython" OFF )
 
+option( INSTALL_MadGraph5 "Install MadGraph5" OFF )
+add_feature_info( INSTALL_MadGraph5 INSTALL_MadGraph5 "MadGraph5 is required for installation of CheckMATE." )
+
 option( INSTALL_HepMC2 "Install HepMC2" OFF )
 add_feature_info( INSTALL_HepMC2 INSTALL_HepMC2 "HepMC2 is required for installation of Pythia." )
 
 option( INSTALL_Pythia8 "Install Pythia8" OFF )
 add_feature_info( INSTALL_Pythia8 INSTALL_Pythia8 "Pythia8 is required for installation of CheckMATE." )
 
+option( INSTALL_Delphes "Install Delphes" OFF )
+add_feature_info( INSTALL_Delphes INSTALL_Delphes "Delphes is required for installation of CheckMATE." )
+
+cmake_dependent_option( INSTALL_CheckMATE "Install CheckMATE" OFF "INSTALL_Delphes;INSTALL_Pythia8;INSTALL_HepMC2;INSTALL_MadGraph5" OFF )
+add_feature_info( INSTALL_CheckMATE INSTALL_CheckMATE "This option depends on the options INSTALL_Delphes, INSTALL_Pythia8, INSTALL_HepMC2, INSTALL_MadGraph5 to be ON." )
 
 option( INSTALL_SLHAea "Install SLHAea" OFF )
 add_feature_info( INSTALL_SLHAea INSTALL_SLHAea "SLHAea is required for using the SPhenoCalculator of Fittino." )
