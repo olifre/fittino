@@ -69,7 +69,7 @@ FIND_PACKAGE( SUPERISO                                                          
 find_package( PythonInterp )
 FIND_PACKAGE( PythonLibs )
 
-set( veccoreVersions "6.12/04;6.12/06" )
+set( veccoreVersions "6.12/04;6.12/06;6.14/04" )
 
 if( "${ROOT_VERSION}" IN_LIST veccoreVersions  )
 
