@@ -7,6 +7,8 @@ file( COPY ${PROJECT_SOURCE_DIR}/input/steering DESTINATION ${PROJECT_BINARY_DIR
 list( APPEND inputFiles steering/SModelS.in.xml )
 list( APPEND inputFiles steering/SCYNet.xml )
 list( APPEND inputFiles steering/RPV.xml )
+list( APPEND inputFiles steering/pMSSM11_LHCsimulation_SCYNet.in.xml )
+
 
 list( APPEND inputFiles external/SModelS/parameters.ini )
 list( APPEND inputFiles external/SPheno/pMSSM11.slha )
