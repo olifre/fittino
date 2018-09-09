@@ -2,9 +2,6 @@
 
 
 #include <boost/filesystem.hpp>
-#include <boost/python.hpp>
-#include <boost/python/object.hpp>
-#include "Python.h"
 #include "LHCNeuralNet2Calculator.h"
 #include "CalculatorException.h"
 #include "PhysicsModel.h"
