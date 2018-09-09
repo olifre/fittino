@@ -2,12 +2,12 @@ import os
 import numpy as np
 from copy import deepcopy
 
-from sklearn.utils import shuffle
-def shuffle_data(x, y):
-    x.x, y.chi2 = shuffle(x.x, y.chi2) #option: random_state=0 controlling seed
-    y.train_test_init_sq() #so we compare prediction with correct ytrain,test
-    x.split_train_data() #new train split
-    y.split_train_data() #new test split
+#from sklearn.utils import shuffle
+#def shuffle_data(x, y):
+#    x.x, y.chi2 = shuffle(x.x, y.chi2) #option: random_state=0 controlling seed
+#    y.train_test_init_sq() #so we compare prediction with correct ytrain,test
+#    x.split_train_data() #new train split
+#    y.split_train_data() #new test split
 
 class fulldata:
     check = False
