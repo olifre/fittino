@@ -45,6 +45,9 @@ ENABLE_LANGUAGE( CXX )
 ENABLE_LANGUAGE( C )
 ENABLE_LANGUAGE( Fortran )
 
+set( CMAKE_CXX_STANDARD 14 CACHE STRING "" )
+set( CMAKE_CXX_STANDARD_REQUIRED ON )
+
 FIND_PACKAGE( Boost 1.47.0 REQUIRED COMPONENTS filesystem system thread regex chrono )
 FIND_PACKAGE( ROOT 5.20.00 REQUIRED COMPONENTS Minuit2 TMVA                                                 )
 FIND_PACKAGE( GSL                                                                    )
