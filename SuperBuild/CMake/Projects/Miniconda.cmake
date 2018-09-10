@@ -1,54 +1,22 @@
+set( Miniconda "Miniconda2-4.5.11")
+
 find_package( UnixCommands )
 set_package_properties( UnixCommands PROPERTIES TYPE REQUIRED PURPOSE "Required by INSTALL_Python2 to run the bash installer of Miniconda." )
 
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86_64" )
 
-    if( INSTALL_Python2 )
-
-        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda2-4.3.31-MacOSX-x86_64.sh )
-        set( miniconda_url_md5 2c499488605bafd9e13a430f299f1489 )
-        set( Miniconda "Miniconda2-4.3.31")
-
-
-    elseif( INSTALL_Python3 )
-
-        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda3-4.3.31-MacOSX-x86_64.sh )
-        set( miniconda_url_md5 03c2dedc466886459e968157c63197f3 )
-        set( Miniconda "Miniconda3-4.3.31")
-
-    endif()
+    set( miniconda_url https://repo.continuum.io/miniconda/Miniconda2-4.5.11-MacOSX-x86_64.sh )
+    set( miniconda_url_md5 a444da43ad50a83c332ea1fb7a5bb96c )
 
 elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86_64" )
 
-    if( INSTALL_Python2 )
-
-        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda2-4.3.31-Linux-x86_64.sh )
-        set( miniconda_url_md5 da2dd466d26e33a2b1f72fdb853a8ff0 )
-        set( Miniconda "Miniconda2-4.3.31")
-
-    elseif( INSTALL_Python3 )
-
-        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda3-4.3.31-Linux-x86_64.sh )
-        set( miniconda_url_md5 7fe70b214bee1143e3e3f0467b71453c )
-        set( Miniconda "Miniconda3-4.3.31")
-
-    endif()
+        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda2-4.5.11-Linux-x86_64.sh )
+        set( miniconda_url_md5 458324438b7b0e5afcc272b63d44195d )
 
 elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86" )
 
-    if( INSTALL_Python2 )
-
-        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda2-4.3.31-Linux-x86.sh )
-        set( miniconda_url_md5 4067ba22e1d687f92b11531a0b30b17f )
-        set( Miniconda "Miniconda2-4.3.31")
-
-    elseif( INSTALL_Python3 )
-
-        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda3-4.3.31-Linux-x86.sh )
-        set( miniconda_url_md5 df2f9770d83df8269f3f43f1e60285e6 )
-        set( Miniconda "Miniconda3-4.3.31")
-
-    endif()
+        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda2-4.5.11-Linux-x86.sh )
+        set( miniconda_url_md5 187c460ffc6ea5f890b512320b2994c6 )
 
 else()
 
