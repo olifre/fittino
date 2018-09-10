@@ -1,6 +1,8 @@
 
 set( INSTALL_SLHAea  ON CACHE BOOL "" FORCE )
 set( INSTALL_SPheno  ON CACHE BOOL "" FORCE )
+set( INSTALL_Python2  ON CACHE BOOL "" FORCE ) #?
+
 
 # needed for CheckMATE installation
 set( INSTALL_MadGraph5  ON CACHE BOOL "" FORCE )
