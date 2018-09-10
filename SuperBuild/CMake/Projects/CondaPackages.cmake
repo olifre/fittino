@@ -1,6 +1,6 @@
 if( INSTALL_Python2 )
 
-    set( CondaPackages "CondaPackages2-1" )
+    set( CondaPackages "CondaPackages2-2" )
     set( pythonIncludeDir include/python2.7 )
 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
@@ -44,29 +44,34 @@ elseif( INSTALL_Python3 )
 
 endif()
 
-set( install_command ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Miniconda_EXECUTABLE} remove -y  --prefix <INSTALL_DIR> --all )
+set( download_command ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR> )
+set( install_command  ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR> )
 
-# TODO: when conda 4.4 is released containing the --download-only flag (see https://github.com/conda/conda/commit/962eae0eb1c14d0b23c388b2a218b95379fb32d8 ) and cmake substitutes download_dir (in CMake 3.11.0 ), this can be split into download and install step (compare PipPackages)
+list( APPEND download_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Miniconda_EXECUTABLE} create -y --prefix <INSTALL_DIR> --download-only )
 
-list( APPEND install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Miniconda_EXECUTABLE} create -y --prefix <INSTALL_DIR> )
+list( APPEND install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=<DOWNLOAD_DIR> PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Miniconda_EXECUTABLE} create -y --prefix <INSTALL_DIR> --offline --use-index-cache )
 
 if( Conda_REQUIREMENTSFILE )
 
+    list(APPEND download_command --no-deps --no-update-deps --file ${requirements} )
     list(APPEND install_command --no-deps --no-update-deps --file ${requirements} )
 
 elseif( INSTALL_Python3 )
 
-    list( APPEND install_command numpy scipy matplotlib nose pyyaml mpmath )
+    list( APPEND download_command python=3.6 numpy scipy matplotlib nose pyyaml mpmath )
+    list( APPEND install_command  python=3.6 numpy scipy matplotlib nose pyyaml mpmath )
+
 
 elseif( INSTALL_Python2 )
 
-    list( APPEND install_command numpy scipy matplotlib nose tensorflow docutils )
+    list( APPEND download_command python=2.7 numpy scipy matplotlib nose tensorflow docutils keras )
+    list( APPEND install_command  python=2.7 numpy scipy matplotlib nose tensorflow docutils keras )
 
 endif()
 
 if( BUILD_OFFLINE )
 
-    list( APPEND install_command --offline --use-index-cache )
+    list( APPEND download_command --offline --use-index-cache )
 
 endif()
 
@@ -75,10 +80,10 @@ externalproject_add(
     ${CondaPackages}
     DEPENDS ${Miniconda}
     DOWNLOAD_NO_EXTRACT
-    DOWNLOAD_COMMAND ${install_command}
+    DOWNLOAD_COMMAND ${download_command}
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
-    INSTALL_COMMAND ""
+    INSTALL_COMMAND  ${install_command}
 
 )
 
