@@ -91,6 +91,10 @@ if( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND PYTHON_VERSION_STRING STREQUAL P
 
             set( PYTHON2_FOUND 1 )
 
+            # needed to use Python 2.7.13-15 with C++17
+            # compare also https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=231073
+            add_compile_options( -Wno-register )
+
         endif()
 
     elseif( PYTHON_VERSION_MAJOR EQUAL "3" AND PYTHON_VERSION_MINOR GREATER_EQUAL "5" )
