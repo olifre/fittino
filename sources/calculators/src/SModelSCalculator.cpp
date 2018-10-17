@@ -72,7 +72,7 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
 
     _testPoints = modelTester.attr( "testPoints" );
 
-    _fileList = getAllInputFiles( _fileName );
+    _inputFiles = getAllInputFiles( _fileName );
 
     _parser = getParameters( _parameterFile );
 
@@ -184,7 +184,11 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
     _crossSections_LO->Execute();
     _crossSections_NLL->Execute();
     
-    auto result = _testPoints( _fileList, _fileName, "results", _parser, _databaseVersion, _listOfExpRes, 900, false, _parameterFile );
+    // [] returns a boost::python::proxy and needs to be converted to a boost::python::object
+    boost::python::object fileList = _inputFiles[0];
+    boost::python::object inDir = _inputFiles[1];
+    
+    auto result = _testPoints( fileList, inDir, "results", _parser, _databaseVersion, _listOfExpRes, 900, true, _parameterFile );
     
     if ( !result ) {
         

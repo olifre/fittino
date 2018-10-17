@@ -32,7 +32,7 @@ namespace Fittino {
       std::string _parameterFile;
       double _rValue;
       boost::python::object _parser;
-      boost::python::object _fileList;
+      boost::python::object _inputFiles;
       boost::python::object _listOfExpRes;
       boost::python::object _testPoints;
       double _decompositionStatus;
