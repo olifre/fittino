@@ -197,158 +197,158 @@
                     <OutputFile>SPheno.spc</OutputFile>
                 </SPhenoCalculator>
 
-<!--         <LHCNeuralNet2Calculator>-->
-<!--                    <scynet_script>SCYNet</scynet_script>-->
-<!--                    <scynet_out>SCYNet.out</scynet_out>-->
-<!--                    <M1>[M1]</M1>-->
-<!--                    <M2>[M2]</M2>-->
-<!--                    <M3>[M3]</M3>-->
-<!--                    <MQ1>[MQ1]</MQ1>-->
-<!--                    <MQ3>[MQ3]</MQ3>-->
-<!--                    <ML1>[ML1]</ML1>-->
-<!--                    <ML3>[ML3]</ML3>-->
-<!--                    <MA0>[MA0]</MA0>-->
-<!--                    <TanBeta>[TanBeta]</TanBeta>-->
-<!--                    <Mu>[Mu]</Mu>-->
-<!--                    <A>[A]</A>-->
-<!--                </LHCNeuralNet2Calculator>-->
-<!---->
-<!--               <FormulaPropCalculator>-->
-<!--                  <NonZerosRequired>true</NonZerosRequired>-->
-<!--                  <Quantity>-->
-<!--                     <Name>Chi2_SCYNet_lower</Name>-->
-<!--                     <Value>[SCYNet_Chi2] >= 2.0 </Value>-->
-<!--                  </Quantity>-->
-<!--                </FormulaPropCalculator>-->
-<!---->
-<!--                <FormulaPropCalculator>-->
-<!--                  <NonZerosRequired>true</NonZerosRequired>-->
-<!--                  <Quantity>-->
-<!--                     <Name>Chi2_SCYNet_upper</Name>-->
-<!--                     <Value>[SCYNet_Chi2] &lt;= 10.0 </Value>-->
-<!--                  </Quantity>-->
-<!--                </FormulaPropCalculator>    -->
-<!---->
-<!--                <FormulaCalculator>-->
-<!--                  <NonZerosRequired>true</NonZerosRequired>-->
-<!--                  <Quantity>-->
-<!--                     <Name>Decay_Width_Chargino</Name>-->
-<!--                     <Value>[SPheno_GammaTotal_~chi1p] >= 10e-13 </Value>-->
-<!--                  </Quantity>-->
-<!--                </FormulaCalculator>    -->
-<!---->
-<!---->
-<!--        <MinimumCalculator>-->
-<!--            <Name>MassOfLSP</Name>-->
-<!--            <Regex>SPheno.*Mass_~.*</Regex>-->
-<!---->
-<!--        </MinimumCalculator>-->
-<!---->
-<!---->
-<!--        <FormulaCalculator>-->
-<!--          <NonZerosRequired>true</NonZerosRequired>-->
-<!--          <Quantity>-->
-<!--             <Name>NeutralinoLSP</Name>-->
-<!--             <Value>[SPheno_Mass_~chi10] == [MassOfLSP_Value]</Value>-->
-<!--          </Quantity>-->
-<!--        </FormulaCalculator>  -->
-<!---->
-<!---->
-<!--        <Chi2Calculator>-->
-<!--            <Name>Preselection</Name>-->
-<!--            <Observable> -->
-<!--              <Name>Mass_h0</Name>-->
-<!--              <Prediction>[SPheno_Mass_h0]</Prediction>-->
-<!--              <Measurement>110.</Measurement>-->
-<!--              <Type>LowerLimit</Type>-->
-<!--            </Observable>-->
-<!--            <Observable> -->
-<!--              <Name>Mass_H0</Name>-->
-<!--              <Prediction>[SPheno_Mass_H0]</Prediction>-->
-<!--              <Measurement>110.</Measurement>-->
-<!--              <Type>LowerLimit</Type>-->
-<!--            </Observable>-->
-<!--            <Observable> -->
-<!--              <Name>Mass_~chi1p</Name>-->
-<!--              <Prediction>[SPheno_Mass_~chi1p]</Prediction>-->
-<!--              <Measurement>103.5</Measurement>-->
-<!--              <Type>LowerLimit</Type>-->
-<!--            </Observable>-->
-<!--            <Observable> -->
-<!--              <Name>Mass_W</Name>-->
-<!--              <Prediction>[SPheno_Mass_Wp]</Prediction>-->
-<!--              <Measurement>80.385</Measurement>-->
-<!--              <Uncertainty>-->
-<!--                <Value>5*0.015</Value>-->
-<!--                          </Uncertainty>-->
-<!--              <Uncertainty>-->
-<!--                                 <Value>5*[Prediction]*0.1/100.</Value>-->
-<!--                          </Uncertainty>-->
-<!--              <Type>Box</Type>-->
-<!--            </Observable>-->
-<!--            <Observable> -->
-<!--              <Name>BR_b_s_gamma</Name>-->
-<!--              <Prediction>[SPheno_BR_b_s_gamma]</Prediction>-->
-<!--              <Measurement>3.43e-4</Measurement>-->
-<!--              <Uncertainty>-->
-<!--                <Value>5*0.21e-4</Value>-->
-<!--              </Uncertainty>-->
-<!--              <Uncertainty>-->
-<!--                <Value>5*0.07e-4</Value>-->
-<!--              </Uncertainty>-->
-<!--              <Uncertainty>-->
-<!--                <Value>5*[Prediction]*14./100.</Value>-->
-<!--                            </Uncertainty>-->
-<!--              <Type>Box</Type>-->
-<!--            </Observable>-->
-<!--            <Observable> -->
-<!--              <Name>BR_Bs_mu_mu</Name>-->
-<!--              <Prediction>[SPheno_BR_Bs_mu_mu]</Prediction>-->
-<!--              <Measurement>2.9e-9</Measurement>-->
-<!--              <Uncertainty>-->
-<!--                <Value>0.7e-9</Value>-->
-<!--              </Uncertainty>-->
-<!--              <Uncertainty>-->
-<!--                <Value>5*[Prediction]*26./100.</Value>-->
-<!--                            </Uncertainty>-->
-<!--              <Type>Box</Type>-->
-<!--            </Observable>-->
-<!--            <Observable> -->
-<!--              <Name>BR_Bu_tau_nu</Name>-->
-<!--              <Prediction>[SPheno_BR_Bu_tau_nu]</Prediction>-->
-<!--              <Measurement>1.05e-4</Measurement>-->
-<!--              <Uncertainty>-->
-<!--                     <Value>5*0.25e-4</Value>-->
-<!--              </Uncertainty>-->
-<!--              <Uncertainty>-->
-<!--                 <Value>5*[Prediction]*20./100.</Value>-->
-<!--              </Uncertainty>-->
-<!--              <Type>Box</Type>-->
-<!--            </Observable>-->
-<!--            <Observable> -->
-<!--              <Name>Abs_Delta_Mass_Bs</Name>-->
-<!--              <Prediction>[SPheno_Abs_Delta_Mass_Bs]</Prediction>-->
-<!--              <Measurement>17.719</Measurement>-->
-<!--              <Uncertainty>-->
-<!--                <Value>5*0.036</Value>-->
-<!--              </Uncertainty>-->
-<!--              <Uncertainty>-->
-<!--                <Value>5*0.023</Value>-->
-<!--              </Uncertainty>-->
-<!--              <Uncertainty>-->
-<!--                <Value>5*[Prediction]*24./100.</Value>-->
-<!--              </Uncertainty>-->
-<!--              <Type>Box</Type>-->
-<!--            </Observable> -->
-<!--        </Chi2Calculator>-->
-<!--                <FormulaCalculator>-->
-<!--                   <NonZerosRequired>true</NonZerosRequired>-->
-<!--             <Quantity>-->
-<!--                 <Name>PreselectionPassed</Name>-->
-<!--                 <Value>[Preselection_Chi2]==0.</Value>-->
-<!--            </Quantity> -->
-<!---->
-<!--        </FormulaCalculator> -->
+         <LHCNeuralNet2Calculator>
+                    <scynet_script>SCYNet</scynet_script>
+                    <scynet_out>SCYNet.out</scynet_out>
+                    <M1>[M1]</M1>
+                    <M2>[M2]</M2>
+                    <M3>[M3]</M3>
+                    <MQ1>[MQ1]</MQ1>
+                    <MQ3>[MQ3]</MQ3>
+                    <ML1>[ML1]</ML1>
+                    <ML3>[ML3]</ML3>
+                    <MA0>[MA0]</MA0>
+                    <TanBeta>[TanBeta]</TanBeta>
+                    <Mu>[Mu]</Mu>
+                    <A>[A]</A>
+                </LHCNeuralNet2Calculator>
+
+               <FormulaPropCalculator>
+                  <NonZerosRequired>true</NonZerosRequired>
+                  <Quantity>
+                     <Name>Chi2_SCYNet_lower</Name>
+                     <Value>[SCYNet_Chi2] >= 2.0 </Value>
+                  </Quantity>
+                </FormulaPropCalculator>
+
+                <FormulaPropCalculator>
+                  <NonZerosRequired>true</NonZerosRequired>
+                  <Quantity>
+                     <Name>Chi2_SCYNet_upper</Name>
+                     <Value>[SCYNet_Chi2] &lt;= 10.0 </Value>
+                  </Quantity>
+                </FormulaPropCalculator>
+
+                <FormulaCalculator>
+                  <NonZerosRequired>true</NonZerosRequired>
+                  <Quantity>
+                     <Name>Decay_Width_Chargino</Name>
+                     <Value>[SPheno_GammaTotal_~chi1p] >= 10e-13 </Value>
+                  </Quantity>
+                </FormulaCalculator>
+
+
+        <MinimumCalculator>
+            <Name>MassOfLSP</Name>
+            <Regex>SPheno.*Mass_~.*</Regex>
+
+        </MinimumCalculator>
+
+
+        <FormulaCalculator>
+          <NonZerosRequired>true</NonZerosRequired>
+          <Quantity>
+             <Name>NeutralinoLSP</Name>
+             <Value>[SPheno_Mass_~chi10] == [MassOfLSP_Value]</Value>
+          </Quantity>
+        </FormulaCalculator>
+
+
+        <Chi2Calculator>
+            <Name>Preselection</Name>
+            <Observable>
+              <Name>Mass_h0</Name>
+              <Prediction>[SPheno_Mass_h0]</Prediction>
+              <Measurement>110.</Measurement>
+              <Type>LowerLimit</Type>
+            </Observable>
+            <Observable>
+              <Name>Mass_H0</Name>
+              <Prediction>[SPheno_Mass_H0]</Prediction>
+              <Measurement>110.</Measurement>
+              <Type>LowerLimit</Type>
+            </Observable>
+            <Observable>
+              <Name>Mass_~chi1p</Name>
+              <Prediction>[SPheno_Mass_~chi1p]</Prediction>
+              <Measurement>103.5</Measurement>
+              <Type>LowerLimit</Type>
+            </Observable>
+            <Observable>
+              <Name>Mass_W</Name>
+              <Prediction>[SPheno_Mass_Wp]</Prediction>
+              <Measurement>80.385</Measurement>
+              <Uncertainty>
+                <Value>5*0.015</Value>
+                          </Uncertainty>
+              <Uncertainty>
+                                 <Value>5*[Prediction]*0.1/100.</Value>
+                          </Uncertainty>
+              <Type>Box</Type>
+            </Observable>
+            <Observable>
+              <Name>BR_b_s_gamma</Name>
+              <Prediction>[SPheno_BR_b_s_gamma]</Prediction>
+              <Measurement>3.43e-4</Measurement>
+              <Uncertainty>
+                <Value>5*0.21e-4</Value>
+              </Uncertainty>
+              <Uncertainty>
+                <Value>5*0.07e-4</Value>
+              </Uncertainty>
+              <Uncertainty>
+                <Value>5*[Prediction]*14./100.</Value>
+                            </Uncertainty>
+              <Type>Box</Type>
+            </Observable>
+            <Observable>
+              <Name>BR_Bs_mu_mu</Name>
+              <Prediction>[SPheno_BR_Bs_mu_mu]</Prediction>
+              <Measurement>2.9e-9</Measurement>
+              <Uncertainty>
+                <Value>0.7e-9</Value>
+              </Uncertainty>
+              <Uncertainty>
+                <Value>5*[Prediction]*26./100.</Value>
+                            </Uncertainty>
+              <Type>Box</Type>
+            </Observable>
+            <Observable>
+              <Name>BR_Bu_tau_nu</Name>
+              <Prediction>[SPheno_BR_Bu_tau_nu]</Prediction>
+              <Measurement>1.05e-4</Measurement>
+              <Uncertainty>
+                     <Value>5*0.25e-4</Value>
+              </Uncertainty>
+              <Uncertainty>
+                 <Value>5*[Prediction]*20./100.</Value>
+              </Uncertainty>
+              <Type>Box</Type>
+            </Observable>
+            <Observable>
+              <Name>Abs_Delta_Mass_Bs</Name>
+              <Prediction>[SPheno_Abs_Delta_Mass_Bs]</Prediction>
+              <Measurement>17.719</Measurement>
+              <Uncertainty>
+                <Value>5*0.036</Value>
+              </Uncertainty>
+              <Uncertainty>
+                <Value>5*0.023</Value>
+              </Uncertainty>
+              <Uncertainty>
+                <Value>5*[Prediction]*24./100.</Value>
+              </Uncertainty>
+              <Type>Box</Type>
+            </Observable>
+        </Chi2Calculator>
+                <FormulaCalculator>
+                   <NonZerosRequired>true</NonZerosRequired>
+             <Quantity>
+                 <Name>PreselectionPassed</Name>
+                 <Value>[Preselection_Chi2]==0.</Value>
+            </Quantity>
+
+        </FormulaCalculator>
 <!---->
 <!--        <ProspinoCalculator>-->
 <!--                        <Executable>./prospino2</Executable>-->
