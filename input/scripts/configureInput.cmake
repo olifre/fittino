@@ -4,15 +4,7 @@ file( COPY ${PROJECT_SOURCE_DIR}/input/style DESTINATION ${PROJECT_BINARY_DIR}/i
 file( COPY ${PROJECT_SOURCE_DIR}/input/external DESTINATION ${PROJECT_BINARY_DIR}/input PATTERN ".svn" EXCLUDE )
 file( COPY ${PROJECT_SOURCE_DIR}/input/steering DESTINATION ${PROJECT_BINARY_DIR}/input PATTERN ".svn" EXCLUDE )
 
-list( APPEND inputFiles steering/SModelS.in.xml )
-list( APPEND inputFiles steering/SCYNet.xml )
-list( APPEND inputFiles steering/RPV.xml )
-list( APPEND inputFiles steering/pMSSM11_LHCsimulation_SCYNet.in.xml )
 
-
-list( APPEND inputFiles external/SModelS/parameters.ini )
-list( APPEND inputFiles external/SPheno/pMSSM11.slha )
-list( APPEND inputFiles external/SPheno/LesHouches.in.MSSMTriLnV_low )
 
 foreach( f ${inputFiles} )
 

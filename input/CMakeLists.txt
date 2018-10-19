@@ -51,9 +51,17 @@ list( APPEND installDirs style )
 list( APPEND installDirs external )
 list( APPEND installDirs steering )
 
+list( APPEND inputFiles steering/SModelS.in.xml )
+list( APPEND inputFiles steering/SCYNet.xml )
+list( APPEND inputFiles steering/RPV.xml )
+list( APPEND inputFiles steering/pMSSM11_LHCsimulation_SCYNet.in.xml )
+list( APPEND inputFiles external/SModelS/parameters.ini )
+list( APPEND inputFiles external/SPheno/pMSSM11.slha )
+list( APPEND inputFiles external/SPheno/LesHouches.in.MSSMTriLnV_low )
+
 add_custom_command( OUTPUT ${installDirs}
-                    COMMAND ${CMAKE_COMMAND} "-Doutputs=${outputs}" ${confargs} -P ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake
-                    DEPENDS ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake ${fulloutputs} ${PROJECT_SOURCE_DIR}/input/
+                    COMMAND ${CMAKE_COMMAND} "-Doutputs=${outputs}" "-DinputFiles=${inputFiles}" ${confargs} -P ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake
+DEPENDS ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake ${fulloutputs} ${PROJECT_SOURCE_DIR}/input/ ${inputFiles}
                     VERBATIM )
 
 add_custom_target( input-conf ALL DEPENDS ${installDirs})
