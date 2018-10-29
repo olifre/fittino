@@ -72,7 +72,7 @@ converter = "python /lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/c
 const char *cstr = converter.c_str();
 
 
-std:: system( cstr );
+//std:: system( cstr );
 
 
 // Checks if pythia would crash due to a to small decay width

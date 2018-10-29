@@ -1,4 +1,4 @@
-import model mssm-full
+import model MSSM_SLHA2
 define sqa = ul ur dl dr cl cr sl sr 
 define asqa = ul~ ur~ dl~ dr~ cl~ cr~ sl~ sr~
 define jj = go ul ur dl dr cl cr sl sr b1 b2 t1 t2 ul~ ur~ dl~ dr~ cl~ cr~ sl~ sr~ b1~ b2~ t1~ t2~
@@ -19,4 +19,4 @@ set misset 0
 
 
 SPheno.spc
-
+update to_slha2
