@@ -45,6 +45,8 @@ list( APPEND confargs -DSPheno_EXECUTABLE=${SPheno_EXECUTABLE} )
 list( APPEND confargs -DSPheno_MSSMTriLnV_EXECUTABLE=${SPheno_MSSMTriLnV_EXECUTABLE} )
 list( APPEND confargs -DSModelS_Database_DIR=${SModelS_Database_DIR} )
 list( APPEND confargs -DSModelS_Tools_EXECUTABLE=${SModelS_Tools_EXECUTABLE} )
+list( APPEND confargs -DMadGraph5_EXECUTABLE=${MadGraph5_EXECUTABLE} )
+list( APPEND confargs -DCheckMATE_EXECUTABLE=${CheckMATE_EXECUTABLE} )
 
 list( APPEND installDirs definitions )
 list( APPEND installDirs style )

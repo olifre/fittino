@@ -71,6 +71,9 @@ FIND_PACKAGE( Eigen3 3.1                                                        
 FIND_PACKAGE( SUPERISO                                                               )
 find_package( PythonInterp )
 FIND_PACKAGE( PythonLibs )
+FIND_PACKAGE( MadGraph5 )
+FIND_PACKAGE( CheckMATE )
+
 
 set( veccoreVersions "6.12/04;6.12/06;6.14/04" )
 

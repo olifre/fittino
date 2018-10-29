@@ -15,3 +15,12 @@ externalproject_add(
     INSTALL_COMMAND ${CMAKE_COMMAND} -E env $(MAKE) install
 
 )
+
+externalproject_get_property( ${CheckMATE} source_dir )
+set( CheckMATE_ROOT_DIR ${source_dir} )
+
+list( APPEND CACHE_ARGS "-DCheckMATE_EXECUTABLE:FILEPATH=${CheckMATE_ROOT_DIR}/bin/CheckMATE" )
+
+list( APPEND PATH ${CheckMATE_ROOT_DIR}/bin )
+
+list( APPEND Fittino_DEPENDENCIES ${CheckMATE} )

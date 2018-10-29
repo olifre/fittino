@@ -14,4 +14,9 @@ externalproject_add(
 externalproject_get_property( ${MadGraph5} source_dir )
 set( MadGraph5_ROOT_DIR ${source_dir} )
 
+list( APPEND CACHE_ARGS "-DMadGraph5_EXECUTABLE:FILEPATH=${MadGraph5_ROOT_DIR}/bin/mg5_aMC" )
+
 list( APPEND PATH ${MadGraph5_ROOT_DIR}/bin )
+list( APPEND PYTHONPATH ${MadGraph5_ROOT_DIR} )
+
+list( APPEND Fittino_DEPENDENCIES ${MadGraph} )
