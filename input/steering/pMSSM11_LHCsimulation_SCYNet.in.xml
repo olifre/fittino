@@ -349,95 +349,95 @@
             </Quantity>
 
         </FormulaCalculator>
-<!---->
-<!--        <ProspinoCalculator>-->
-<!--                        <Executable>./prospino2</Executable>-->
-<!--                        <ProOutput>./prospino2/prospino.dat</ProOutput>-->
-<!--                        <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--                        <ProOldSLHAFile>./prospino2/prospino.in.les_houches</ProOldSLHAFile>-->
-<!--                </ProspinoCalculator>-->
-<!--        -->
-<!---->
-<!--        -->
-<!---->
-<!---->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>sqsq</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                    <XS>[Pro_XSNLO_1m_ss]</XS>-->
-<!--                </EventNumber3Calculator>-->
-<!---->
-<!---->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>sqasq</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                    <XS>[Pro_XSNLO_1m_sb]</XS>-->
-<!--                </EventNumber3Calculator>-->
-<!---->
-<!---->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>gogo</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                    <XS>[Pro_XSNLO_1m_gg]</XS>-->
-<!--                </EventNumber3Calculator>-->
-<!---->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>gosq</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                    <XS>[Pro_XSNLO_1m_sg]</XS>-->
-<!--                </EventNumber3Calculator>-->
-<!---->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>b1b1~</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                    <XS>[Pro_XSNLO_1m_bb1]</XS>-->
-<!--                </EventNumber3Calculator>-->
-<!---->
-<!---->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>b2b2~</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                    <XS>[Pro_XSNLO_1m_bb2]</XS>-->
-<!--                </EventNumber3Calculator>-->
-<!---->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>t1t1~</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                    <XS>[Pro_XSNLO_1m_tb1]</XS>-->
-<!--                </EventNumber3Calculator>-->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>t2t2~</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                    <XS>[Pro_XSNLO_1m_tb2]</XS>-->
-<!--                </EventNumber3Calculator>-->
-<!---->
-<!---->
-<!---->
-<!--        <MadGraph5EWCalculator>-->
-<!--                    <Name>ewew</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                        <MGinputFile>MGewew_cMSSM_13TeV_1.txt</MGinputFile>-->
-<!--                        <XSFile>cMSSM_ewew/crossx.html</XSFile>-->
-<!--                        <BannerFile>cMSSM_ewew/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--                        <EventFile>cMSSM_ewew/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--                        <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_ewew.txt</Template>-->
-<!--                           <Name> MGewew_cMSSM_13TeV_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value> 10000</Value>-->
-<!--                           </Quantity>-->
-<!---->
-<!--                         </InputFile>-->
-<!---->
-<!---->
-<!--               </MadGraph5EWCalculator>-->
-<!--                -->
+
+        <ProspinoCalculator>
+                        <Executable>./prospino2</Executable>
+                        <ProOutput>./prospino2/prospino.dat</ProOutput>
+                        <SLHAFile>SPheno.spc</SLHAFile>
+                        <ProOldSLHAFile>./prospino2/prospino.in.les_houches</ProOldSLHAFile>
+                </ProspinoCalculator>
+        
+
+        
+
+
+        <EventNumber3Calculator>
+                    <Name>sqsq</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[Pro_XSNLO_1m_ss]</XS>
+                </EventNumber3Calculator>
+
+
+        <EventNumber3Calculator>
+                    <Name>sqasq</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[Pro_XSNLO_1m_sb]</XS>
+                </EventNumber3Calculator>
+
+
+        <EventNumber3Calculator>
+                    <Name>gogo</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[Pro_XSNLO_1m_gg]</XS>
+                </EventNumber3Calculator>
+
+        <EventNumber3Calculator>
+                    <Name>gosq</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[Pro_XSNLO_1m_sg]</XS>
+                </EventNumber3Calculator>
+
+        <EventNumber3Calculator>
+                    <Name>b1b1~</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[Pro_XSNLO_1m_bb1]</XS>
+                </EventNumber3Calculator>
+
+
+        <EventNumber3Calculator>
+                    <Name>b2b2~</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[Pro_XSNLO_1m_bb2]</XS>
+                </EventNumber3Calculator>
+
+        <EventNumber3Calculator>
+                    <Name>t1t1~</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[Pro_XSNLO_1m_tb1]</XS>
+                </EventNumber3Calculator>
+        <EventNumber3Calculator>
+                    <Name>t2t2~</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[Pro_XSNLO_1m_tb2]</XS>
+                </EventNumber3Calculator>
+
+
+ 
+        <MadGraph5EWCalculator>
+                    <Name>ewew</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                        <MGinputFile>MGewew_cMSSM_13TeV_1.txt</MGinputFile>
+                        <XSFile>cMSSM_ewew/crossx.html</XSFile>
+                        <BannerFile>cMSSM_ewew/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+                        <EventFile>cMSSM_ewew/Events/run_01/unweighted_events.lhe.gz</EventFile>
+                        <SLHAFile>SPheno.spc</SLHAFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_ewew.txt</Template>
+                           <Name> MGewew_cMSSM_13TeV_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value> 10000</Value>
+                           </Quantity>
+
+                         </InputFile>
+
+
+               </MadGraph5EWCalculator>
+        
 <!--                <MadGraph5EWCalculator>-->
 <!--                    <Name>ewst</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
 <!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
 <!--                        <XSFile>cMSSM_ewst/crossx.html</XSFile>-->
 <!--                        <MGinputFile>MGewst_cMSSM_13TeV_1.txt</MGinputFile>-->
@@ -460,12 +460,12 @@
 <!---->
 <!--            <MadGraph5Calculator>-->
 <!--            <Name>gogo</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
 <!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <MGinputFile>MGgogo_cMSSM_13TeV_jet_1.txt</MGinputFile>           -->
+<!--                <MGinputFile>MGgogo_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
 <!--                <BannerFile>cMSSM_gogo/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--            <EventFile>cMSSM_gogo/Events/run_01/unweighted_events.lhe.gz</EventFile>           -->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>           -->
+<!--            <EventFile>cMSSM_gogo/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
+<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
 <!--                   <InputFile>-->
 <!--                           <Template>MG_template_gogo.txt</Template>-->
 <!--                           <Name> MGgogo_cMSSM_13TeV_jet_1.txt </Name>-->
@@ -475,16 +475,16 @@
 <!--                           </Quantity>-->
 <!---->
 <!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>    -->
+<!--                </MadGraph5Calculator>-->
 <!---->
 <!--                 <MadGraph5Calculator>-->
 <!--            <Name>b1b1</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                <MGinputFile>MGb1b1~_cMSSM_13TeV_jet_1.txt</MGinputFile>           -->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
+<!--                <MGinputFile>MGb1b1~_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
 <!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_b1b1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>           -->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>           -->
-<!--            <EventFile>cMSSM_b1b1~/Events/run_01/unweighted_events.lhe.gz</EventFile>           -->
+<!--                <BannerFile>cMSSM_b1b1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
+<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
+<!--            <EventFile>cMSSM_b1b1~/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
 <!--                   <InputFile>-->
 <!--                           <Template>MG_template_b1b1~.txt</Template>-->
 <!--                           <Name> MGb1b1~_cMSSM_13TeV_jet_1.txt </Name>-->
@@ -493,17 +493,17 @@
 <!--                              <Value>[b1b1~_N]</Value>-->
 <!--                           </Quantity>-->
 <!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>  -->
+<!--                </MadGraph5Calculator>-->
 <!---->
 <!--                <MadGraph5Calculator>-->
 <!--            -->
 <!--            <Name>b2b2</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                <MGinputFile>MGb2b2~_cMSSM_13TeV_jet_1.txt</MGinputFile>           -->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
+<!--                <MGinputFile>MGb2b2~_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
 <!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_b2b2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>           -->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>           -->
-<!--            <EventFile>cMSSM_b2b2~/Events/run_01/unweighted_events.lhe.gz</EventFile>           -->
+<!--                <BannerFile>cMSSM_b2b2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
+<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
+<!--            <EventFile>cMSSM_b2b2~/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
 <!--                   <InputFile>-->
 <!--                           <Template>MG_template_b2b2~.txt</Template>-->
 <!--                           <Name> MGb2b2~_cMSSM_13TeV_jet_1.txt </Name>-->
@@ -516,12 +516,12 @@
 <!--                <MadGraph5Calculator>-->
 <!---->
 <!--            <Name>t1t1</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                <MGinputFile>MGt1t1~_cMSSM_13TeV_jet_1.txt</MGinputFile>           -->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
+<!--                <MGinputFile>MGt1t1~_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
 <!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_t1t1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>           -->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>           -->
-<!--            <EventFile>cMSSM_t1t1~/Events/run_01/unweighted_events.lhe.gz</EventFile>           -->
+<!--                <BannerFile>cMSSM_t1t1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
+<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
+<!--            <EventFile>cMSSM_t1t1~/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
 <!--                   <InputFile>-->
 <!--                           <Template>MG_template_t1t1~.txt</Template>-->
 <!--                           <Name> MGt1t1~_cMSSM_13TeV_jet_1.txt </Name>-->
@@ -534,12 +534,12 @@
 <!--                <MadGraph5Calculator>-->
 <!--            -->
 <!--            <Name>t2t2</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                <MGinputFile>MGt2t2~_cMSSM_13TeV_jet_1.txt</MGinputFile>           -->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
+<!--                <MGinputFile>MGt2t2~_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
 <!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_t2t2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>           -->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>           -->
-<!--            <EventFile>cMSSM_t2t2~/Events/run_01/unweighted_events.lhe.gz</EventFile>           -->
+<!--                <BannerFile>cMSSM_t2t2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
+<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
+<!--            <EventFile>cMSSM_t2t2~/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
 <!--                   <InputFile>-->
 <!--                           <Template>MG_template_t2t2~.txt</Template>-->
 <!--                           <Name> MGt2t2~_cMSSM_13TeV_jet_1.txt </Name>-->
@@ -552,12 +552,12 @@
 <!--                <MadGraph5Calculator>-->
 <!---->
 <!--            <Name>gosq</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                <MGinputFile>MGgosq_cMSSM_13TeV_jet_1.txt</MGinputFile>           -->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
+<!--                <MGinputFile>MGgosq_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
 <!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_gosq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>           -->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>           -->
-<!--            <EventFile>cMSSM_gosq/Events/run_01/unweighted_events.lhe.gz</EventFile>           -->
+<!--                <BannerFile>cMSSM_gosq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
+<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
+<!--            <EventFile>cMSSM_gosq/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
 <!--                   <InputFile>-->
 <!--                           <Template>MG_template_gosq.txt</Template>-->
 <!--                           <Name> MGgosq_cMSSM_13TeV_jet_1.txt </Name>-->
@@ -570,12 +570,12 @@
 <!--                <MadGraph5Calculator>-->
 <!--            <Name>sqasq</Name>-->
 <!---->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                <MGinputFile>MGsqasq_cMSSM_13TeV_jet_1.txt</MGinputFile>           -->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
+<!--                <MGinputFile>MGsqasq_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
 <!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_sqasq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>           -->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>           -->
-<!--            <EventFile>cMSSM_sqasq/Events/run_01/unweighted_events.lhe.gz</EventFile>           -->
+<!--                <BannerFile>cMSSM_sqasq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
+<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
+<!--            <EventFile>cMSSM_sqasq/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
 <!--                   <InputFile>-->
 <!--                           <Template>MG_template_sqasq.txt</Template>-->
 <!--                           <Name> MGsqasq_cMSSM_13TeV_jet_1.txt </Name>-->
@@ -588,12 +588,12 @@
 <!--                <MadGraph5Calculator>-->
 <!---->
 <!--            <Name>sqsq</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
-<!--                <MGinputFile>MGsqsq_cMSSM_13TeV_jet_1.txt</MGinputFile>           -->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
+<!--                <MGinputFile>MGsqsq_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
 <!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_sqsq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>           -->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>           -->
-<!--            <EventFile>cMSSM_sqsq/Events/run_01/unweighted_events.lhe.gz</EventFile>           -->
+<!--                <BannerFile>cMSSM_sqsq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
+<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
+<!--            <EventFile>cMSSM_sqsq/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
 <!--                   <InputFile>-->
 <!--                           <Template>MG_template_sqsq.txt</Template>-->
 <!--                           <Name> MGsqsq_cMSSM_13TeV_jet_1.txt </Name>-->
@@ -602,16 +602,16 @@
 <!--                              <Value>[sqsq_N]</Value>-->
 <!--                           </Quantity>-->
 <!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>  -->
+<!--                </MadGraph5Calculator>-->
 <!--    -->
 <!--        <EventNumber3Calculator>-->
 <!--                    <Name>ewew</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
 <!--                    <XS>[ewew_XS]</XS>-->
 <!--                </EventNumber3Calculator>-->
 <!--        <EventNumber3Calculator>-->
 <!--                    <Name>ewst</Name>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>-->
+<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
 <!--                    <XS>[ewst_XS]</XS>-->
 <!--                </EventNumber3Calculator>-->
 
@@ -648,10 +648,10 @@
 <!--            <old_result>My_New_Run/evaluation/total_results.txt</old_result>-->
 <!--            <results>checkmate_cMSSM/evaluation/total_results.txt</results>-->
 <!--            <r_results>checkmate_cMSSM/result.txt</r_results>-->
-<!--                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/CheckMATE/CheckMATE-2.0.11/bin/CheckMATE</Executable>-->
-<!--            <InputFileTest>/lustre/user/bruegge/fittinorun/testparam_with_analysis.dat</InputFileTest>-->
+<!--                    <Executable>@CheckMATE_EXECUTABLE@</Executable>-->
+<!--            <InputFileTest>@Fittino_INPUT_DIR@/external/SCYNet/CheckMATE_templates/testparam_with_analysis.dat</InputFileTest>-->
 <!--                    <InputFile>-->
-<!--                        <Template>/lustre/user/bruegge/cm_input_cMSSM_13TeV_jet_withew_noCL</Template>-->
+<!--                        <Template>@Fittino_INPUT_DIR@/external/SCYNet/cm_input_13TeV_strong_ew_noCLs</Template>-->
 <!--                        <Name>cm_input_cMSSM</Name>-->
 <!--                        <Quantity>-->
 <!--                            <Name>[XSect_sqsq]</Name>-->
@@ -660,8 +660,8 @@
 <!--                        <Quantity>-->
 <!--                            <Name>[XSect_sqsq_err]</Name>-->
 <!--                            <Value>[Pro_ErrNLO_ss]</Value>-->
-<!--                        </Quantity>  -->
-<!--                        <Quantity>   -->
+<!--                        </Quantity>-->
+<!--                        <Quantity>-->
 <!--                            <Name>[XSgogo]</Name>-->
 <!--                            <Value>[gogo_NXS]</Value>-->
 <!--                        </Quantity>-->
@@ -716,7 +716,7 @@
 <!--                        <Quantity>-->
 <!--                            <Name>[XSect_sb2asb2_err]</Name>-->
 <!--                            <Value>[Pro_ErrNLO_bb2]</Value>-->
-<!--                        </Quantity> -->
+<!--                        </Quantity>-->
 <!--                         <Quantity>-->
 <!--                            <Name>[XSewew]</Name>-->
 <!--                            <Value>[ewew_NXS]</Value>-->
@@ -735,7 +735,7 @@
 <!--                        </Quantity>-->
 <!-- -->
 <!--                    </InputFile>-->
-<!--                </CheckMATE4Calculator>  -->
+<!--                </CheckMATE4Calculator>-->
 
 <!--               <ClsCalculator>
                         <Name>Cor_1</Name>
