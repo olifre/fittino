@@ -11,7 +11,7 @@
 
             <Name>MSSM</Name>
 
-             <ModelParameter>
+            <ModelParameter>
                 <Name>Minput</Name>
                 <Value>1500</Value>
                 <Error>1</Error>
@@ -22,7 +22,7 @@
 
             <ModelParameter>
                 <Name>M1</Name>
-                <Value>100</Value>
+                <Value>-1549.88851517</Value>
                 <Error>1</Error>
                 <LowerBound>-4000</LowerBound>
                 <UpperBound>4000</UpperBound>
@@ -31,7 +31,7 @@
 
             <ModelParameter>
                 <Name>M2</Name>
-                <Value>100</Value>
+                <Value>3581.22581508</Value>
                 <Error>1</Error>
                 <LowerBound>100</LowerBound>
                 <UpperBound>4000</UpperBound>
@@ -40,7 +40,7 @@
 
             <ModelParameter>
                 <Name>M3</Name>
-                <Value>2000</Value>
+                <Value>3024.28680319</Value>
                 <Error>1</Error>
                 <LowerBound>-4000</LowerBound>
                 <UpperBound>4000</UpperBound>
@@ -49,7 +49,7 @@
 
             <ModelParameter>
                 <Name>MQ1</Name>
-                <Value>2000</Value>
+                <Value>2015.49389822</Value>
                 <Error>1</Error>
                 <LowerBound>300</LowerBound>
                 <UpperBound>5000</UpperBound>
@@ -58,7 +58,7 @@
 
             <ModelParameter>
                 <Name>MQ3</Name>
-                <Value>4000</Value>
+                <Value>4247.25654302</Value>
                 <Error>1</Error>
                 <LowerBound>100</LowerBound>
                 <UpperBound>5000</UpperBound>
@@ -67,7 +67,7 @@
 
             <ModelParameter>
                 <Name>ML1</Name>
-                <Value>440</Value>
+                <Value>2699.87606377</Value>
                 <Error>1</Error>
                 <LowerBound>100</LowerBound>
                 <UpperBound>3000</UpperBound>
@@ -76,7 +76,7 @@
 
             <ModelParameter>
                 <Name>ML3</Name>
-                <Value>440</Value>
+                <Value>2742.96369003</Value>
                 <Error>1</Error>
                 <LowerBound>100</LowerBound>
                 <UpperBound>4000</UpperBound>
@@ -85,7 +85,7 @@
 
             <ModelParameter>
                 <Name>MA0</Name>
-                <Value>2070</Value>
+                <Value>1804.55978856</Value>
                 <Error>1</Error>
                 <LowerBound>0</LowerBound>
                 <UpperBound>4000</UpperBound>
@@ -94,7 +94,7 @@
 
             <ModelParameter>
                 <Name>A</Name>
-                <Value>790</Value>
+                <Value>2250.4074101</Value>
                 <Error>1</Error>
                 <LowerBound>-5000</LowerBound>
                 <UpperBound>5000</UpperBound>
@@ -103,7 +103,7 @@
 
             <ModelParameter>
                 <Name>Mu</Name>
-                <Value>550</Value>
+                <Value>-1576.42703453</Value>
                 <Error>1</Error>
                 <LowerBound>-5000</LowerBound>
                 <UpperBound>5000</UpperBound>
@@ -112,14 +112,14 @@
 
             <ModelParameter>
                 <Name>TanBeta</Name>
-                <Value>37.6</Value>
+                <Value>20.8516688812</Value>
                 <Error>1</Error>
                 <LowerBound>1</LowerBound>
                 <UpperBound>60</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
-         <ModelParameter>
+            <ModelParameter>
                 <Name>Mt</Name>
                 <Value>173.3</Value>
                 <Error>1</Error>
