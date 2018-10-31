@@ -18,6 +18,9 @@ cmake_dependent_option( Conda_REQUIREMENTSFILE  "Create Conda environment as spe
 option( INSTALL_MadGraph5 "Install MadGraph5" OFF )
 add_feature_info( INSTALL_MadGraph5 INSTALL_MadGraph5 "MadGraph5 is required for installation of CheckMATE." )
 
+option( INSTALL_Prospino "Install Prospino" OFF )
+add_feature_info( INSTALL_Prospino INSTALL_Prospino "Prospino is required for compiling helper program used by ProspinoCalculator." )
+
 option( INSTALL_HepMC2 "Install HepMC2" OFF )
 add_feature_info( INSTALL_HepMC2 INSTALL_HepMC2 "HepMC2 is required for installation of Pythia." )
 

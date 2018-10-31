@@ -4,6 +4,12 @@ if( INSTALL_MadGraph5 )
 
 endif()
 
+if( INSTALL_Prospino )
+
+    include( Projects/Prospino )
+
+endif()
+
 if( INSTALL_HepMC2 )
 
     include( Projects/HepMC2 )

@@ -2,7 +2,7 @@
 set( INSTALL_SLHAea  ON CACHE BOOL "" FORCE )
 set( INSTALL_SPheno  ON CACHE BOOL "" FORCE )
 set( INSTALL_Python2  ON CACHE BOOL "" FORCE ) #?
-
+set( INSTALL_Prospino  ON CACHE BOOL "" FORCE )
 
 # needed for CheckMATE installation
 set( INSTALL_MadGraph5  ON CACHE BOOL "" FORCE )
@@ -10,7 +10,5 @@ set( INSTALL_Delphes   ON CACHE BOOL "" FORCE )
 set( INSTALL_HepMC2    ON CACHE BOOL "" FORCE )
 set( INSTALL_Pythia8   ON CACHE BOOL "" FORCE )
 set( INSTALL_CheckMATE ON CACHE BOOL "" FORCE )
-
-# TODO: ADD PROSPINO
 
 set( INSTALL_Fittino ON CACHE BOOL "" FORCE )
