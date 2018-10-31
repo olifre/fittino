@@ -1,4 +1,4 @@
-import model MSSM_SLHA2
+import model MSSM_SLHA2-full
 define ewmssmparticles = sve svm svt el- mul- ta1- er- mur- ta2- sve~ svm~ svt~ el+ mul+ ta1+ er+ mur+ ta2+ n1 n2 n3 n4 x1+ x2+ x1- x2-
 
 generate p p > ewmssmparticles ewmssmparticles

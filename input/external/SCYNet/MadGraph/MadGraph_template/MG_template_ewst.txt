@@ -1,4 +1,4 @@
-import model MSSM_SLHA2
+import model MSSM_SLHA2-full
 define ewmssmparticles = sve svm svt el- mul- ta1- er- mur- ta2- sve~ svm~ svt~ el+ mul+ ta1+ er+ mur+ ta2+ n1 n2 n3 n4 x1+ x2+ x1- x2-
 define susystrong = go ul ur dl dr cl cr sl sr b1 b2 t1 t2 ul~ ur~ dl~ dr~ cl~ cr~ sl~ sr~ b1~ b2~ t1~ t2~
 

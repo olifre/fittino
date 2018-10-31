@@ -1,4 +1,4 @@
-import model MSSM_SLHA2
+import model MSSM_SLHA2-full
 define jj = go ul ur dl dr cl cr sl sr b1 b2 t1 t2 ul~ ur~ dl~ dr~ cl~ cr~ sl~ sr~ b1~ b2~ t1~ t2~
 generate p p > t2 t2~ @0
 add process p p > t2 t2~ j @1 $jj
