@@ -747,6 +747,16 @@
                         <python_result>cls_value.txt</python_result>
                 </ClsCalculator>   -->
 
+<!--                <ClsCalculator_2>-->
+<!--                    <Name></Name>-->
+<!--                    <results>./checkmate_cMSSM/evaluation/total_results.txt</results>-->
+<!--                    <number_SR>4</number_SR>-->
+<!--                    <energy>13</energy>-->
+<!--                    <number_toys>None</number_toys>-->
+<!--                    <orthogonal_group>orthogonal.txt</orthogonal_group>-->
+<!--                    <python_script>python_newmethod.py</python_script>-->
+<!--                    <python_result>cls_value.txt</python_result>-->
+<!--                </ClsCalculator_2>-->
 
 
             </Calculators>
