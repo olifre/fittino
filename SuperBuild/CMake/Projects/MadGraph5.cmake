@@ -1,10 +1,13 @@
-set( MadGraph5 MadGraph5-2.6.3.2 )
+set( MadGraph5 MadGraph5-2.5.5 )
+#set( MadGraph5 MadGraph5-2.6.3.2 )
 
 externalproject_add(
 
     ${MadGraph5}
-    URL https://launchpad.net/mg5amcnlo/2.0/2.6.x/+download/MG5_aMC_v2.6.3.2.tar.gz
-    URL_MD5 65a66e60e2f3f800130e8bc9b477bc25
+    URL https://launchpad.net/mg5amcnlo/2.0/2.5.x/+download/MG5_aMC_v2.5.5.tar.gz
+    URL_MD5 f3ad05bc5afa86f9cab83d2742d05bd0
+    #URL https://launchpad.net/mg5amcnlo/2.0/2.6.x/+download/MG5_aMC_v2.6.3.2.tar.gz
+    #URL_MD5 65a66e60e2f3f800130e8bc9b477bc25
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
