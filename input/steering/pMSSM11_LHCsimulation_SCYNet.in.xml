@@ -435,185 +435,185 @@
 
                </MadGraph5EWCalculator>
         
-<!--                <MadGraph5EWCalculator>-->
-<!--                    <Name>ewst</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                        <XSFile>cMSSM_ewst/crossx.html</XSFile>-->
-<!--                        <MGinputFile>MGewst_cMSSM_13TeV_1.txt</MGinputFile>-->
-<!--                        <BannerFile>cMSSM_ewst/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--                        <EventFile>cMSSM_ewst/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--                        <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_ewst.txt</Template>-->
-<!--                           <Name> MGewst_cMSSM_13TeV_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value>10000</Value>-->
-<!--                           </Quantity>-->
-<!---->
-<!--                         </InputFile>-->
-<!--                </MadGraph5EWCalculator>-->
-<!---->
-<!---->
-<!---->
-<!---->
-<!--            <MadGraph5Calculator>-->
-<!--            <Name>gogo</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <MGinputFile>MGgogo_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
-<!--                <BannerFile>cMSSM_gogo/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--            <EventFile>cMSSM_gogo/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_gogo.txt</Template>-->
-<!--                           <Name> MGgogo_cMSSM_13TeV_jet_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value>[gogo_N]</Value>-->
-<!--                           </Quantity>-->
-<!---->
-<!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>-->
-<!---->
-<!--                 <MadGraph5Calculator>-->
-<!--            <Name>b1b1</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                <MGinputFile>MGb1b1~_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_b1b1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--            <EventFile>cMSSM_b1b1~/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_b1b1~.txt</Template>-->
-<!--                           <Name> MGb1b1~_cMSSM_13TeV_jet_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value>[b1b1~_N]</Value>-->
-<!--                           </Quantity>-->
-<!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>-->
-<!---->
-<!--                <MadGraph5Calculator>-->
-<!--            -->
-<!--            <Name>b2b2</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                <MGinputFile>MGb2b2~_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_b2b2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--            <EventFile>cMSSM_b2b2~/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_b2b2~.txt</Template>-->
-<!--                           <Name> MGb2b2~_cMSSM_13TeV_jet_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value>[b2b2~_N]</Value>-->
-<!--                           </Quantity>-->
-<!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>-->
-<!--                <MadGraph5Calculator>-->
-<!---->
-<!--            <Name>t1t1</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                <MGinputFile>MGt1t1~_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_t1t1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--            <EventFile>cMSSM_t1t1~/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_t1t1~.txt</Template>-->
-<!--                           <Name> MGt1t1~_cMSSM_13TeV_jet_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value>[t1t1~_N]</Value>-->
-<!--                           </Quantity>-->
-<!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>-->
-<!--                <MadGraph5Calculator>-->
-<!--            -->
-<!--            <Name>t2t2</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                <MGinputFile>MGt2t2~_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_t2t2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--            <EventFile>cMSSM_t2t2~/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_t2t2~.txt</Template>-->
-<!--                           <Name> MGt2t2~_cMSSM_13TeV_jet_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value>[t2t2~_N]</Value>-->
-<!--                           </Quantity>-->
-<!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>-->
-<!--                <MadGraph5Calculator>-->
-<!---->
-<!--            <Name>gosq</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                <MGinputFile>MGgosq_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_gosq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--            <EventFile>cMSSM_gosq/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_gosq.txt</Template>-->
-<!--                           <Name> MGgosq_cMSSM_13TeV_jet_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value>[gosq_N]</Value>-->
-<!--                           </Quantity>-->
-<!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>-->
-<!--                <MadGraph5Calculator>-->
-<!--            <Name>sqasq</Name>-->
-<!---->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                <MGinputFile>MGsqasq_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_sqasq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--            <EventFile>cMSSM_sqasq/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_sqasq.txt</Template>-->
-<!--                           <Name> MGsqasq_cMSSM_13TeV_jet_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value>[sqasq_N]</Value>-->
-<!--                           </Quantity>-->
-<!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>-->
-<!--                <MadGraph5Calculator>-->
-<!---->
-<!--            <Name>sqsq</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                <MGinputFile>MGsqsq_cMSSM_13TeV_jet_1.txt</MGinputFile>-->
-<!--                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>-->
-<!--                <BannerFile>cMSSM_sqsq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>-->
-<!--            <SLHAFile>SPheno.spc</SLHAFile>-->
-<!--            <EventFile>cMSSM_sqsq/Events/run_01/unweighted_events.lhe.gz</EventFile>-->
-<!--                   <InputFile>-->
-<!--                           <Template>MG_template_sqsq.txt</Template>-->
-<!--                           <Name> MGsqsq_cMSSM_13TeV_jet_1.txt </Name>-->
-<!--                           <Quantity>-->
-<!--                              <Name>[events]</Name>-->
-<!--                              <Value>[sqsq_N]</Value>-->
-<!--                           </Quantity>-->
-<!--                         </InputFile>-->
-<!--                </MadGraph5Calculator>-->
-<!--    -->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>ewew</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                    <XS>[ewew_XS]</XS>-->
-<!--                </EventNumber3Calculator>-->
-<!--        <EventNumber3Calculator>-->
-<!--                    <Name>ewst</Name>-->
-<!--                    <Executable>@MadGraph5_EXECUTABLE@</Executable>-->
-<!--                    <XS>[ewst_XS]</XS>-->
-<!--                </EventNumber3Calculator>-->
+                <MadGraph5EWCalculator>
+                    <Name>ewst</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                        <XSFile>cMSSM_ewst/crossx.html</XSFile>
+                        <MGinputFile>MGewst_cMSSM_13TeV_1.txt</MGinputFile>
+                        <BannerFile>cMSSM_ewst/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+                        <EventFile>cMSSM_ewst/Events/run_01/unweighted_events.lhe.gz</EventFile>
+                        <SLHAFile>SPheno.spc</SLHAFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_ewst.txt</Template>
+                           <Name> MGewst_cMSSM_13TeV_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value>10000</Value>
+                           </Quantity>
+
+                         </InputFile>
+                </MadGraph5EWCalculator>
+
+
+
+
+            <MadGraph5Calculator>
+            <Name>gogo</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                <MGinputFile>MGgogo_cMSSM_13TeV_jet_1.txt</MGinputFile>
+                <BannerFile>cMSSM_gogo/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+            <EventFile>cMSSM_gogo/Events/run_01/unweighted_events.lhe.gz</EventFile>
+            <SLHAFile>SPheno.spc</SLHAFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_gogo.txt</Template>
+                           <Name> MGgogo_cMSSM_13TeV_jet_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value>[gogo_N]</Value>
+                           </Quantity>
+
+                         </InputFile>
+                </MadGraph5Calculator>
+
+                 <MadGraph5Calculator>
+            <Name>b1b1</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                <MGinputFile>MGb1b1~_cMSSM_13TeV_jet_1.txt</MGinputFile>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                <BannerFile>cMSSM_b1b1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+            <SLHAFile>SPheno.spc</SLHAFile>
+            <EventFile>cMSSM_b1b1~/Events/run_01/unweighted_events.lhe.gz</EventFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_b1b1~.txt</Template>
+                           <Name> MGb1b1~_cMSSM_13TeV_jet_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value>[b1b1~_N]</Value>
+                           </Quantity>
+                         </InputFile>
+                </MadGraph5Calculator>
+
+                <MadGraph5Calculator>
+            
+            <Name>b2b2</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                <MGinputFile>MGb2b2~_cMSSM_13TeV_jet_1.txt</MGinputFile>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                <BannerFile>cMSSM_b2b2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+            <SLHAFile>SPheno.spc</SLHAFile>
+            <EventFile>cMSSM_b2b2~/Events/run_01/unweighted_events.lhe.gz</EventFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_b2b2~.txt</Template>
+                           <Name> MGb2b2~_cMSSM_13TeV_jet_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value>[b2b2~_N]</Value>
+                           </Quantity>
+                         </InputFile>
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+
+            <Name>t1t1</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                <MGinputFile>MGt1t1~_cMSSM_13TeV_jet_1.txt</MGinputFile>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                <BannerFile>cMSSM_t1t1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+            <SLHAFile>SPheno.spc</SLHAFile>
+            <EventFile>cMSSM_t1t1~/Events/run_01/unweighted_events.lhe.gz</EventFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_t1t1~.txt</Template>
+                           <Name> MGt1t1~_cMSSM_13TeV_jet_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value>[t1t1~_N]</Value>
+                           </Quantity>
+                         </InputFile>
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+            
+            <Name>t2t2</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                <MGinputFile>MGt2t2~_cMSSM_13TeV_jet_1.txt</MGinputFile>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                <BannerFile>cMSSM_t2t2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+            <SLHAFile>SPheno.spc</SLHAFile>
+            <EventFile>cMSSM_t2t2~/Events/run_01/unweighted_events.lhe.gz</EventFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_t2t2~.txt</Template>
+                           <Name> MGt2t2~_cMSSM_13TeV_jet_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value>[t2t2~_N]</Value>
+                           </Quantity>
+                         </InputFile>
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+
+            <Name>gosq</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                <MGinputFile>MGgosq_cMSSM_13TeV_jet_1.txt</MGinputFile>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                <BannerFile>cMSSM_gosq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+            <SLHAFile>SPheno.spc</SLHAFile>
+            <EventFile>cMSSM_gosq/Events/run_01/unweighted_events.lhe.gz</EventFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_gosq.txt</Template>
+                           <Name> MGgosq_cMSSM_13TeV_jet_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value>[gosq_N]</Value>
+                           </Quantity>
+                         </InputFile>
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+            <Name>sqasq</Name>
+
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                <MGinputFile>MGsqasq_cMSSM_13TeV_jet_1.txt</MGinputFile>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                <BannerFile>cMSSM_sqasq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+            <SLHAFile>SPheno.spc</SLHAFile>
+            <EventFile>cMSSM_sqasq/Events/run_01/unweighted_events.lhe.gz</EventFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_sqasq.txt</Template>
+                           <Name> MGsqasq_cMSSM_13TeV_jet_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value>[sqasq_N]</Value>
+                           </Quantity>
+                         </InputFile>
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+
+            <Name>sqsq</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                <MGinputFile>MGsqsq_cMSSM_13TeV_jet_1.txt</MGinputFile>
+                        <Decay_Width>[SPheno_GammaTotal_~chi1p]</Decay_Width>
+                <BannerFile>cMSSM_sqsq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+            <SLHAFile>SPheno.spc</SLHAFile>
+            <EventFile>cMSSM_sqsq/Events/run_01/unweighted_events.lhe.gz</EventFile>
+                   <InputFile>
+                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_sqsq.txt</Template>
+                           <Name> MGsqsq_cMSSM_13TeV_jet_1.txt </Name>
+                           <Quantity>
+                              <Name>[events]</Name>
+                              <Value>[sqsq_N]</Value>
+                           </Quantity>
+                         </InputFile>
+                </MadGraph5Calculator>
+    
+        <EventNumber3Calculator>
+                    <Name>ewew</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[ewew_XS]</XS>
+                </EventNumber3Calculator>
+        <EventNumber3Calculator>
+                    <Name>ewst</Name>
+                    <Executable>@MadGraph5_EXECUTABLE@</Executable>
+                    <XS>[ewst_XS]</XS>
+                </EventNumber3Calculator>
 
 
 
