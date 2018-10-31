@@ -20,6 +20,7 @@
 
 FILE(GLOB includes ./include/*.h)
 LIST( APPEND includes "include/AxionCalculator.h" )
+LIST( APPEND includes "include/ClsCalculator_2.h" )
 LIST( APPEND includes "include/Correlation.h" )
 LIST( APPEND includes "include/GM2CalcCalculator.h" )
 LIST( APPEND includes "include/InputFile.h" )
@@ -62,7 +63,8 @@ INCLUDE_DIRECTORIES(${ROOT_INCLUDE_DIRS})
 
 
 LIST( APPEND sources "src/AbsoluteUncertainty.cpp" )
-LIST( APPEND includes "src/AxionCalculator.cpp" )
+LIST( APPEND sources "src/AxionCalculator.cpp" )
+LIST( APPEND sources "src/ClsCalculator_2.cpp" )
 LIST( APPEND sources "src/Correlation.cpp" )
 LIST( APPEND sources "src/InputFile.cpp" )
 LIST( APPEND sources "src/FormulaQuantity.cpp" )

@@ -28,6 +28,7 @@
 #include "CheckMATE2Calculator.h"
 #include "CheckVacuumCalculator.h"
 #include "Chi2Calculator.h"
+#include "ClsCalculator_2.h"
 #include "ContourHistogramMaker.h"
 #include "ContourPlotter.h"
 #include "EdgeDetectionTool.h"
@@ -162,6 +163,10 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 
         return new Chi2Calculator( model, ptree );
 
+    }
+    else if ( type == "ClsCalculator_2" ) {
+        
+        return new ClsCalculator_2( model, ptree );
     }
     else if ( type == "FeynHiggsNativeCalculator" )  {
 
