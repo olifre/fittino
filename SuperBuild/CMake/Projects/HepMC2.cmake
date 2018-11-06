@@ -20,3 +20,5 @@ externalproject_add(
 
 externalproject_get_property( ${HepMC2} install_dir )
 set( HepMC2_ROOT_DIR ${install_dir} )
+
+list( APPEND ldLibraryPathValue ${HepMC2_ROOT_DIR}/lib )
