@@ -30,7 +30,7 @@ add_feature_info( INSTALL_Pythia8 INSTALL_Pythia8 "Pythia8 is required for insta
 option( INSTALL_Delphes "Install Delphes" OFF )
 add_feature_info( INSTALL_Delphes INSTALL_Delphes "Delphes is required for installation of CheckMATE." )
 
-cmake_dependent_option( INSTALL_CheckMATE "Install CheckMATE" OFF "INSTALL_Delphes;INSTALL_Pythia8;INSTALL_HepMC2;INSTALL_MadGraph5" OFF )
+cmake_dependent_option( INSTALL_CheckMATE "Install CheckMATE" OFF "INSTALL_Delphes;INSTALL_Pythia8;INSTALL_HepMC2;INSTALL_MadGraph5;INSTALL_Python2" OFF )
 add_feature_info( INSTALL_CheckMATE INSTALL_CheckMATE "This option depends on the options INSTALL_Delphes, INSTALL_Pythia8, INSTALL_HepMC2, INSTALL_MadGraph5 to be ON." )
 
 option( INSTALL_SLHAea "Install SLHAea" OFF )
