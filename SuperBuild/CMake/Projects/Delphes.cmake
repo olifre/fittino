@@ -49,10 +49,11 @@ externalproject_add(
 externalproject_get_property( ${Delphes} install_dir )
 set( Delphes_ROOT_DIR ${install_dir} )
 
+list( APPEND PATH ${Delphes_ROOT_DIR}/bin )
+list( APPEND ldLibraryPathValue ${Delphes_ROOT_DIR}/lib )
+
 # apparently the CheckMATE authors are not aware of Delphes' cmake installation and require an in source build of Delphes
 # That's why we copy the lib dir of Delphes to source_dir in the INSTALL_COMMAND and pass the source dir to CheckMATE
 
 externalproject_get_property( ${Delphes} source_dir )
 set( Delphes_SOURCE_DIR ${source_dir} )
-
-list( APPEND PATH ${Delphes_ROOT_DIR}/bin )
