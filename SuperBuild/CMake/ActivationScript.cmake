@@ -1,6 +1,19 @@
+set( script ${CMAKE_CURRENT_BINARY_DIR}/activate.sh )
+
+file( WRITE ${script} "#!/usr/bin/env bash\n\n" )
+
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
     set( ldLibraryPathName "DYLD_LIBRARY_PATH" )
+
+    if( INSTALL_CheckMATE )
+
+        file( APPEND ${script} "mkdir -p @rpath\n" )
+        file( APPEND ${script} "ln -fs ${Delphes_ROOT_DIR}/lib/libDelphes.dylib @rpath\n" )
+        file( APPEND ${script} "ln -fs ${HepMC2_ROOT_DIR}/lib/libHepMC.4.dylib\n" )
+        file( APPEND ${script} "ln -fs ${HepMC2_ROOT_DIR}/lib/libHepMCfio.4.dylib\n\n" )
+
+    endif()
 
 elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
 
@@ -12,10 +25,6 @@ else()
 
 endif()
 
-set( script ${CMAKE_CURRENT_BINARY_DIR}/activate.sh )
-
-file( WRITE ${script} "#!/usr/bin/env bash\n\n" )
-
 if( INSTALL_Python2 OR INSTALL_Python3 )
 
     file( APPEND ${script} "unset PYTHONPATH\n" )
@@ -23,17 +32,18 @@ if( INSTALL_Python2 OR INSTALL_Python3 )
 
 endif()
 
+foreach( dir IN LISTS PYTHONPATH )
+
+    file( APPEND ${script} "export PYTHONPATH=${dir}:$PYTHONPATH\n" )
+
+endforeach()
+
 foreach( dir IN LISTS PATH )
 
     file( APPEND ${script} "export PATH=${dir}:$PATH\n" )
 
 endforeach()
 
-foreach( dir IN LISTS PYTHONPATH )
-
-    file( APPEND ${script} "export PYTHONPATH=${dir}:$PYTHONPATH\n" )
-
-endforeach()
 
 foreach( dir IN LISTS ldLibraryPathValue )
 
