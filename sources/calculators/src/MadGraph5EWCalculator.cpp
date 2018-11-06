@@ -105,15 +105,15 @@ else{
   boost::split( parts, info, boost::is_any_of( "\n,:" ) );
 
 
-//  _XS = stod( parts[4] );
-  _nevents = stod( parts[2] );
+   _XS = stod( parts[4] );
+   _nevents = stod( parts[2] );
 
 // unzips the eventfile for later use in e.g CheckMate
 std:: string gunzipfile;
 gunzipfile = "gunzip " + _EventFile;
 const char *cstr = gunzipfile.c_str();
 
-//std::system(cstr);
+std::system(cstr);
 Read_XS_Error();
 
 }
@@ -168,7 +168,7 @@ void Fittino::MadGraph5EWCalculator::Read_XS_Error() {
          }                                                                                                                                                                                                                                                                                             infile.close();
        double temp1 = std::stod(XS);
        double temp2 = std::stod(XS_error);
-       _XS = temp1;
+//       _XS = temp1;
        _XS_error = temp2;
        
 
