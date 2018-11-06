@@ -1,3 +1,11 @@
+if( INSTALL_Python2 OR INSTALL_Python3 )
+
+    include( Projects/Miniconda )
+    include( Projects/CondaPackages )
+    include( Projects/PipPackages )
+
+endif()
+
 if( INSTALL_MadGraph5 )
 
     include( Projects/MadGraph5 )
@@ -31,15 +39,6 @@ endif()
 if( INSTALL_CheckMATE )
 
     include( Projects/CheckMATE )
-
-endif()
-
-
-if( INSTALL_Python2 OR INSTALL_Python3 )
-
-    include( Projects/Miniconda )
-    include( Projects/CondaPackages )
-    include( Projects/PipPackages )
 
 endif()
 
