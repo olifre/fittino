@@ -55,26 +55,26 @@ message( FATAL_ERROR "CMAKE_SYSTEM_NAME is ${CMAKE_SYSTEM_NAME} but only Darwin 
 
 endif()
 
-set( script ${CMAKE_CURRENT_BINARY_DIR}/activate.sh )
-file( WRITE ${script} "#!/usr/bin/env bash\n\n" )
+set( activationScript ${CMAKE_CURRENT_BINARY_DIR}/activate.sh )
+file( WRITE ${activationScript} "#!/usr/bin/env bash\n\n" )
 
 include( Projects )
 
 foreach( dir IN LISTS PYTHONPATH )
 
-    file( APPEND ${script} "export PYTHONPATH=${dir}:$PYTHONPATH\n" )
+    file( APPEND ${activationScript} "export PYTHONPATH=${dir}:$PYTHONPATH\n" )
 
 endforeach()
 
 foreach( dir IN LISTS PATH )
 
-    file( APPEND ${script} "export PATH=${dir}:$PATH\n" )
+    file( APPEND ${activationScript} "export PATH=${dir}:$PATH\n" )
 
 endforeach()
 
 foreach( dir IN LISTS ldLibraryPathValue )
 
-    file( APPEND ${script} "export ${ldLibraryPathName}=${dir}:$${ldLibraryPathName}\n" )
+    file( APPEND ${activationScript} "export ${ldLibraryPathName}=${dir}:$${ldLibraryPathName}\n" )
 
 endforeach()
 

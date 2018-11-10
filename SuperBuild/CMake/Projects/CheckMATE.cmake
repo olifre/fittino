@@ -30,9 +30,9 @@ list( APPEND Fittino_DEPENDENCIES ${CheckMATE} )
 
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
-    file( APPEND ${script} "\n mkdir -p @rpath\n" )
-    file( APPEND ${script} "ln -fs ${Delphes_ROOT_DIR}/lib/libDelphes.dylib @rpath\n" )
-    file( APPEND ${script} "ln -fs ${HepMC2_ROOT_DIR}/lib/libHepMC.4.dylib\n" )
-    file( APPEND ${script} "ln -fs ${HepMC2_ROOT_DIR}/lib/libHepMCfio.4.dylib\n\n" )
+    file( APPEND ${activationScript} "\n mkdir -p @rpath\n" )
+    file( APPEND ${activationScript} "ln -fs ${Delphes_ROOT_DIR}/lib/libDelphes.dylib @rpath\n" )
+    file( APPEND ${activationScript} "ln -fs ${HepMC2_ROOT_DIR}/lib/libHepMC.4.dylib\n" )
+    file( APPEND ${activationScript} "ln -fs ${HepMC2_ROOT_DIR}/lib/libHepMCfio.4.dylib\n\n" )
 
 endif()
