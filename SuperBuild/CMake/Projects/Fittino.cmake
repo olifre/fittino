@@ -68,3 +68,6 @@ set( Fittino_ROOT_DIR ${install_dir} )
 list( APPEND PATH ${install_dir}/bin )
 
 # ExternalProject_Add_StepDependencies( ${Fittino} configure ${CMAKE_CURRENT_BINARY_DIR}/init.cmake )
+
+file( APPEND ${script} "export FITTINO_ROOT_DIR=${Fittino_ROOT_DIR}\n" )
+file( APPEND ${script} "export FITTINO_INPUT_DIR=${Fittino_ROOT_DIR}/share/fittino/input\n" )
