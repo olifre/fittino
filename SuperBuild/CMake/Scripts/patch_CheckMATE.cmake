@@ -15,6 +15,6 @@ FILE( READ ${fileName} fileContent )
 
 # allow scipy versions >= 1.0.0
 set ( expr "int(scipy.__version__.split('.')[1]) <= 10" )
-string( REPLACE "${expr}" "${expr} AND int(scipy.__version__.split('.')[0]) == 0" fileContent ${fileContent} )
+string( REPLACE "${expr}" "${expr} and int(scipy.__version__.split('.')[0]) == 0" fileContent ${fileContent} )
 
 FILE ( WRITE ${fileName} ${fileContent} )
