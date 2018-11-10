@@ -38,7 +38,9 @@ include( FeatureSummary )
 include( Options )
 
 if ( BUILD_OFFLINE )
+
     set_property( DIRECTORY PROPERTY "EP_UPDATE_DISCONNECTED" ${PROJECT_BINARY_DIR} )
+
 endif()
 
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
@@ -56,15 +58,15 @@ message( FATAL_ERROR "CMAKE_SYSTEM_NAME is ${CMAKE_SYSTEM_NAME} but only Darwin 
 endif()
 
 set( activationScript ${CMAKE_CURRENT_BINARY_DIR}/activate.sh )
-file( WRITE ${activationScript} "#!/usr/bin/env bash\n\n" )
+file( WRITE ${activationScript} "#!/usr/bin/env bash\n" )
 
 include( Projects )
 
-foreach( dir IN LISTS PYTHONPATH )
+if ( PATH )
 
-    file( APPEND ${activationScript} "export PYTHONPATH=${dir}:$PYTHONPATH\n" )
+    file( APPEND ${activationScript} "\n" )
 
-endforeach()
+endif()
 
 foreach( dir IN LISTS PATH )
 
@@ -72,9 +74,27 @@ foreach( dir IN LISTS PATH )
 
 endforeach()
 
+if ( ldLibraryPathValue )
+
+    file( APPEND ${activationScript} "\n" )
+
+endif()
+
 foreach( dir IN LISTS ldLibraryPathValue )
 
     file( APPEND ${activationScript} "export ${ldLibraryPathName}=${dir}:$${ldLibraryPathName}\n" )
+
+endforeach()
+
+if ( PYTHONPATH )
+
+    file( APPEND ${activationScript} "\n" )
+
+endif()
+
+foreach( dir IN LISTS PYTHONPATH )
+
+    file( APPEND ${activationScript} "export PYTHONPATH=${dir}:$PYTHONPATH\n" )
 
 endforeach()
 
