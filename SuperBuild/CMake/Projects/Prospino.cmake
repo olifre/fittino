@@ -4,16 +4,16 @@ enable_language( Fortran )
 
 externalproject_add(
 
-${Prospino}
-URL http://www.thphys.uni-heidelberg.de/~plehn/includes/prospino/on_the_web_10_17_14.tar.gz
-URL_MD5 40e73d6b56a5008c134cc89c769e274c
-BUILD_IN_SOURCE ON
-CONFIGURE_COMMAND ""
-#BUILD_COMMAND ${CMAKE_COMMAND} -E env $(MAKE) -f <SOURCE_DIR>/Makefile DIRECT=<SOURCE_DIR> COMP=${CMAKE_Fortran_COMPILER}
-BUILD_COMMAND $(MAKE) COMP=${CMAKE_Fortran_COMPILER}
-INSTALL_COMMAND ""
+    ${Prospino}
+    URL http://www.thphys.uni-heidelberg.de/~plehn/includes/prospino/on_the_web_10_17_14.tar.gz
+    URL_MD5 40e73d6b56a5008c134cc89c769e274c
+    BUILD_IN_SOURCE ON
+    CONFIGURE_COMMAND ""
+    #BUILD_COMMAND ${CMAKE_COMMAND} -E env $(MAKE) -f <SOURCE_DIR>/Makefile DIRECT=<SOURCE_DIR> COMP=${CMAKE_Fortran_COMPILER}
+    BUILD_COMMAND $(MAKE) COMP=${CMAKE_Fortran_COMPILER}
+    INSTALL_COMMAND ""
 
-)   
+)
 
 externalproject_get_property( ${Prospino} binary_dir )
 set( Prospino_ROOT_DIR ${binary_dir} )
@@ -23,3 +23,11 @@ list( APPEND CACHE_ARGS "-DProspino_ROOT_DIR:DIRECTORY=${Prospino_ROOT_DIR}" )
 list( APPEND PATH ${Prospino_ROOT_DIR} )
 
 list( APPEND Fittino_DEPENDENCIES ${Prospino} )
+
+file( APPEND ${activationScript} "\n" )
+file( APPEND ${activationScript} "mkdir -p Pro2_subroutines\n" )
+file( APPEND ${activationScript} "ln -fs ${Prospino_ROOT_DIR}/Pro2_subroutines/ctq66.00.pds Pro2_subroutines\n" )
+file( APPEND ${activationScript} "ln -fs ${Prospino_ROOT_DIR}/Pro2_subroutines/cteq6l1.tbl Pro2_subroutines\n" )
+# the following two files are actually not needed for fittino
+file( APPEND ${activationScript} "ln -fs ${Prospino_ROOT_DIR}/Pro2_subroutines/cteq5l.tbl Pro2_subroutines\n" )
+file( APPEND ${activationScript} "ln -fs ${Prospino_ROOT_DIR}/Pro2_subroutines/cteq5m1.tbl Pro2_subroutines\n" )
