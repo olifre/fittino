@@ -47,6 +47,8 @@ list( APPEND confargs -DSModelS_Database_DIR=${SModelS_Database_DIR} )
 list( APPEND confargs -DSModelS_Tools_EXECUTABLE=${SModelS_Tools_EXECUTABLE} )
 list( APPEND confargs -DMadGraph5_EXECUTABLE=${MadGraph5_EXECUTABLE} )
 list( APPEND confargs -DCheckMATE_EXECUTABLE=${CheckMATE_EXECUTABLE} )
+list( APPEND confargs -DProspino_EXECUTABLE=${Prospino_EXECUTABLE} )
+
 
 list( APPEND installDirs definitions )
 list( APPEND installDirs style )
