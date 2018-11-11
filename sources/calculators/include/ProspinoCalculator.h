@@ -70,7 +70,7 @@ namespace Fittino {
      //InputFile _inputFile;
    //  Executor  _executor;
     std::string _ProOutput;
-    std::string _ProsOldSLHAFile;
+    std::string _SLHAFileForProspino;
     std::string _executable; 
      double _weight;
       double _nevents;

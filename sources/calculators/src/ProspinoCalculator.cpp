@@ -37,16 +37,14 @@
 
 Fittino::ProspinoCalculator::ProspinoCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree ) 
   : SLHACalculatorBase( model, &ptree ),
-    
-    
-    
-    _ProsOldSLHAFile ( ptree.get<std::string>("ProOldSLHAFile") ),	
+
+    _SLHAFileForProspino( "prospino.in.les_houches" ),
     _SLHAFile( ptree.get<std::string>("SLHAFile") ),
     _executable ( ptree.get<std::string>("Executable") ) 
 
 {
 
-    _ProOutput = ptree.get<std::string>("ProOutput");
+    _ProOutput = "prospino.dat";
 
 AddOutput("Pro_XSLO_05m_gg");
 AddOutput("Pro_XSLO_05m_bb1");
@@ -121,29 +119,17 @@ Fittino::ProspinoCalculator::~ProspinoCalculator() {
 }
 
 void Fittino::ProspinoCalculator::CalculatePredictions() {
-int n;
+    
 // removes the old SLHA files
-n=0;
-std:: string remove;
-remove = "rm "+ _ProsOldSLHAFile;
-const char *cstr = remove.c_str();
+std::string remove = "rm "+ _SLHAFileForProspino;
+std:: system ( remove.c_str() );
+
 // gives the new created SPheno SLHA file, the name Prospino needs
-std:: string copypaste;
-copypaste = "cp " + _SLHAFile + " " + _ProsOldSLHAFile ;
-const char *cstrr = copypaste.c_str();
+std:: string copypaste = "cp " + _SLHAFile + " " + _SLHAFileForProspino ;
+std:: system ( copypaste.c_str() );
 
 // calls prospino
-std:: string execute;
-execute = "cd " + _executable + " ; ./prospino_2.run" ; 
-const char *cstrrr = execute.c_str();
-
-
-std:: system( cstr );
-std:: system ( cstrr );
-
-
-std:: system( cstrrr );
-// reads in the output file
+std:: system( _executable.c_str() );
 
 ReadFile();
 
