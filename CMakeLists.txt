@@ -73,7 +73,7 @@ find_package( PythonInterp )
 FIND_PACKAGE( PythonLibs )
 FIND_PACKAGE( MadGraph5 )
 FIND_PACKAGE( CheckMATE )
-
+find_package( Prospino )
 
 set( veccoreVersions "6.12/04;6.12/06;6.14/04" )
 
