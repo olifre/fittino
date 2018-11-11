@@ -351,10 +351,8 @@
         </FormulaCalculator>
 
         <ProspinoCalculator>
-                        <Executable>./prospino2</Executable>
-                        <ProOutput>./prospino2/prospino.dat</ProOutput>
+                        <Executable>@Prospino_EXECUTABLE@</Executable>
                         <SLHAFile>SPheno.spc</SLHAFile>
-                        <ProOldSLHAFile>./prospino2/prospino.in.les_houches</ProOldSLHAFile>
                 </ProspinoCalculator>
         
 
