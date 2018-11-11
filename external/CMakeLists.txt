@@ -23,3 +23,9 @@ IF(LHAPDF_FOUND AND GSL_FOUND)
 ENDIF()
 
 ADD_SUBDIRECTORY(CheckVacuum)
+
+if( Prospino_FOUND )
+
+    add_subdirectory( Prospino )
+
+endif()
