@@ -64,8 +64,8 @@ elseif( INSTALL_Python3 )
 
 elseif( INSTALL_Python2 )
 
-    list( APPEND download_command python=2.7 numpy scipy matplotlib nose tensorflow docutils keras requests ipython plotly pandas )
-    list( APPEND install_command  python=2.7 numpy scipy matplotlib nose tensorflow docutils keras requests ipython plotly pandas  )
+    list( APPEND download_command python=2.7 numpy scipy matplotlib nose tensorflow iminuit docutils keras requests ipython plotly pandas )
+    list( APPEND install_command  python=2.7 numpy scipy matplotlib nose tensorflow iminuit docutils keras requests ipython plotly pandas  )
 
 endif()
 
