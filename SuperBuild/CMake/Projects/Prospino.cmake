@@ -18,7 +18,7 @@ externalproject_add(
 externalproject_get_property( ${Prospino} binary_dir )
 set( Prospino_ROOT_DIR ${binary_dir} )
 
-list( APPEND CACHE_ARGS "-DProspino_ROOT_DIR:DIRECTORY=${Prospino_ROOT_DIR}" )
+list( APPEND CACHE_ARGS "-DProspino_ROOT_DIR:PATH=${Prospino_ROOT_DIR}" )
 
 list( APPEND PATH ${Prospino_ROOT_DIR} )
 
