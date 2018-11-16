@@ -9,5 +9,5 @@ SkipParamCheck: True
 
 [myprocess]
 XSect: 4 FB
-Events: /lustre/user/bruegge/fittinorun/testfile.hep
+Events: @CheckMATE_TESTFILE@
 

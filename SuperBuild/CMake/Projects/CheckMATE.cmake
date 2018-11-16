@@ -23,6 +23,7 @@ externalproject_get_property( ${CheckMATE} source_dir )
 set( CheckMATE_ROOT_DIR ${source_dir} )
 
 list( APPEND CACHE_ARGS "-DCheckMATE_EXECUTABLE:FILEPATH=${CheckMATE_ROOT_DIR}/bin/CheckMATE" )
+list( APPEND CACHE_ARGS "-DCheckMATE_TESTFILE:FILEPATH=${CheckMATE_ROOT_DIR}/bin/example_run_cards/auxiliary/testfile.hep" )
 
 list( APPEND PATH ${CheckMATE_ROOT_DIR}/bin )
 

@@ -47,6 +47,7 @@ list( APPEND confargs -DSModelS_Database_DIR=${SModelS_Database_DIR} )
 list( APPEND confargs -DSModelS_Tools_EXECUTABLE=${SModelS_Tools_EXECUTABLE} )
 list( APPEND confargs -DMadGraph5_EXECUTABLE=${MadGraph5_EXECUTABLE} )
 list( APPEND confargs -DCheckMATE_EXECUTABLE=${CheckMATE_EXECUTABLE} )
+list( APPEND confargs -DCheckMATE_TESTFILE=${CheckMATE_TESTFILE} )
 list( APPEND confargs -DProspino_EXECUTABLE=${Prospino_EXECUTABLE} )
 
 
@@ -62,6 +63,9 @@ list( APPEND inputFiles steering/pMSSM11_LHCsimulation_SCYNet.in.xml )
 list( APPEND inputFiles external/SModelS/parameters.ini )
 list( APPEND inputFiles external/SPheno/pMSSM11.slha )
 list( APPEND inputFiles external/SPheno/LesHouches.in.MSSMTriLnV_low )
+list( APPEND inputFiles external/SCYNet/CheckMATE_templates/testparam_with_analysis.dat )
+
+
 
 add_custom_command( OUTPUT ${installDirs}
                     COMMAND ${CMAKE_COMMAND} "-Doutputs=${outputs}" "-DinputFiles=${inputFiles}" ${confargs} -P ${PROJECT_SOURCE_DIR}/input/scripts/configureInput.cmake
