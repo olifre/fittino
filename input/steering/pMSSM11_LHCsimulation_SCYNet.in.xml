@@ -647,9 +647,9 @@
             <results>checkmate_cMSSM/evaluation/total_results.txt</results>
             <r_results>checkmate_cMSSM/result.txt</r_results>
                     <Executable>@CheckMATE_EXECUTABLE@</Executable>
-            <InputFileTest>@Fittino_INPUT_DIR@/external/SCYNet/CheckMATE_templates/testparam_with_analysis.dat</InputFileTest>
+            <InputFileTest>@Fittino_INPUT_DIR@/external/CheckMATE/testparam_with_analysis.dat</InputFileTest>
                     <InputFile>
-                        <Template>@Fittino_INPUT_DIR@/external/SCYNet/CheckMATE_templates/cm_input_13TeV_strong_ew_noCLs</Template>
+                        <Template>@Fittino_INPUT_DIR@/external/CheckMATE/cm_input_13TeV_strong_ew_noCLs</Template>
                         <Name>cm_input_cMSSM</Name>
                         <Quantity>
                             <Name>[XSect_sqsq]</Name>
