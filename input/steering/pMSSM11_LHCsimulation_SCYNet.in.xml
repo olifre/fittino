@@ -421,7 +421,7 @@
                         <EventFile>cMSSM_ewew/Events/run_01/unweighted_events.lhe.gz</EventFile>
                         <SLHAFile>SPheno.spc</SLHAFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_ewew.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_ewew.txt</Template>
                            <Name> MGewew_cMSSM_13TeV_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
@@ -443,7 +443,7 @@
                         <EventFile>cMSSM_ewst/Events/run_01/unweighted_events.lhe.gz</EventFile>
                         <SLHAFile>SPheno.spc</SLHAFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_ewst.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_ewst.txt</Template>
                            <Name> MGewst_cMSSM_13TeV_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
@@ -465,7 +465,7 @@
             <EventFile>cMSSM_gogo/Events/run_01/unweighted_events.lhe.gz</EventFile>
             <SLHAFile>SPheno.spc</SLHAFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_gogo.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_gogo.txt</Template>
                            <Name> MGgogo_cMSSM_13TeV_jet_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
@@ -484,7 +484,7 @@
             <SLHAFile>SPheno.spc</SLHAFile>
             <EventFile>cMSSM_b1b1~/Events/run_01/unweighted_events.lhe.gz</EventFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_b1b1~.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_b1b1~.txt</Template>
                            <Name> MGb1b1~_cMSSM_13TeV_jet_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
@@ -503,7 +503,7 @@
             <SLHAFile>SPheno.spc</SLHAFile>
             <EventFile>cMSSM_b2b2~/Events/run_01/unweighted_events.lhe.gz</EventFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_b2b2~.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_b2b2~.txt</Template>
                            <Name> MGb2b2~_cMSSM_13TeV_jet_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
@@ -521,7 +521,7 @@
             <SLHAFile>SPheno.spc</SLHAFile>
             <EventFile>cMSSM_t1t1~/Events/run_01/unweighted_events.lhe.gz</EventFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_t1t1~.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_t1t1~.txt</Template>
                            <Name> MGt1t1~_cMSSM_13TeV_jet_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
@@ -539,7 +539,7 @@
             <SLHAFile>SPheno.spc</SLHAFile>
             <EventFile>cMSSM_t2t2~/Events/run_01/unweighted_events.lhe.gz</EventFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_t2t2~.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_t2t2~.txt</Template>
                            <Name> MGt2t2~_cMSSM_13TeV_jet_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
@@ -557,7 +557,7 @@
             <SLHAFile>SPheno.spc</SLHAFile>
             <EventFile>cMSSM_gosq/Events/run_01/unweighted_events.lhe.gz</EventFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_gosq.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_gosq.txt</Template>
                            <Name> MGgosq_cMSSM_13TeV_jet_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
@@ -575,7 +575,7 @@
             <SLHAFile>SPheno.spc</SLHAFile>
             <EventFile>cMSSM_sqasq/Events/run_01/unweighted_events.lhe.gz</EventFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_sqasq.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_sqasq.txt</Template>
                            <Name> MGsqasq_cMSSM_13TeV_jet_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
@@ -593,7 +593,7 @@
             <SLHAFile>SPheno.spc</SLHAFile>
             <EventFile>cMSSM_sqsq/Events/run_01/unweighted_events.lhe.gz</EventFile>
                    <InputFile>
-                           <Template>@Fittino_INPUT_DIR@/external/SCYNet/MadGraph/MadGraph_template/MG_template_sqsq.txt</Template>
+                           <Template>@Fittino_INPUT_DIR@/external/MadGraph/MG_template_sqsq.txt</Template>
                            <Name> MGsqsq_cMSSM_13TeV_jet_1.txt </Name>
                            <Quantity>
                               <Name>[events]</Name>
