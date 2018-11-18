@@ -55,6 +55,12 @@ if( INSTALL_SCYNet )
 
 endif()
 
+if( INSTALL_SCYNet2 )
+
+    include( Projects/SCYNet2 )
+
+endif()
+
 if( INSTALL_SLHAea )
 
     include( Projects/SLHAea )
