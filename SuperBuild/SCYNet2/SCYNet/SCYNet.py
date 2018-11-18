@@ -193,10 +193,13 @@ class SCYNet:
             file.write(output)
             if self.verbose: print ('wrote %s lines' % written)
 def main(a):
-
+    
     net = '1.1565_03Aug'
-    print (net+'.txt')
-    SN = SCYNet(args= sys.argv, inp = a, model=net+'.h5', hp=net+'.txt')
+    from pkg_resources import resource_filename
+    model = os.path.abspath(resource_filename( 'scynet.data', net + '.h5') )
+    hp = os.path.abspath(resource_filename( 'scynet.data', net + '.txt') )
+
+    SN = SCYNet( args= sys.argv, inp = a, model=model, hp=hp )
     #SN = SCYNet(args='/home/lb948295/SCY_Net/data/points_test.npy', model=net+'.h5', hp=net+'.txt')
     pred = SN.predict()
     print pred
