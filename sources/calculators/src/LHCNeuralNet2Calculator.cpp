@@ -92,7 +92,7 @@ void Fittino::LHCNeuralNet2Calculator::CalculatePredictions() {
    // external python script calling the net is used
    
    std::string execute;
-   execute = "python -c \"import " + _scynet + " as bla; print bla.main([[" + parpoint_1 + "," + parpoint_2 + "," + parpoint_3 + "," + parpoint_4 + "," + parpoint_5 + "," + parpoint_6 + "," + parpoint_7 + "," + parpoint_8 + "," + parpoint_9 + "," + parpoint_10 + ","+ parpoint_11 +"]])\" ";
+   execute = "python -c \"from scynet import SCYNet as bla; print bla.main([[" + parpoint_1 + "," + parpoint_2 + "," + parpoint_3 + "," + parpoint_4 + "," + parpoint_5 + "," + parpoint_6 + "," + parpoint_7 + "," + parpoint_8 + "," + parpoint_9 + "," + parpoint_10 + ","+ parpoint_11 +"]])\" ";
     const char *python = execute.c_str();
     std::cout << execute ;
     std::system(python);
