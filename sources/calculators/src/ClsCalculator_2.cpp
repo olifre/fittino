@@ -245,7 +245,7 @@ std::cout << n0_string << std::endl;
 std:: string execute;
 std::string cls_script_ohnepy;
 cls_script_ohnepy = _cls_script.substr(0, _cls_script.size()-3);
-execute = "python -c \"import " + cls_script_ohnepy + " as bla; print bla.calc_CLs(" + n0_string + ", 0.0, " + b0_string + "," + db_string + ", 0.0, " + s0_string + "," + ds_string + ", " + _nr_toys +"," + _nr_SR +", 1, 1 ,1) \" ";
+execute = "python -c \"from cls import " + cls_script_ohnepy + " as bla; print bla.calc_CLs(" + n0_string + ", 0.0, " + b0_string + "," + db_string + ", 0.0, " + s0_string + "," + ds_string + ", " + _nr_toys +"," + _nr_SR +", 1, 1 ,1) \" ";
 const char *python = execute.c_str();
 std::cout << execute ;
 
@@ -537,7 +537,7 @@ std::cout << n0_string << std::endl;
 std:: string execute;
 std::string cls_script_ohnepy;
 cls_script_ohnepy = _cls_script.substr(0, _cls_script.size()-3);
-execute = "python -c \"import " + cls_script_ohnepy + " as bla; print bla.main(" + n0_string+ "," + b0_string+ "," + db_string+ "," + s0_string+ "," + ds_string+ "," +  ds_sys_string+ "," + ") \" ";
+execute = "python -c \"from cls import " + cls_script_ohnepy + " as bla; print bla.main(" + n0_string+ "," + b0_string+ "," + db_string+ "," + s0_string+ "," + ds_string+ "," +  ds_sys_string+ "," + ") \" ";
 const char *python = execute.c_str();
 
 
@@ -764,7 +764,7 @@ std::cout << n0_string << std::endl;
 std:: string execute;
 std::string cls_script_ohnepy;
 cls_script_ohnepy = _cls_script.substr(0, _cls_script.size()-3);
-execute = "python -c \"import " + cls_script_ohnepy + " as bla; print bla.calc_CLs(" + n0_string + ", 0.0, " + b0_string + "," + db_string + ", 0.0, " + s0_string + "," + ds_string + ", " + _nr_toys +"," + _nr_SR +", 1, 1 ,1) \" ";
+execute = "python -c \"from cls import " + cls_script_ohnepy + " as bla; print bla.calc_CLs(" + n0_string + ", 0.0, " + b0_string + "," + db_string + ", 0.0, " + s0_string + "," + ds_string + ", " + _nr_toys +"," + _nr_SR +", 1, 1 ,1) \" ";
 const char *python = execute.c_str();
 std::cout << execute ;
 
