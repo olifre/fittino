@@ -43,59 +43,10 @@ if ( BUILD_OFFLINE )
 
 endif()
 
-if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-
-    set( ldLibraryPathName "DYLD_LIBRARY_PATH" )
-
-elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
-
-    set( ldLibraryPathName "LD_LIBRARY_PATH" )
-
-else()
-
-message( FATAL_ERROR "CMAKE_SYSTEM_NAME is ${CMAKE_SYSTEM_NAME} but only Darwin and Linux are supported." )
-
-endif()
-
-set( activationScript ${CMAKE_CURRENT_BINARY_DIR}/activate.sh )
-file( WRITE ${activationScript} "#!/usr/bin/env bash\n" )
+include( InitializeActivationScript )
 
 include( Projects )
 
-if ( PATH )
-
-    file( APPEND ${activationScript} "\n" )
-
-endif()
-
-foreach( dir IN LISTS PATH )
-
-    file( APPEND ${activationScript} "export PATH=${dir}:$PATH\n" )
-
-endforeach()
-
-if ( ldLibraryPathValue )
-
-    file( APPEND ${activationScript} "\n" )
-
-endif()
-
-foreach( dir IN LISTS ldLibraryPathValue )
-
-    file( APPEND ${activationScript} "export ${ldLibraryPathName}=${dir}:$${ldLibraryPathName}\n" )
-
-endforeach()
-
-if ( PYTHONPATH )
-
-    file( APPEND ${activationScript} "\n" )
-
-endif()
-
-foreach( dir IN LISTS PYTHONPATH )
-
-    file( APPEND ${activationScript} "export PYTHONPATH=${dir}:$PYTHONPATH\n" )
-
-endforeach()
+include( FinalizeActivationScript )
 
 feature_summary( WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES )
