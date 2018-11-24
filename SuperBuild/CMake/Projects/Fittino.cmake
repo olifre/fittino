@@ -2,6 +2,8 @@ set( Fittino Fittino )
 
 list( APPEND CACHE_ARGS "-DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>" )
 list( APPEND CACHE_ARGS "-DCMAKE_CXX_STANDARD:STRING=${CMAKE_CXX_STANDARD}" )
+list( APPEND CACHE_ARGS "-DROOT_CONFIG_EXECUTABLE:FILEPATH=${ROOT_CONFIG_EXECUTABLE}" )
+
 
 check_language( Fortran )
 
@@ -67,8 +69,12 @@ set( Fittino_ROOT_DIR ${install_dir} )
 
 list( APPEND PATH ${install_dir}/bin )
 
+file( APPEND ${activationScript} "\n")
+file( APPEND ${activationScript} "source ${install_dir}/bin/activate.sh ")
+
 # ExternalProject_Add_StepDependencies( ${Fittino} configure ${CMAKE_CURRENT_BINARY_DIR}/init.cmake )
 
+# TODO: move to Fittino's own activationScript
 file( APPEND ${activationScript} "\n")
 file( APPEND ${activationScript} "export FITTINO_ROOT_DIR=${Fittino_ROOT_DIR}\n" )
 file( APPEND ${activationScript} "export FITTINO_INPUT_DIR=${Fittino_ROOT_DIR}/share/fittino/input\n" )
