@@ -19,7 +19,7 @@
 ################################################################################
 
 CMAKE_MINIMUM_REQUIRED( VERSION 3.3 FATAL_ERROR )
-cmake_policy(SET CMP0057 NEW)
+cmake_policy( SET CMP0057 NEW )
 
 PROJECT( fittino NONE )
 
@@ -42,8 +42,8 @@ SET( FEYNHIGGS_QUAD TRUE CACHE BOOL "" )
 option( USE_WCxf "" ON )
 
 ENABLE_LANGUAGE( CXX )
-ENABLE_LANGUAGE( C )
-ENABLE_LANGUAGE( Fortran )
+ENABLE_LANGUAGE( C ) # TODO: make optional
+ENABLE_LANGUAGE( Fortran ) # TODO make optional
 
 set( CMAKE_CXX_STANDARD 14 CACHE STRING "" )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
@@ -75,10 +75,11 @@ FIND_PACKAGE( MadGraph5 )
 FIND_PACKAGE( CheckMATE )
 find_package( Prospino )
 
-set( veccoreVersions "6.12/04;6.12/06;6.14/04" )
+set( veccoreVersions "6.12/04;6.12/06;6.14/04;6.14/06" )
 
 if( "${ROOT_VERSION}" IN_LIST veccoreVersions  )
 
+    message( "veccore needed" )
     find_package( VecCore REQUIRED )
     list( APPEND ROOT_INCLUDE_DIRS ${VecCore_INCLUDE_DIRS} )
 
@@ -110,15 +111,19 @@ endif()
 
 IF( SPheno_FOUND )
 
-    add_definitions( -DSPHENO_EXECUTABLE="${SPheno_EXECUTABLE}" )
+    add_definitions( -DSPHENO_EXECUTABLE="${SPheno_EXECUTABLE}" )  #TODO: Remove
 
 endif()
 
 IF( SMODELSTOOLS_FOUND )
 
-    add_definitions( -DSModelSTools_EXECUTABLE="${SModelSTools_EXECUTABLE}" )
+    add_definitions( -DSModelSTools_EXECUTABLE="${SModelSTools_EXECUTABLE}" ) #TODO: Remove
 
 endif()
+
+set( PYTHONPATH "" CACHE INTERNAL "" )
+
+include( SuperBuild/CMake/InitializeActivationScript.cmake )
 
 add_subdirectory( CMakeModules )
 add_subdirectory( sources )
@@ -155,4 +160,10 @@ add_custom_target( input SOURCES ${insrc} )
 
 # maybe needed for some IDEs in order to be able to run install command
 # add_custom_target( Install COMMAND ${CMAKE_MAKE_PROGRAM} install )
+
+add_subdirectory( data )
+
+include( SuperBuild/CMake/FinalizeActivationScript.cmake )
+
+install( PROGRAMS ${activationScript} DESTINATION bin  )
 
