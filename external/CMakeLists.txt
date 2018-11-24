@@ -33,3 +33,5 @@ if( Prospino_FOUND )
 endif()
 
 add_subdirectory(CLs)
+
+add_custom_target( external )
