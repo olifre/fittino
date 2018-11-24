@@ -36,10 +36,12 @@ if( PYTHONINTERP_FOUND )
 endif()
 
 set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
+set( Fittino_DATA_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/data )
 
 list( APPEND confargs -DPROJECT_BINARY_DIR=${PROJECT_BINARY_DIR} )
 list( APPEND confargs -DPROJECT_SOURCE_DIR=${PROJECT_SOURCE_DIR} )
 list( APPEND confargs -DFittino_INPUT_DIR=${Fittino_INPUT_DIR} )
+list( APPEND confargs -DFittino_DATA_DIR=${Fittino_DATA_DIR} )
 list( APPEND confargs -DPYTHONINTERP_FOUND=${PYTHONINTERP_FOUND} )
 list( APPEND confargs -DSPheno_EXECUTABLE=${SPheno_EXECUTABLE} )
 list( APPEND confargs -DSPheno_MSSMTriLnV_EXECUTABLE=${SPheno_MSSMTriLnV_EXECUTABLE} )
