@@ -19,7 +19,9 @@
 ################################################################################
 
 IF(LHAPDF_FOUND AND GSL_FOUND)
+
   ADD_SUBDIRECTORY(HDim6)
+
 ENDIF()
 
 ADD_SUBDIRECTORY(CheckVacuum)
@@ -29,3 +31,5 @@ if( Prospino_FOUND )
     add_subdirectory( Prospino )
 
 endif()
+
+add_subdirectory(CLs)
