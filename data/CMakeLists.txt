@@ -1,5 +1,6 @@
 set( files )
-list( APPEND files orthogonal.txt)
+list( APPEND files orthogonal.txt )
+list( APPEND files total_results.txt )
 
 install( FILES ${files} DESTINATION share/fittino/data )
 
