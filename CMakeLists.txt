@@ -130,6 +130,8 @@ file( APPEND ${activationScript} "export FITTINO_ROOT_DIR=${CMAKE_INSTALL_PREFIX
 file( APPEND ${activationScript} "export FITTINO_INPUT_DIR=${CMAKE_INSTALL_PREFIX}/share/fittino/input\n" )
 file( APPEND ${activationScript} "export FITTINO_STEERING_DIR=${CMAKE_INSTALL_PREFIX}/share/fittino/input/steering\n" )
 
+list( APPEND PATH ${CMAKE_INSTALL_PREFIX}/bin )
+
 add_subdirectory( CMakeModules )
 add_subdirectory( sources )
 add_subdirectory( external )

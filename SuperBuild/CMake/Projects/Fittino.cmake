@@ -67,8 +67,6 @@ externalproject_add(
 externalproject_get_property( ${Fittino} install_dir )
 set( Fittino_ROOT_DIR ${install_dir} )
 
-list( APPEND PATH ${install_dir}/bin )
-
 file( APPEND ${activationScript} "\n")
 file( APPEND ${activationScript} "source ${install_dir}/bin/activate.sh ")
 
