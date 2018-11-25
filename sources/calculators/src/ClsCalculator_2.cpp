@@ -54,8 +54,8 @@ Fittino::ClsCalculator_2::ClsCalculator_2( const ModelBase* model, const boost::
     _energy (ptree.get<std::string>("energy")),    
     _nr_toys (ptree.get<std::string>("number_toys")),    
     _CM_tot_result (ptree.get<std::string>( "results" ) ),
-    _cls_script ( ptree.get<std::string> ("python_script") ),    
-    _cls_python_result ( ptree.get<std::string> ("python_result") ),  
+    _cls_script ( "python_newmethod.py" ),
+    _cls_python_result ( "cls_value.txt" ),  
     _ORG ( ptree.get<std::string> ("orthogonal_group") )  
 
 {

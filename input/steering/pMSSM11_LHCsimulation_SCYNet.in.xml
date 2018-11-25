@@ -752,8 +752,6 @@
 <!--                    <energy>13</energy>-->
 <!--                    <number_toys>None</number_toys>-->
 <!--                    <orthogonal_group>@Fittino_DATA_DIR@/orthogonal.txt</orthogonal_group>-->
-<!--                    <python_script>python_newmethod.py</python_script>-->
-<!--                    <python_result>cls_value.txt</python_result>-->
 <!--                </ClsCalculator_2>-->
 
 
