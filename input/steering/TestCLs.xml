@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
+
+<InputFile>
+
+    <VerbosityLevel>INFO</VerbosityLevel>
+
+    <Model>
+
+        <ModelBase>
+
+            <Name>MSSM</Name>
+
+            <ModelParameter>
+                <Name>Minput</Name>
+                <Value>1500</Value>
+                <Error>1</Error>
+                <LowerBound>1500</LowerBound>
+                <UpperBound>1500</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M1</Name>
+                <Value>-1549.88851517</Value>
+                <Error>1</Error>
+                <LowerBound>-4000</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M2</Name>
+                <Value>3581.22581508</Value>
+                <Error>1</Error>
+                <LowerBound>100</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M3</Name>
+                <Value>3024.28680319</Value>
+                <Error>1</Error>
+                <LowerBound>-4000</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MQ1</Name>
+                <Value>2015.49389822</Value>
+                <Error>1</Error>
+                <LowerBound>300</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MQ3</Name>
+                <Value>4247.25654302</Value>
+                <Error>1</Error>
+                <LowerBound>100</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>ML1</Name>
+                <Value>2699.87606377</Value>
+                <Error>1</Error>
+                <LowerBound>100</LowerBound>
+                <UpperBound>3000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>ML3</Name>
+                <Value>2742.96369003</Value>
+                <Error>1</Error>
+                <LowerBound>100</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MA0</Name>
+                <Value>1804.55978856</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>A</Name>
+                <Value>2250.4074101</Value>
+                <Error>1</Error>
+                <LowerBound>-5000</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>Mu</Name>
+                <Value>-1576.42703453</Value>
+                <Error>1</Error>
+                <LowerBound>-5000</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>TanBeta</Name>
+                <Value>20.8516688812</Value>
+                <Error>1</Error>
+                <LowerBound>1</LowerBound>
+                <UpperBound>60</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>Mt</Name>
+                <Value>173.3</Value>
+                <Error>1</Error>
+                <LowerBound>130</LowerBound>
+                <UpperBound>215</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+
+
+            <Observables>
+            </Observables>
+            <CovarianceMatrices>
+            </CovarianceMatrices>
+
+            <Calculators>
+
+
+
+                <ClsCalculator_2>
+                    <Name></Name>
+                    <results>@Fittino_DATA_DIR@/total_results.txt</results>
+                    <number_SR>4</number_SR>
+                    <energy>13</energy>
+                    <number_toys>None</number_toys>
+                    <orthogonal_group>@Fittino_DATA_DIR@/orthogonal.txt</orthogonal_group>
+                </ClsCalculator_2>
+
+
+            </Calculators>
+
+
+        </ModelBase>
+
+    </Model>
+
+    <Tool>
+
+        <MarkovChainSampler>
+            <NumberOfIterations>1</NumberOfIterations>
+        </MarkovChainSampler>
+
+    </Tool>
+
+</InputFile>
+

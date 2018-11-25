@@ -66,6 +66,7 @@ list( APPEND inputFiles external/SModelS/parameters.ini )
 list( APPEND inputFiles external/SPheno/pMSSM11.slha )
 list( APPEND inputFiles external/SPheno/LesHouches.in.MSSMTriLnV_low )
 list( APPEND inputFiles external/CheckMATE/testparam_with_analysis.dat )
+list( APPEND inputFiles steering/TestCLs.xml )
 
 
 
