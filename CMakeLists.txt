@@ -125,6 +125,11 @@ set( PYTHONPATH "" CACHE INTERNAL "" )
 
 include( SuperBuild/CMake/InitializeActivationScript.cmake )
 
+file( APPEND ${activationScript} "\n")
+file( APPEND ${activationScript} "export FITTINO_ROOT_DIR=${CMAKE_INSTALL_PREFIX}\n" )
+file( APPEND ${activationScript} "export FITTINO_INPUT_DIR=${CMAKE_INSTALL_PREFIX}/share/fittino/input\n" )
+file( APPEND ${activationScript} "export FITTINO_STEERING_DIR=${CMAKE_INSTALL_PREFIX}/share/fittino/input/steering\n" )
+
 add_subdirectory( CMakeModules )
 add_subdirectory( sources )
 add_subdirectory( external )

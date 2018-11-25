@@ -73,8 +73,3 @@ file( APPEND ${activationScript} "\n")
 file( APPEND ${activationScript} "source ${install_dir}/bin/activate.sh ")
 
 # ExternalProject_Add_StepDependencies( ${Fittino} configure ${CMAKE_CURRENT_BINARY_DIR}/init.cmake )
-
-# TODO: move to Fittino's own activationScript
-file( APPEND ${activationScript} "\n")
-file( APPEND ${activationScript} "export FITTINO_ROOT_DIR=${Fittino_ROOT_DIR}\n" )
-file( APPEND ${activationScript} "export FITTINO_INPUT_DIR=${Fittino_ROOT_DIR}/share/fittino/input\n" )
