@@ -48,14 +48,14 @@ std::vector<std::pair<std::string, double>> rvalue_vec;
 int zero_signal = 0;
 
 Fittino::ClsCalculator_2::ClsCalculator_2( const ModelBase* model, const boost::property_tree::ptree& ptree ) 
-  : SLHACalculatorBase( model, &ptree ),
+  : CalculatorBase( model, &ptree ),
   
     _nr_SR (ptree.get<std::string>("number_SR")),    
     _energy (ptree.get<std::string>("energy")),    
     _nr_toys (ptree.get<std::string>("number_toys")),    
     _CM_tot_result (ptree.get<std::string>( "results" ) ),
     _cls_script ( "python_newmethod.py" ),
-    _cls_python_result ( "cls_value.txt" ),  
+    _cls_python_result ( "cls_value.txt" ),
     _ORG ( ptree.get<std::string> ("orthogonal_group") )  
 
 {

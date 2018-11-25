@@ -22,9 +22,9 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+#include "CalculatorBase.h"
 #include "Executor.h"
 #include "InputFile.h"
-#include "SLHACalculatorBase.h"
 #include <map>
 
 class TTree;
@@ -46,7 +46,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for MadGraph
    */
-  class ClsCalculator_2 : public SLHACalculatorBase{
+  class ClsCalculator_2 : public CalculatorBase{
 
 
     public:
