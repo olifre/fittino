@@ -24,10 +24,7 @@ list( APPEND PATH ${Prospino_ROOT_DIR} )
 
 list( APPEND Fittino_DEPENDENCIES ${Prospino} )
 
+# actually only ctq66.00.pds and cteq6l1.tbl are needed.
+# further tables contained are cteq5l.tbl and cteq5m1.tbl
 file( APPEND ${activationScript} "\n" )
-file( APPEND ${activationScript} "mkdir -p Pro2_subroutines\n" )
-file( APPEND ${activationScript} "ln -fs ${Prospino_ROOT_DIR}/Pro2_subroutines/ctq66.00.pds Pro2_subroutines\n" )
-file( APPEND ${activationScript} "ln -fs ${Prospino_ROOT_DIR}/Pro2_subroutines/cteq6l1.tbl Pro2_subroutines\n" )
-# the following two files are actually not needed for fittino
-file( APPEND ${activationScript} "ln -fs ${Prospino_ROOT_DIR}/Pro2_subroutines/cteq5l.tbl Pro2_subroutines\n" )
-file( APPEND ${activationScript} "ln -fs ${Prospino_ROOT_DIR}/Pro2_subroutines/cteq5m1.tbl Pro2_subroutines\n" )
+file( APPEND ${activationScript}  "ln -fs ${Prospino_ROOT_DIR}/Pro2_subroutines\n" )
