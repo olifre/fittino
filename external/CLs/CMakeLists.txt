@@ -1,6 +1,6 @@
 
 set( src )
-list( APPEND src setup.py cls  )
+list( APPEND src setup.py fittinocls  )
 
 if( PYTHON2_FOUND )
 
