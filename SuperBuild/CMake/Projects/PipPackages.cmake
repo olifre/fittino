@@ -23,7 +23,7 @@ elseif( INSTALL_Python3 )
 
 endif()
 
-set( download_command ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH  ${PYTHON_EXECUTABLE} -m pip download --find-links . --no-cache-dir -b <BINARY_DIR> -r ${requirements} --no-deps --dest . )
+set( download_command ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 PYTHONPATH=${CondaPackages_PYTHONPATH}  ${PYTHON_EXECUTABLE} -m pip download --find-links . --no-cache-dir -b <BINARY_DIR> -r ${requirements} --no-deps --dest . )
 
 if( BUILD_OFFLINE )
 
@@ -32,7 +32,7 @@ if( BUILD_OFFLINE )
 endif()
 
 # TODO this should become the build step once CMake 3.11.0 (which supports DOWNLOAD_DIR) is widely available (compare condapackages)
-LIST( APPEND download_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${PYTHON_EXECUTABLE} -m pip install --find-links . --no-cache-dir -b <BINARY_DIR> -r ${requirements} --no-deps --prefix <INSTALL_DIR> --no-index )
+LIST( APPEND download_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 PYTHONPATH=${CondaPackages_PYTHONPATH} ${PYTHON_EXECUTABLE} -m pip install --find-links . --no-cache-dir -b <BINARY_DIR> -r ${requirements} --no-deps --prefix <INSTALL_DIR> --no-index )
 
 externalproject_add(
 

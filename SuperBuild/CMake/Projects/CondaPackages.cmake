@@ -2,6 +2,7 @@ if( INSTALL_Python2 )
 
     set( CondaPackages "CondaPackages2-2" )
     set( pythonIncludeDir include/python2.7 )
+    set( pyver "2.7" )
 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
@@ -24,6 +25,7 @@ elseif( INSTALL_Python3 )
 
     set( CondaPackages "CondaPackages3-1" )
     set( pythonIncludeDir include/python3.6m )
+    set( pyver "3.6" )
 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
@@ -47,9 +49,9 @@ endif()
 set( download_command ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR> )
 set( install_command  ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR> )
 
-list( APPEND download_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Miniconda_EXECUTABLE} create -y --prefix <INSTALL_DIR> --download-only )
+list( APPEND download_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 PYTHONPATH=${Miniconda_PYTHONPATH} ${Miniconda_EXECUTABLE} create -y --prefix <INSTALL_DIR> --download-only )
 
-list( APPEND install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=<DOWNLOAD_DIR> PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Miniconda_EXECUTABLE} create -y --prefix <INSTALL_DIR> --offline --use-index-cache )
+list( APPEND install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=<DOWNLOAD_DIR> PYTHONNOUSERSITE=1 PYTHONPATH=${Miniconda_PYTHONPATH} ${Miniconda_EXECUTABLE} create -y --prefix <INSTALL_DIR> --offline --use-index-cache )
 
 if( Conda_REQUIREMENTSFILE )
 
@@ -93,6 +95,7 @@ externalproject_get_property( ${CondaPackages} install_dir )
 
 # set filepath according to https://cmake.org/cmake/help/v3.10/module/FindPythonInterp.html
 set( PYTHON_EXECUTABLE ${install_dir}/bin/python )
+set( CondaPackages_PYTHONPATH "${install_dir}/lib/python${pyver}:${install_dir}/lib/python${pyver}/site-packages" )
 
 list( APPEND CACHE_ARGS -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE} )
 list( APPEND CACHE_ARGS -DPYTHON_LIBRARY:FILEPATH=${install_dir}/${pythonLibrary} )
