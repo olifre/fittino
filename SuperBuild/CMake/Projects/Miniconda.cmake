@@ -41,4 +41,5 @@ externalproject_add(
 externalproject_get_property( ${Miniconda} install_dir )
 
 set( Miniconda_EXECUTABLE ${install_dir}/bin/conda )
+set( Miniconda_PYTHONPATH "${install_dir}/lib/python2.7:${install_dir}/lib/python2.7/site-packages" )
 
