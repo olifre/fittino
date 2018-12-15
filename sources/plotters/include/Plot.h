@@ -1,6 +1,7 @@
 #ifndef PLOT_H
 #define PLOT_H
 
+#include <vector>
 #include <boost/property_tree/ptree.hpp>
 
 class TCanvas;
