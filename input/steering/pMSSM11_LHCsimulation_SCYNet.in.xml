@@ -745,14 +745,14 @@
                         <python_result>cls_value.txt</python_result>
                 </ClsCalculator>   -->
 
-<!--                <ClsCalculator_2>-->
-<!--                    <Name></Name>-->
-<!--                    <results>./checkmate_cMSSM/evaluation/total_results.txt</results>-->
-<!--                    <number_SR>4</number_SR>-->
-<!--                    <energy>13</energy>-->
-<!--                    <number_toys>None</number_toys>-->
-<!--                    <orthogonal_group>@Fittino_DATA_DIR@/orthogonal.txt</orthogonal_group>-->
-<!--                </ClsCalculator_2>-->
+                <ClsCalculator_2>
+                    <Name></Name>
+                    <results>./checkmate_cMSSM/evaluation/total_results.txt</results>
+                    <number_SR>4</number_SR>
+                    <energy>13</energy>
+                    <number_toys>None</number_toys>
+                    <orthogonal_group>@Fittino_DATA_DIR@/orthogonal.txt</orthogonal_group>
+                </ClsCalculator_2>
 
 
             </Calculators>
