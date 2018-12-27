@@ -164,7 +164,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
         return new Chi2Calculator( model, ptree );
 
     }
-    else if ( type == "ClsCalculator_2" ) {
+    else if ( type == "Cls2Calculator" ) {
         
         return new ClsCalculator_2( model, ptree );
     }
