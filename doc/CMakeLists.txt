@@ -10,6 +10,8 @@ list( APPEND src Input.md )
 add_custom_target( docfiles SOURCES ${src} )
 
 list( APPEND xmlFiles ${PROJECT_SOURCE_DIR}/input/steering/SModelS.in.xml )
+list( APPEND xmlFiles ${PROJECT_SOURCE_DIR}/input/steering/pMSSM11_LHCsimulation_SCYNet.in.xml )
+
 
 if( PYTHONINTERP_FOUND )
 

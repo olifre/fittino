@@ -1,6 +1,7 @@
 # Input files
 
 - [SModelS.xml](SModelS.html): Requires SPheno, SModelS, and SCYNet.
+- [pMSSM11_LHCsimulation_SCYNet.in.xml](pMSSM11_LHCsimulation_SCYNet.html)
 
 #### MSSMTriLnV
 The following input files are generated with help of Python. If no Python installation was found, they are not generated.
