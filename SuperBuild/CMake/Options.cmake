@@ -15,6 +15,8 @@ set (installPython OFF)
 endif()
 cmake_dependent_option( Conda_REQUIREMENTSFILE  "Create Conda environment as specified in requiremts file." ON "installPython" OFF )
 
+cmake_dependent_option( Python_REQUIREMENTSFILE  "Create Python environment as specified in requiremts file." ON "installPython" OFF )
+
 option( INSTALL_MadGraph5 "Install MadGraph5" OFF )
 add_feature_info( INSTALL_MadGraph5 INSTALL_MadGraph5 "MadGraph5 is required for installation of CheckMATE." )
 
