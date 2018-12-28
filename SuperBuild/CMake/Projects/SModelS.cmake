@@ -16,7 +16,7 @@ externalproject_add(
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/smodels/lib $(MAKE) FCC=${CMAKE_Fortran_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER} PYTHIAVER=8226
 
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${PYTHON_EXECUTABLE} -m pip install <SOURCE_DIR> --prefix=<INSTALL_DIR> --no-cache-dir -b <BINARY_DIR> --no-deps --no-index
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 PYTHONPATH=${PYTHONPATH_STRING} ${PYTHON_EXECUTABLE} -m pip install <SOURCE_DIR> --prefix=<INSTALL_DIR> --no-cache-dir -b <BINARY_DIR> --no-deps --no-index
      COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/smodels-database <INSTALL_DIR>/smodels-database
     # see http://smodels.readthedocs.io/en/latest/Installation.html#adding-fastlim-data
     COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/smodels-database ${TAR} -xzvf smodels-v1.1-fastlim-1.0.tgz

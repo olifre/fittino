@@ -29,7 +29,7 @@ elseif( INSTALL_Python3 )
 
 endif()
 
-set( download_command ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${PYTHON_EXECUTABLE} -m pip download --find-links . --no-cache-dir -b <BINARY_DIR> --dest . )
+set( download_command ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 PYTHONPATH=${PYTHONPATH_STRING} ${PYTHON_EXECUTABLE} -m pip download --find-links . --no-cache-dir -b <BINARY_DIR> --dest . )
 
 if( BUILD_OFFLINE )
 
@@ -37,7 +37,9 @@ if( BUILD_OFFLINE )
 
 endif()
 
-set( build_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 PYTHONPATH=<INSTALL_DIR>/${libs} ${PYTHON_EXECUTABLE} -m pip install --find-links <DOWNLOAD_DIR> --no-cache-dir -b <BINARY_DIR> --prefix <INSTALL_DIR> --no-index )
+set( pythonPath "<INSTALL_DIR>/${libs}:${PYTHONPATH_STRING}" )
+
+set( build_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 PYTHONPATH=${pythonPath} ${PYTHON_EXECUTABLE} -m pip install --find-links <DOWNLOAD_DIR> --no-cache-dir -b <BINARY_DIR> --prefix <INSTALL_DIR> --no-index )
 
 if( Python_REQUIREMENTSFILE )
 

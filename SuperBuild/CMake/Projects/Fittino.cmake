@@ -36,7 +36,7 @@ set( Fittino_CMAKE_GENERATOR ${CMAKE_GENERATOR} CACHE STRING "" )
 
 if( INSTALL_Python2 OR INSTALL_Python3 )
 
-    list( APPEND fittinoInstallCommand ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 PYTHONPATH=${Miniconda_PYTHONPATH} )
+    list( APPEND fittinoInstallCommand ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 PYTHONPATH=${PYTHONPATH_STRING} )
 
 endif()
 
