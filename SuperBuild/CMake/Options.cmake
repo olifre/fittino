@@ -3,10 +3,10 @@ include( CMakeDependentOption )
 option( BUILD_OFFLINE "" OFF )
 
 cmake_dependent_option( INSTALL_Python2 "Install Python 2 environment fulfilling the requirements of CheckMATE, SCYNet, and SModelS." OFF "NOT INSTALL_Python3" OFF )
-add_feature_info( INSTALL_Python2 INSTALL_Python2 "the Python 2 evironment installed fulfills the requirements of CheckMATE, SCYNet, and SModelS. This option depends on the option INSTALL_Python3 to be OFF. It requires the package UnixCommands to be found in order to run the bash installer of Miniconda." )
+add_feature_info( INSTALL_Python2 INSTALL_Python2 "the Python 2 evironment installed fulfills the requirements of CheckMATE, SCYNet, and SModelS. This option depends on the option INSTALL_Python3 to be OFF." )
 
 cmake_dependent_option( INSTALL_Python3 "Install Python 3 environment including flavio and its requirements" OFF "NOT INSTALL_Python2" OFF )
-add_feature_info( INSTALL_Python3 INSTALL_Python3 "the Python 3 installation includes flavio and its requirements. Flavio is used by the FlavioCalculator of Fittino. It requires the package UnixCommands to be found in order to run the bash installer of Miniconda." )
+add_feature_info( INSTALL_Python3 INSTALL_Python3 "the Python 3 installation includes flavio and its requirements. Flavio is used by the FlavioCalculator of Fittino." )
 
 if( INSTALL_Python2 OR INSTALL_Python3 ) 
 set( installPython ON) 
