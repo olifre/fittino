@@ -7,7 +7,8 @@ if( INSTALL_Python2 )
     set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/PipPackages2.txt" )
     list( APPEND  pkgs cython numpy scipy matplotlib nose tensorflow docutils keras requests ipython plotly pandas argparse Unum tex2pix pyslha  )
 
-    set( install_command  )
+# see https://github.com/tensorflow/tensorflow/issues/6341#issuecomment-377804376
+    set( install_command ${CMAKE_COMMAND} -E touch <INSTALL_DIR>/${libs}/google/__init__.py )
 
 elseif( INSTALL_Python3 )
 
@@ -62,7 +63,7 @@ externalproject_add(
     DOWNLOAD_COMMAND ${download_command}
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${build_command}
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Flavio_patch/flha.py <INSTALL_DIR>/${libs}/flavio/io/flha.py 
+    INSTALL_COMMAND ${install_command}
 
 )
 
