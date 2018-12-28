@@ -9,7 +9,7 @@ set_package_properties( UnixCommands PROPERTIES TYPE REQUIRED PURPOSE "Required 
 externalproject_add(
 
     ${SModelS}
-    DEPENDS ${PipPackages} ${Pythia8Download}
+    DEPENDS ${Virtualenv} ${Pythia8Download}
     URL https://github.com/smodels/smodels/archive/a1fd1bb22989457049daad8a93235f41e17e68ed.zip
     URL_MD5 628478ce03e9293c16a4de0445357921
     PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${Pythia8Download_FILE} <SOURCE_DIR>/smodels/lib/pythia8/.pythia8226.tgz

@@ -5,7 +5,7 @@ set( SCYNet2_URL ${CMAKE_CURRENT_SOURCE_DIR}/SCYNet2 )
 externalproject_add(
 
     ${SCYNet2}
-    DEPENDS ${PipPackages}
+    DEPENDS ${Virtualenv}
     URL ${SCYNet2_URL}
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
