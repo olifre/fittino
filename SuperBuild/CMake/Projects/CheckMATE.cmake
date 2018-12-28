@@ -12,7 +12,7 @@ externalproject_add(
     #URL_MD5 d4af00cbf28948c4b1820abfbf6ef9d3
     URL https://checkmate.hepforge.org/downloads/CheckMATE-2.0.11.tar.gz
     URL_MD5 2ba417d2483e86c4334df18c9c44b74a
-    DEPENDS ${Delphes} ${HepMC2} ${Pythia8} ${MadGraph5} ${CondaPackages}
+    DEPENDS ${Delphes} ${HepMC2} ${Pythia8} ${MadGraph5} ${Virtualenv}
     PATCH_COMMAND ${CMAKE_COMMAND} -P ${PROJECT_SOURCE_DIR}/CMake/Scripts/patch_CheckMATE.cmake
     CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CXX=${CMAKE_CXX_COMPILER} ./configure --with-rootsys=${ROOTSYS} --with-delphes=${Delphes_SOURCE_DIR} --with-hepmc=${HepMC2_ROOT_DIR} --with-pythia=${Pythia8_ROOT_DIR}  --with-madgraph=${MadGraph5_ROOT_DIR} --with-python=${PYTHON_EXECUTABLE}
 # --with-gziplib=${zlib_library_dir} --with-gzipinc=${ZLIB_INCLUDE_DIRS}
