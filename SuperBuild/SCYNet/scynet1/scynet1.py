@@ -2,7 +2,7 @@
 import math
 import numpy as np
 import tensorflow as tf
-from utils import getData
+import os
 
 class SCYNet:
 
@@ -76,15 +76,15 @@ class SCYNet:
     def startSession(self, energy):
        
         with self.g.as_default():
-		self.setTransformationParameters( energy )
-
-		self.sess = tf.Session(graph=self.g)
-
-		net = 'direct_' + str( energy ) + 'TeV.ckpt'
-		net = getData( net ) 
-
-		saver = tf.train.Saver()
-		saver.restore( self.sess, net )
+            self.setTransformationParameters( energy )
+            self.sess = tf.Session(graph=self.g)
+            net = 'direct_' + str( energy ) + 'TeV.ckpt'
+        # net = getData( net )
+            from pkg_resources import resource_filename
+            net = os.path.abspath( resource_filename( 'scynet1.data', net ) )
+#dummy = tf.Variable(0)
+            saver = tf.train.Saver()
+            saver.restore( self.sess, net )
 
 
     def setTransformationParameters(self, energy ):
