@@ -31,7 +31,7 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
     //PyObject *ret = PyObject_CallMethod(instance_8, "startSession", "i", 8);
     //assert( ret != NULL );
 
-    boost::python::object scynetModule = boost::python::import("scynet.scynet");
+    boost::python::object scynetModule = boost::python::import("scynet1.scynet1");
     boost::python::object scynetClass = scynetModule.attr( "SCYNet" );
 
     PyObject* instance_8 = PyInstance_New( scynetClass.ptr(), NULL, NULL);
