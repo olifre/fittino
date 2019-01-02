@@ -44,8 +44,8 @@ set( build_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 PYTHONPATH
 
 if( Python_REQUIREMENTSFILE )
 
-    list( APPEND download_command --no-deps -r ${requirements} COMMAND ${download_command} --no-deps iminuit==1.3.3 argparse==1.4.0 )
-    list( APPEND build_command --no-deps -r ${requirements} COMMAND ${build_command} --no-deps iminuit==1.3.3 argparse==1.4.0 )
+    list( APPEND download_command --no-deps -r ${requirements} COMMAND ${download_command} --no-deps iminuit==1.3.3 )
+    list( APPEND build_command --no-deps -r ${requirements} COMMAND ${build_command} --no-deps iminuit==1.3.3 )
 
 else()
 
