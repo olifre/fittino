@@ -425,6 +425,7 @@
                 </Chi2Calculator>
                 
                 <LHCNeuralNetCalculator>
+                    <Name>SCYNet1</Name>
                     <M1>[M1]</M1>
                     <M2>[M2]</M2>
                     <M3>[M3]</M3>
@@ -437,6 +438,23 @@
                     <Mu>[Mu]</Mu>
                     <A>[A]</A>
                 </LHCNeuralNetCalculator>
+
+                <LHCNeuralNet2Calculator>
+                    <Name>SCYNet2</Name>
+                    <scynet_script>SCYNet</scynet_script>
+                    <scynet_out>SCYNet.out</scynet_out>
+                    <M1>[M1]</M1>
+                    <M2>[M2]</M2>
+                    <M3>[M3]</M3>
+                    <MQ1>[MQ1]</MQ1>
+                    <MQ3>[MQ3]</MQ3>
+                    <ML1>[ML1]</ML1>
+                    <ML3>[ML3]</ML3>
+                    <MA0>[MA0]</MA0>
+                    <TanBeta>[TanBeta]</TanBeta>
+                    <Mu>[Mu]</Mu>
+                    <A>[A]</A>
+                </LHCNeuralNet2Calculator>
 
                 <SModelSCalculator>
                     <Name>SModelSCalculator</Name>
@@ -460,7 +478,7 @@
 
             </Calculators>
 
-            <Chi2Contribution>[LEO_Chi2]-[SCYNet_Chi2_Total]+[SModelS_Chi2]</Chi2Contribution>
+            <Chi2Contribution>[LEO_Chi2]-[SCYNet1_Chi2_Total]+[SModelS_Chi2]</Chi2Contribution>
 
         </ModelBase>
 

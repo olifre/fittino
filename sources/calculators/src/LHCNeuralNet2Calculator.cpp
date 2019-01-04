@@ -17,12 +17,7 @@ Fittino::LHCNeuralNet2Calculator::LHCNeuralNet2Calculator( const ModelBase* mode
     _scynet_out (ptree.get<std::string>("scynet_out")) 
 {
     
-    if ( _name.empty() ) { 
-
-    _tag  = "SCYNet";
-    _name = "SCYNet";
-
-   }
+    SetName( "SCYNet2" );
     
     AddOutput( "Chi2" );
 

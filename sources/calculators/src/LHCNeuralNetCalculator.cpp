@@ -13,12 +13,7 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
     : CalculatorBase( model, &ptree ) 
 {
     
-    if ( _name.empty() ) { 
-
-    _tag  = "SCYNet";
-    _name = "SCYNet";
-
-   }
+    SetName( "SCYNet1" );
     
     AddOutput( "Chi2_8TeV", _chi2_8 );
     AddOutput( "Chi2_13TeV", _chi2_13 );

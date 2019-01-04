@@ -197,7 +197,8 @@
                     <OutputFile>SPheno.spc</OutputFile>
                 </SPhenoCalculator>
 
-         <LHCNeuralNet2Calculator>
+                <LHCNeuralNet2Calculator>
+                    <Name>SCYNet</Name>
                     <scynet_script>SCYNet</scynet_script>
                     <scynet_out>SCYNet.out</scynet_out>
                     <M1>[M1]</M1>
