@@ -81,8 +81,8 @@ void Fittino::LHCNeuralNet2Calculator::CalculatePredictions() {
    parpoint_7 = std::to_string(parpoints[6]);
    parpoint_8 = std::to_string(parpoints[7]);
    parpoint_9 = std::to_string(parpoints[8]);
-   parpoint_10 = std::to_string(parpoints[10]);
-   parpoint_11 = std::to_string(parpoints[11]);
+   parpoint_10 = std::to_string(parpoints[9]);
+   parpoint_11 = std::to_string(parpoints[10]);
    
    // external python script calling the net is used
    
