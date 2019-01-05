@@ -218,7 +218,7 @@
                   <NonZerosRequired>true</NonZerosRequired>
                   <Quantity>
                      <Name>Chi2_SCYNet_lower</Name>
-                     <Value>[SCYNet_Chi2] >= 2.0 </Value>
+                     <Value>[SCYNet_Chi2] &gt; 0.5 </Value>
                   </Quantity>
                 </FormulaPropCalculator>
 
