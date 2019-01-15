@@ -27,4 +27,4 @@ list( APPEND Fittino_DEPENDENCIES ${Prospino} )
 # actually only ctq66.00.pds and cteq6l1.tbl are needed.
 # further tables contained are cteq5l.tbl and cteq5m1.tbl
 file( APPEND ${activationScript} "\n" )
-file( APPEND ${activationScript}  "cp -r ${Prospino_ROOT_DIR}/Pro2_subroutines\n" )
+file( APPEND ${activationScript}  "cp -r ${Prospino_ROOT_DIR}/Pro2_subroutines .\n" )
